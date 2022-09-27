@@ -1,0 +1,6 @@
+export const ACAO_EDITAR = 'editar'
+export const ACAO_CLONAR = 'clonar'
+export const ACAO_VISUALIZAR = 'visualizar'
+export const ACAO_NOVA_REGRA = 'nova-regra'
+export const ACAO_VISUALIZAR_REGRA = 'ver-regra'
+export const ACAO_LISTAR_REGRA = 'listar-regra'

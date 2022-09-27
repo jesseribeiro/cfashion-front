@@ -1,0 +1,118 @@
+// =========================================================
+// * Vuetify Material Dashboard - v1.0.0
+// =========================================================
+
+// * Product Page: https://www.creative-tim.com/product/vuetify-material-dashboard
+// * Copyright 2019 Creative Tim (https://www.creative-tim.com)
+// * Licenses under MIT
+
+// * Coded by Creative Tim
+
+// =========================================================
+
+// * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+@import "material-dashboard/mixins";
+@import "material-dashboard/variables";
+@import "material-dashboard/typography";
+@import "material-dashboard/sidebar";
+@import "material-dashboard/toolbar";
+@import "material-dashboard/misc";
+@import "material-dashboard/inputs";
+@import "material-dashboard/footer";
+@import "material-dashboard/cards";
+@import "material-dashboard/tables";
+@import "material-dashboard/tabs";
+@import "material-dashboard/checkboxes";
+@import "material-dashboard/tooltips";
+@import "material-dashboard/buttons";
+@import "material-dashboard/alerts";
+@import "material-dashboard/fixed-plugin";
+@import "material-dashboard/dropdown";
+
+tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, .05);
+}
+// marca os campos obrigatorios com * red
+div[aria-required=true].v-input .v-label::after {
+  content: " *";
+  color: red;
+}
+.uppercase{
+  text-transform: uppercase;
+}
+.lowercase{
+  text-transform: lowercase;
+}
+.shadow-none{
+  box-shadow: none !important;
+}
+.rounded-0{
+  border-radius:  0px;
+}
+.rounded-1 {
+  border-radius: 3px;
+}
+.rounded-2 {
+  border-radius: 6px;
+}
+.noshadow{
+  box-shadow: none !important;
+}
+.text-left {
+  text-align:left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.lowercase input {
+  text-transform: lowercase
+}
+.centralizaTudo{
+  text-align: center;
+  justify-content: center;
+  vertical-align: center;
+  justify-items: center;
+  justify-self: center;
+}
+.d-grid{
+  display:grid;
+}
+.grid-cols-1-1{
+  grid-template-columns: 1fr 1fr;
+}
+.d-flex{
+  display: flex;
+}
+.justify-content-space-between{
+  justify-content: space-between;
+}
+.justify-content-start{
+  justify-content: flex-start;
+}
+.justify-content-center{
+  justify-content: center;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+.flex-row{
+  flex-direction: row;
+}
+.flex-column{
+  flex-direction: column;
+}
+// retirar flechas numeros 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

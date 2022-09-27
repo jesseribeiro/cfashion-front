@@ -1,0 +1,13 @@
+export * from './ufs'
+export * from './acao'
+export * from './estadocivil'
+export * from './sexo'
+export * from './escolaridade'
+export * from './money'
+export * from './tiporesidencia'
+export * from './tipoReferenciaPessoal'
+export * from './tipoDocumento'
+export * from './localstore'
+export * from './pagination'
+export * from './porusuario'
+export const TODAS_ID = -1

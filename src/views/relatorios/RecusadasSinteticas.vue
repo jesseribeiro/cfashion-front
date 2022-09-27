@@ -1,0 +1,217 @@
+<template>
+  <v-container
+    fluid
+    grid-list-md>
+    <span class="title">Autorizações Recusadas Sintético</span>
+    <v-form
+      ref="form2"
+      @submit.prevent="validateBeforeSubmit">
+      <v-layout
+        row
+        wrap>
+        <v-flex md12>
+          <v-card class="elevation-0">
+            <v-card-text>
+              <v-layout
+                row
+                wrap>
+                <v-flex md12>
+                  <core-filtro-rede-empresa-loja
+                    v-model="filtros"
+                    :show-todas="true"
+                    :obrigatorio="true"
+                  />
+                </v-flex>
+                <v-flex
+                  v-if="!customizarTempo"
+                  md8>
+                  <v-autocomplete
+                    v-validate="'required'"
+                    v-model="filtros.tpPeriodo"
+                    :items="periodos"
+                    :error-messages="errors.collect('Período')"
+                    label="Período"
+                    item-value="id"
+                    item-text="descricao"
+                  />
+                </v-flex>
+                <v-flex
+                  v-if="customizarTempo"
+                  md4>
+                  <v-text-field
+                    v-validate="'required'"
+                    v-model="filtros.dataInicio"
+                    label="Data Inicial"
+                    type="date"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex
+                  v-if="customizarTempo"
+                  md4>
+                  <v-text-field
+                    v-validate="'required'"
+                    v-model="filtros.dataFim"
+                    label="Data Final"
+                    type="date"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-checkbox
+                    v-model="customizarTempo"
+                    label="Customizar tempo de atraso"
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.situacao"
+                    :items="recusas"
+                    :error-messages="errors.collect('Motivos Recusas')"
+                    label="Motivos Recusas"
+                    item-value="id"
+                    item-text="descricao"
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.totalizacao"
+                    :items="totalizar"
+                    label="Totalização"
+                    item-value="id"
+                    item-text="descricao"
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.tipoRel"
+                    :items="tiposRel"
+                    label="Relatório em"
+                    item-value="id"
+                    item-text="descricao"
+                  />
+                </v-flex>
+              </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+        <v-flex md12>
+          <v-layout class="justify-end">
+            <v-btn
+              :loading="loadingBtn"
+              type="submit"
+              color="primary">Gerar</v-btn>
+          </v-layout>
+        </v-flex>
+        <core-progress-modal :show="loading" />
+
+        <embed
+          v-if="filePDF"
+          id="plugin"
+          :src="filePDF"
+          width="100%"
+          height="1000px"
+          name="plugin"
+          type="application/pdf">
+      </v-layout>
+    </v-form>
+  </v-container>
+</template>
+
+<script>
+import { TiposBusiness, RelatorioBusiness } from '../../business'
+import reportUtils from '../../utils/reportUtils'
+
+export default {
+  metaInfo: {
+    titleTemplate: '%s - Relatório'
+  },
+  data () {
+    return {
+      filtros: {
+        redeId: null,
+        empresaId: null,
+        lojaId: null,
+        situacao: 'TODAS',
+        totalizacao: 'DIARIA',
+        tpPeriodo: 'SETE_DIAS',
+        tpAnalise: 'S',
+        dataInicio: null,
+        dataFim: null,
+        tipoRel: 'PDF',
+      },
+      filePDF: null,
+      customizarTempo: false,
+      tiposRel: [],
+      recusas: [],
+      periodos: [],
+      totalizar: [],
+      loadingBtn: false,
+      loading: false
+    }
+  },
+  beforeMount () {
+    console.log('Chamando beforeMount')
+    this.recusas.push({ id: 'TODAS', descricao: 'Todas' })
+    TiposBusiness.getAllTotalizarPorDataRelatorio()
+      .then(response => {
+        this.totalizar = response.data
+      })
+    TiposBusiness.getAllRecusaVenda()
+      .then(response => {
+        this.recusas = this.recusas.concat(response.data);
+      })
+    TiposBusiness.getAllPeriodoRelatorio()
+      .then(response => {
+        this.periodos = response.data
+      })
+    TiposBusiness.getAllTiposRelatorio()
+      .then(response => {
+        this.tiposRel = response.data
+      })
+  },
+  methods: {
+    validateBeforeSubmit () {
+      this.$validator.validate().then(result => {
+        if (result) {
+          if (!this.filtros.redeId && this.filtros.redeId === TODAS_ID) {
+            this.$root.showAlerta('Selecione uma rede!')
+            return
+          }
+          if (!this.filtros.empresaId && this.filtros.empresaId === TODAS_ID) {
+            this.$root.showAlerta('Selecione uma empresa!')
+            return
+          }
+          if (!this.filtros.lojaId) {
+            this.$root.showAlerta('Selecione uma loja!')
+            return
+          }
+          this.loading = true
+          this.loadingBtn = true
+          RelatorioBusiness.geraComprasRecusadas(this.filtros)
+            .then(response => {
+              if (this.filtros.tipoRel === 'PDF') {
+                this.filePDF = window.URL.createObjectURL(response.data)
+              } else {
+                reportUtils.downloadExcel(response)
+              }
+            })
+            .catch(erro => {
+              if (erro && erro.response.data) {
+                this.$root.showAlerta(erro.response.data.message)
+              } else {
+                this.$root.showErro(this.$vuetify.t('$vuetify.Erro.carregarRelatorio'))
+              }
+            })
+            .finally(() => {
+              this.loading = false
+              this.loadingBtn = false
+            })
+        } else {
+          this.$root.showAlerta(this.$vuetify.t('$vuetify.Erro.camposObrigatorios'))
+        }
+      })
+    }
+  }
+}
+</script>
