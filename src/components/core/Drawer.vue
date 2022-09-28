@@ -79,14 +79,29 @@ export default {
         to: "/home",
         icon: "mdi-home",
         text: "Início",
-        roles: ["CREDIARISTA", "PROPRIETARIO"],
+        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
         children: [],
       },
       {
         to: "/lista-loja",
         icon: "mdi-store",
         text: "Marcas",
-        roles: ["ADMIN", "SUPERVISOR"],
+        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
+        children: [],
+      },
+      {
+        to: "/lista-cliente",
+        icon: "mdi-card-account-details",
+        text: "Clientes",
+        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
+        children: [],
+      },
+      {
+        to: "/lista-produto",
+        icon: "mdi-card-account-details",
+        text: "Produtos",
+        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA",
+        ],
         children: [],
       },
       {
@@ -96,20 +111,7 @@ export default {
         roles: ["ADMIN", "CREDIARISTA", "PROPRIETARIO"],
         children: [],
       },
-      {
-        to: "/lista-cliente",
-        icon: "mdi-card-account-details",
-        text: "Clientes",
-        roles: [
-          "ADMIN",
-          "SUPERVISOR",
-          "COMERCIAL",
-          "NEGOCIADOR",
-          "PROPRIETARIO",
-          "CREDIARISTA",
-        ],
-        children: [],
-      },
+      
       {
         to: "/pagarEmLoja",
         icon: "mdi-credit-card-outline",

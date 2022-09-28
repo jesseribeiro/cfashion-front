@@ -36,6 +36,21 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/lojas/Loja.vue')
   },
   {
+    path: '/lista-produto',
+    name: 'Produtos',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/produtos/Produtos.vue')
+  },
+  {
+    path: '/cad-produto',
+    name: 'Cadastro do Produto',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/produtos/Produto.vue')
+  },
+  {
+    path: '/cad-produto/:id',
+    name: 'Atualização da Produto',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/produtos/Produto.vue')
+  },
+  {
     path: '/lista-cliente',
     name: 'Clientes',
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/clientes/Clientes.vue')
@@ -51,7 +66,7 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/clientes/Cliente.vue')
   },
   {
-    path: '/cad-cliente/:id/:lojaId',
+    path: '/cad-cliente/:id',
     name: 'Atualização de Cliente',
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/clientes/ClienteEditar.vue')
   },

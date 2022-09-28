@@ -32,37 +32,7 @@
                 class="body-2 mt-1"
                 step="3"
                 @click="clickable(3)"
-                >Contrato/Assinatura</v-stepper-step
-              >
-              <v-divider />
-
-              <v-stepper-step
-                :editable="ue >= 4"
-                :complete="e1 > 4"
-                class="body-2 mt-1"
-                step="4"
-                @click="clickable(4)"
-                >Digitalizar Docs</v-stepper-step
-              >
-              <v-divider />
-
-              <v-stepper-step
-                :editable="ue >= 5"
-                :complete="e1 > 5"
-                class="body-2 mt-1"
-                step="5"
-                @click="clickable(5)"
                 >Vender</v-stepper-step
-              >
-              <v-divider />
-
-              <v-stepper-step
-                :editable="ue >= 6"
-                :complete="e1 > 6"
-                class="body-2 mt-1"
-                step="6"
-                @click="clickable(6)"
-                >Impressão Carnê</v-stepper-step
               >
             </v-stepper-header>
 
@@ -91,43 +61,11 @@
 
               <v-stepper-content step="3">
                 <template v-if="e1 === 3">
-                  <cliente-contrato
-                    :value="form"
-                    :disabled="disabled"
-                    :next-step="continuar"
-                    :go-back="voltar"
-                  />
-                </template>
-              </v-stepper-content>
-
-              <v-stepper-content step="4">
-                <template v-if="e1 === 4">
-                  <cliente-digitalizar-docs
-                    :value="form"
-                    :disabled="disabled"
-                    :next-step="continuar"
-                    :go-back="voltar"
-                  />
-                </template>
-              </v-stepper-content>
-
-              <v-stepper-content step="5">
-                <template v-if="e1 === 5">
                   <cliente-vender
                     :value="form"
                     :disabled="disabled"
                     :next-step="continuar"
                     :go-back="voltar"
-                  />
-                </template>
-              </v-stepper-content>
-
-              <v-stepper-content step="6">
-                <template v-if="e1 === 6">
-                  <cliente-imprimir-carne
-                    :value="form"
-                    :disabled="disabled"
-                    :cancelar="cancelar"
                   />
                 </template>
               </v-stepper-content>
@@ -144,10 +82,7 @@ import { ClienteBusiness } from "../../business";
 
 const ClienteConsultaCPF = () => import("./ClienteConsultaCPF.vue");
 const ClienteDados = () => import("./ClienteDados.vue");
-const ClienteContrato = () => import("./ClienteContrato.vue");
-const ClienteDigitalizarDocs = () => import("./ClienteDigitalizarDocs.vue");
 const ClienteVender = () => import("./ClienteVender.vue");
-const ClienteImprimirCarne = () => import("./ClienteImprimirCarne");
 
 export default {
   metaInfo: {
@@ -156,77 +91,19 @@ export default {
   components: {
     ClienteConsultaCPF,
     ClienteDados,
-    ClienteContrato,
-    ClienteDigitalizarDocs,
     ClienteVender,
-    ClienteImprimirCarne,
   },
   data() {
     return {
       form: {
-        flagAutorizacao: false,
         id: null,
-        redeId: null,
-        empresaId: null,
-        lojaId: null,
         nome: null,
         cpf: null,
-        identidade: null,
-        orgaoEmissor: null,
-        dataEmissao: null,
-        uf: null,
-        grupo: null,
-        dataNascimento: null,
-        naturalEstado: null,
-        naturalCidade: null,
+        dataNascimento: null,       
         sexo: null,
-        estadoCivil: null,
-        dependentes: null,
-        nomePai: null,
-        nomeMae: null,
-        telResidencial: null,
         celular: null,
         email: null,
-        escolaridade: null,
-        rendaPrincipal: null,
         endereco: new Endereco(),
-        tipoResidencia: null,
-        tempoResidenciaAnos: null,
-        tempoResidenciaMeses: null,
-        empresa: null,
-        cargo: null,
-        tempoEmpregoAnos: null,
-        tempoEmpregoMeses: null,
-        telComercial: null,
-        ramal: null,
-        nomeRef1: null,
-        relacaoRef1: null,
-        telRef1: null,
-        nomeRef2: null,
-        relacaoRef2: null,
-        telRef2: null,
-        nomeRef3: null,
-        relacaoRef3: null,
-        telRef3: null,
-        nomeRef4: null,
-        relacaoRef4: null,
-        telRef4: null,
-        vendaId: null,
-        carneId: null,
-        observacoes: [],
-        limitesPreAprovado: null,
-        permitirEnvioSPC: true,
-        jaTemCadastroNaLoja: false,
-        enderecoSecundario: false,
-        enderecoAlternativo: {
-          cep: null,
-          logradouro: null,
-          numero: null,
-          complemento: null,
-          uf: null,
-          cidadeIbge: null,
-          bairro: null
-        }
       },
       e1: 0,
       ue: 0,
@@ -243,14 +120,9 @@ export default {
       if (this.form.id) {
         ClienteBusiness.getById(this.form.id).then((response) => {
           this.form = response.data;
-          this.form.lojaId = this.$route.params.lojaId;
           this.formatDatas();
           this.e1 = 2;
         });
-      } else {
-        this.form.redeId = this.$root.redeId();
-        this.form.empresaId = this.$root.empresaId();
-        this.form.lojaId = this.$root.lojaId();
       }
     }
     this.ue == 0 ? (this.ue = 1) : (this.ue = this.e1);
@@ -271,18 +143,17 @@ export default {
       }
     },
     continuar() {
-      // * MODIFICAÇÃO NA REGRA PARA A AUTORIZACAO FECHAR
       if (this.e1 === "1") {
-        if (!this.form.id || !this.form.jaTemCadastroNaLoja) {
-          this.form.flagAutorizacao = false;
+        if (!this.form.id) {
+          console.log(this.form);
           this.$router.push(
             "/cad-cliente-etapa2?payload=" + JSON.stringify(this.form)
           );
         }
       }
-      this.e1 < 6 ? this.e1++ : (this.e1 = 1);
+      this.e1 < 3 ? this.e1++ : (this.e1 = 1);
 
-      if (this.ue < this.e1 && this.ue < 6) {
+      if (this.ue < this.e1 && this.ue < 3) {
         this.ue++;
       }
     },
@@ -290,43 +161,17 @@ export default {
       this.e1 > 1 ? this.e1-- : (this.e1 = 1);
     },
     setData(data) {
-      // let lojaId = this.form.lojaId
       this.form = { ...data };
-      // if (lojaId) { this.form.lojaId = lojaId }
       if (!this.form.endereco) {
         this.form.endereco = new Endereco();
-      }
-      if (!this.form.enderecoAlternativo) {
-        this.form.enderecoAlternativo = {
-          cep: null,
-          logradouro: null,
-          numero: null,
-          complemento: null,
-          uf: null,
-          cidadeIbge: null,
-          bairro: null
-        }
       }
       this.formatDatas();
     },
     formatDatas() {
-      if (this.form.dataEmissao) {
-        this.form.dataEmissao = this.$moment(this.form.dataEmissao).format(
-          "YYYY-MM-DD"
-        );
-      }
       if (this.form.dataNascimento) {
         this.form.dataNascimento = this.$moment(
           this.form.dataNascimento
         ).format("YYYY-MM-DD");
-      }
-      if (this.form.observacoes) {
-        this.form.observacoes = this.form.observacoes.map((value) => {
-          value.dataCadastro = this.$moment(value.dataCadastro).format(
-            "YYYY-MM-DD"
-          );
-          return value;
-        });
       }
     },
     cancelar() {

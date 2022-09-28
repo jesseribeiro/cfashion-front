@@ -62,19 +62,17 @@
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex
-          md3
-          lg2>
+        <v-flex md3 lg2>
           <v-btn
             color="accent"
             icon
             outline
-            @click="$router.push('relatorios')"
+            @click="$router.push('lista-produto')"
           >
             <v-layout
               column>
               <v-icon>mdi-file-document</v-icon>
-              Relatórios
+              Produtos
             </v-layout>
           </v-btn>
         </v-flex>

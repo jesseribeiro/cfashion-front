@@ -45,8 +45,8 @@ export default {
     return axios.get(`/v1/cliente/${id}`)
   },
 
-  consultaSPC (cliente, _params) {
-    return axios.post('/v1/cliente/consulta-spc', cliente, {params: _params})
+  consultaCPF (cliente) {
+    return axios.post('/v1/cliente/consulta-cpf', cliente)
   },
 
   uploadDocumento (id, lojaId, formData) {

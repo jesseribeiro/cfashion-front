@@ -139,5 +139,11 @@ export default {
   },
   getAllRecusaVenda () {
     return axios.get(`/v1/tipos/recusa-venda`)
+  },
+  getAllTamanho () {
+    return axios.get(`/v1/tipos/tamanhos`)
+  },
+  getAllCategoria () {
+    return axios.get(`/v1/tipos/categorias`)
   }
 }

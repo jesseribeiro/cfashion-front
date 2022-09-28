@@ -8,12 +8,12 @@
           @submit.prevent="validateBeforeSubmit"
         >
           <v-card class="Card">
-            <v-card-title class="cardTitle">
-              <h3 class="headline mb-0">Identificação</h3>
+            <v-card-title class="cardTitle" color="error">
+              <h3 class="headline mb-0" color="error">Identificação</h3>
             </v-card-title>
-            <v-card-text>
-              <v-layout row wrap>
-                <v-flex xs12 sm6 md4>
+            <v-card-text color="error">
+              <v-layout row wrap color="error">
+                <v-flex xs12 sm6 md4 color="error">
                   <v-text-field
                     v-model="form.nomeFantasia"
                     v-validate="'required'"

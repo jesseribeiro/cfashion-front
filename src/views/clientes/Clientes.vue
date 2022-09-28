@@ -15,12 +15,6 @@
                 <v-layout
                   row
                   wrap>
-                  <v-flex md12>
-                    <core-filtro-rede-empresa-loja
-                      v-model="filtros"
-                      show-todas
-                    />
-                  </v-flex>
                   <v-flex md5>
                     <v-text-field
                       v-model="filtros.nome"
@@ -33,36 +27,6 @@
                       label="CPF"
                       type="text"/>
                   </v-flex>
-                  <!--
-                  <v-flex md2>
-                    <v-text-field label="Data Nascimento" v-model="filtros.dataNascimento" type="date"/>
-                  </v-flex>
-                  -->
-                  <v-flex md2>
-                    <v-text-field
-                      v-mask="['(##) #### - ####', '(##) ##### - ####']"
-                      v-model="filtros.telResidencial"
-                      label="Telefone"
-                      type="text"/>
-                  </v-flex>
-
-                  <v-flex md3>
-                    <v-text-field
-                      v-model="filtros.identidade"
-                      label="Identidade"
-                      type="text"/>
-                  </v-flex>
-                  <!--
-                  <v-flex md2>
-                    <v-text-field label="Data Inicial Cadastro" v-model="filtros.dataInicial" type="date"/>
-                  </v-flex>
-                  <v-flex md1>
-                    <span class="layout fill-height align-center justify-center">a</span>
-                  </v-flex>
-                  <v-flex md2>
-                    <v-text-field label="Data Final Cadastro" v-model="filtros.dataFinal" type="date"/>
-                  </v-flex>
-                  -->
                 </v-layout>
               </v-form>
             </v-card-text>
@@ -114,13 +78,13 @@
               slot-scope="{ item }"
               ma-5>
               <td>{{ item.nome }}</td>
-              <td>{{ item.telefone }}</td>
+              <td>{{ item.celular }}</td>
               <td>{{ item.cpf }}</td>
               <td v-if="!!item.dataNascimento">{{ item.dataNascimento | moment("DD/MM/YYYY") }}</td>
               <td v-else>{{ '-' }}</td>
-              <td>{{ item.identidade }}</td>
-              <td>{{ item.nomeLoja }}</td>
-              <td v-if="!!item.clienteDesde">{{ item.clienteDesde | moment("DD/MM/YYYY") }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.sexo }}</td>
+              <td v-if="!!item.dataCadastro">{{ item.dataCadastro | moment("DD/MM/YYYY") }}</td>
               <td v-else>{{ '-' }}</td>
               <td class="justify-end layout ma-2">
                 <v-icon
@@ -128,41 +92,21 @@
                   color="primary"
                   title="Editar dados da cliente"
                   @click="editItem(item)">mdi-pencil</v-icon>
-                <v-icon
-                  v-if="$root.isAdminSup() || $root.isNegoc()"
-                  class="mr-2"
-                  color="secondary"
-                  title="Cobrança Cliente"
-                  @click="iniciarCobranca(item)">mdi-headset</v-icon>
-                <v-icon
-                  class="mr-2"
-                  color="error"
-                  title="Comprovante de Quitação"
-                  @click="comprovanteQuitacao(item)">mdi-certificate</v-icon>
               </td>
             </template>
           </v-data-table>
         </v-card>
       </v-flex>
     </v-layout>
-    <cliente-comprovante-quitacao
-      v-if="dialogComprovante"
-      v-model="item"
-      :show="dialogComprovante"
-      :close="closeComprovante"
-    />
   </v-container>
 </template>
 
 <script>
 import ClienteBusiness from '../../business/ClienteBusiness'
-import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS, TODAS_ID } from '../../constants'
-
-const ClienteComprovanteQuitacao = () => import('./ClienteComprovanteQuitacao.vue')
+import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 
 export default {
   components: {
-    ClienteComprovanteQuitacao
   },
   metaInfo: {
     titleTemplate: '%s - Clientes'
@@ -176,18 +120,9 @@ export default {
 	      rowsPerPageItems: ROWS_PER_PAGE_ITEMS
       },
       selected: [],
-      dialogComprovante: false,
       filtros: {
-        redeId: TODAS_ID,
-        empresaId: TODAS_ID,
-        lojaId: TODAS_ID,
         nome: '',
         cpf: null,
-        dataNascimento: null,
-        telResidencial: '',
-        identidade: null,
-        dataInicial: null,
-        dataFinal: null
       },
       search: '',
       headers: [
@@ -199,7 +134,7 @@ export default {
         {
           sortable: false,
           text: 'Telefone',
-          value: 'telefone'
+          value: 'celular'
         },
         {
           sortable: false,
@@ -213,13 +148,13 @@ export default {
         },
         {
           sortable: false,
-          text: 'Identidade',
-          value: 'identidade'
+          text: 'Email',
+          value: 'email'
         },
         {
           sortable: false,
-          text: 'Nome Loja',
-          value: 'nomeLoja'
+          text: 'Sexo',
+          value: 'sexo'
         },
         {
           sortable: false,
@@ -257,10 +192,11 @@ export default {
       this.$router.push('/cad-cliente')
     },
     editItem (item) {
-      this.$router.push(`/cad-cliente/${item.clienteId}/${item.lojaId}`)
+      console.log(item)
+      this.$router.push(`/cad-cliente/${item.id}`)
     },
     validaFiltros () {
-      return this.filtros.nome || this.filtros.cpf || this.filtros.identidade || this.filtros.telResidencial
+      return this.filtros.nome || this.filtros.cpf
     },
     pesquisar () {
       if (!this.validaFiltros()) {
@@ -290,34 +226,6 @@ export default {
           })
       }
     },
-    iniciarCobranca (item) {
-      this.$router.push(`/cliente-cobranca/${item.clienteId}/${item.lojaId}`)
-    },
-    comprovanteQuitacao (item) {
-      this.loading = true
-      ClienteBusiness.verificaCliente(item)
-        .then(response => {
-          // this.openComprovante(item)
-          ClienteBusiness.imprimeComprovante(item).then(reponse => {
-            this.loading = false
-          })
-          .catch((erro) => {
-            this.$root.showAlerta('Cliente não possui comprovante');
-            this.loading = false
-        }) 
-        })
-        .catch((erro) => {
-          this.$root.showAlerta(erro.data);
-          this.loading = false
-        }) 
-    },
-    closeComprovante () {
-      this.dialogComprovante = false
-    },
-    openComprovante (item) {
-      this.item = item
-      this.dialogComprovante = true
-    }
   }
 }
 </script>
