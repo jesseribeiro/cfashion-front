@@ -3,23 +3,15 @@
     <material-card color="primary" flat full-width title="Funcionalidades">
       <v-layout row wrap>
         <v-flex md3 lg2>
-          <v-btn color="accent" icon outline @click="$router.push('vender')">
-            <v-layout column>
-              <v-icon>mdi-cart</v-icon>
-              Vender
-            </v-layout>
-          </v-btn>
-        </v-flex>
-        <v-flex md3 lg2>
           <v-btn
             color="accent"
             icon
             outline
-            @click="$router.push('pagarEmLoja')"
+            @click="$router.push('lista-loja')"
           >
             <v-layout column>
-              <v-icon>mdi-cash-multiple</v-icon>
-              Pagar
+              <v-icon>mdi-shopping</v-icon>
+              Marcas
             </v-layout>
           </v-btn>
         </v-flex>
@@ -41,10 +33,36 @@
             color="accent"
             icon
             outline
+            @click="$router.push('lista-produto')"
+          >
+            <v-layout
+              column>
+              <v-icon>mdi-tshirt-crew</v-icon>
+              Produtos
+            </v-layout>
+          </v-btn>
+        </v-flex>
+        <v-flex md3 lg2>
+          <v-btn color="accent" 
+            icon 
+            outline 
+            @click="$router.push('vender')"
+          >
+            <v-layout column>
+              <v-icon>mdi-cart</v-icon>
+              Vender
+            </v-layout>
+          </v-btn>
+        </v-flex>
+        <v-flex md3 lg2>
+          <v-btn
+            color="accent"
+            icon
+            outline
             @click="$router.push('vendas')"
           >
             <v-layout column>
-              <v-icon>mdi-alpha-a-box-outline</v-icon>
+              <v-icon>mdi-credit-card-outline</v-icon>
               Vendas
             </v-layout>
           </v-btn>
@@ -54,25 +72,11 @@
             color="accent"
             icon
             outline
-            @click="$router.push('lista-loja')"
+            @click="$router.push('parcelas')"
           >
             <v-layout column>
-              <v-icon>mdi-bell</v-icon>
-              Marcas
-            </v-layout>
-          </v-btn>
-        </v-flex>
-        <v-flex md3 lg2>
-          <v-btn
-            color="accent"
-            icon
-            outline
-            @click="$router.push('lista-produto')"
-          >
-            <v-layout
-              column>
-              <v-icon>mdi-file-document</v-icon>
-              Produtos
+              <v-icon>mdi-cash-multiple</v-icon>
+              Parcelas
             </v-layout>
           </v-btn>
         </v-flex>

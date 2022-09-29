@@ -21,6 +21,7 @@
                       v-mask="'###.###.###-##'"
                       v-model="filtros.cpf"
                       label="CPF"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -43,6 +44,7 @@
                       name="Marca"
                       item-text="nomeFantasia"
                       item-value="id"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -50,6 +52,7 @@
                       v-model="filtros.dataInicial"
                       label="Data Inicial"
                       type="date"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -57,6 +60,7 @@
                       v-model="filtros.dataFinal"
                       label="Data Final"
                       type="date"
+                      clearable
                     />
                   </v-flex>
                 </v-layout>
@@ -77,7 +81,7 @@
           <v-toolbar
             flat
             color="white">
-            <v-toolbar-title>Autorizações</v-toolbar-title>
+            <v-toolbar-title>Vendas realizadas</v-toolbar-title>
             <v-divider
               class="mx-2"
               inset
@@ -103,42 +107,29 @@
               slot="items"
               slot-scope="{ item }"
               ma-5>
-              <td class="text-xs-center">{{ item.dataAutorizacao | moment("DD/MM/YYYY H:mm") }}</td>
-              <td class="text-xs-center">
-                <a :href="`/cad-cliente/${item.clienteId}/${item.lojaId}`">
-                  {{ item.cpf }}
-                </a>
-              </td>
+              <td>{{ item.dataVenda | moment("DD/MM/YYYY H:mm") }}</td>
+              <td>{{ item.cpf }}</td>
+              <td>{{ item.nomeProduto }}</td>
+              <td>{{ item.marca }}</td>
+              <td>{{ formatValorMonetario(item.vlProduto) }}</td>
+              <td>{{ item.qtdParcela }}</td>
+              <td>{{ item.tipo }}</td>
+              <td>{{ item.status }}</td>
               <td>
-                <span v-if="item.valorVenda">
-                  {{ item.valorTotal.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}
-                </span>
-              </td>
-              <td class="text-xs-center">{{ item.qtdParcela }}</td>
-              <td class="text-xs-center">{{ item.nomeLoja }}</td>
-              <td class="text-xs-center">{{ item.codigoAutorizacao }}</td>
-              <td class="text-xs-center">{{ item.tipoAutorizacao }}</td>
-              <td class="text-xs-center">{{ item.nomeUsuario }}</td>
-              <td class="text-xs-center">{{ item.recusado }}</td>
-              <td class="text-xs-center">{{ item.situacao }}</td>
-              <td class="text-xs-center">
+                <v-btn
+                  v-if="item.status != 'Pago'"
+                  color="primary"
+                  @click="openDialogPagar(item)"
+                >
+                  Pagar
+                </v-btn>
                 <v-icon
-                  v-if="item.vendaId && item.situacao != 'Cancelada' && $root.isAdminSupCredProp()"
-                  color="error"
+                  v-if="item.status == 'Pago'"
                   title="Cancelar"
+                  color="error"
                   @click="openDialogCancelar(item)">
                   mdi-delete-outline
                 </v-icon>
-              </td>
-              <td class="text-xs-center">
-                <v-icon
-                  v-if="item.carneId && item.situacao != 'Cancelada'"
-                  @click="openImprimirCarne(item)">mdi-printer</v-icon>
-              </td>
-              <td class="text-xs-center">
-                <v-icon
-                  v-if="item.vendaId"
-                  @click="openReciboVenda(item)">mdi-receipt</v-icon>
               </td>
             </template>
           </v-data-table>
@@ -156,29 +147,7 @@
             <v-card>
               <v-card-title class="headline">Cancelar Venda</v-card-title>
 
-              <v-card-text>
-                <v-layout
-                  row
-                  wrap>
-                  <v-flex md12>
-                    <v-alert
-                      :value="true"
-                      type="warning"
-                    >
-                      <span>Essa operação não poderá ser desfeita.</span>
-                    </v-alert>
-                  </v-flex>
-                  <v-flex md12>
-                    <v-textarea
-                      v-model="itemSelecionado.motivo"
-                      label="Informe o motivo do cancelamento"
-                    />
-                  </v-flex>
-                </v-layout>
-              </v-card-text>
-
               <v-card-actions>
-
                 <v-btn
                   outline
                   style="color: black !important"
@@ -194,18 +163,35 @@
           </v-dialog>
         </v-layout>
       </template>
-      <core-recibo-venda
-        v-if="dialogReciboVenda"
-        :venda-id="vendaId"
-        :show="dialogReciboVenda"
-        :close="closeReciboVenda"
-      />
-      <core-dialog-imprimir-carne
-        v-if="dialogImprimirCarne"
-        :value="dialogImprimirCarne"
-        :carne-id="carneId"
-        :close="closeImprimirCarne"
-      />
+
+      <template
+        v-if="dialogPagar">
+        <v-layout
+          row
+          justify-center>
+          <v-dialog
+            v-model="dialogPagar"
+            persistent
+            max-width="390">
+            <v-card>
+              <v-card-title class="headline">Realizar pagamento de todas as parcelas</v-card-title>
+
+              <v-card-actions>
+                <v-btn
+                  outline
+                  style="color: black !important"
+                  @click="closeDialogPagar">Cancelar</v-btn>
+                <v-spacer/>
+
+                <v-btn
+                  :loading="loadingBtn"
+                  color="red"
+                  @click="confirmarPagar">Confirmar</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-layout>
+      </template>
     </v-layout>
   </v-container>
 </template>
@@ -213,6 +199,7 @@
 import { VendaBusiness, TiposBusiness, LojaBusiness } from '../../business'
 import { MONEY, ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 import DateUtils from '../../utils/dateUtils'
+import numberUtils from '../../utils/numberUtils'
 
 export default {
   metaInfo: {
@@ -220,15 +207,9 @@ export default {
   },
   data () {
     return {
-      vendaId: null,
-      carneId: null,
       selected: [],
-      money: MONEY,
-      statusParcelas: [],
       dialogCancelar: false,
-      dialogRecibo: false,
-      dialogImprimirCarne: false,
-      dialogReciboVenda: false,
+      dialogPagar: false,
       pagination: {
         rowsPerPage: ROWS_PER_PAGE,
         rowsPerPageItems: ROWS_PER_PAGE_ITEMS,
@@ -244,20 +225,28 @@ export default {
       headers: [
         {
           sortable: false,
-          text: 'Data Autorização',
-          align: 'center',
-          value: 'dataAutorizacao'
+          text: 'Data Venda',
+          value: 'dataVenda'
         },
         {
           sortable: false,
-          text: 'CPF cliente',
-          align: 'center',
+          text: 'CPF',
           value: 'cpf'
         },
         {
           sortable: false,
+          text: 'Produto',
+          value: 'nomeProduto'
+        },
+        {
+          sortable: false,
+          text: 'Marca',
+          value: 'marca'
+        },
+        {
+          sortable: false,
           text: 'Valor',
-          value: 'valorVenda'
+          value: 'vlProduto'
         },
         {
           sortable: false,
@@ -266,51 +255,18 @@ export default {
         },
         {
           sortable: false,
-          text: 'Loja',
-          value: 'nomeLoja'
-        },
-        {
-          sortable: false,
-          text: 'Autorização',
-          value: 'codigoAutorizacao'
-        },
-        {
-          sortable: false,
           text: 'Tipo',
-          value: 'tipoAutorizacao'
+          value: 'tipo'
         },
         {
           sortable: false,
-          text: 'Usuário',
-          align: 'center',
-          value: 'nomeUsuario'
-        },
-        {
-          sortable: false,
-          text: 'Recusa por',
-          value: 'reusado'
-        },
-        {
-          sortable: false,
-          text: 'Situação',
-          align: 'center',
-          value: 'situacao'
+          text: 'Status',
+          value: 'status'
         },
         {
           sortable: false,
           text: 'Ações',
-          align: 'center'
         },
-        {
-          sortable: false,
-          text: 'Carnê',
-          align: 'center'
-        },
-        {
-          sortable: false,
-          text: 'Recibo',
-          align: 'center'
-        }
       ],
       items: [],
       totalItems: null,
@@ -343,15 +299,7 @@ export default {
       this.vendaId = null
       this.itemSelecionado = null
     },
-    closeReciboVenda () {
-      this.dialogReciboVenda = false
-      this.vendaId = null
-    },
     confirmarCancelar () {
-      if (!this.itemSelecionado.motivo) {
-        this.$root.showAlerta('Informe o motivo do cancelamento')
-        return
-      }
       this.loading = true
       VendaBusiness.cancelarVenda(this.vendaId)
         .then(response => {
@@ -364,30 +312,34 @@ export default {
           this.closeDialogCancelar()
         })
     },
-
     openDialogCancelar (item) {
       this.dialogCancelar = true
       this.vendaId = item.vendaId
       this.itemSelecionado = { ...item }
     },
-
-    openReciboVenda (item) {
-      this.vendaId = item.vendaId
-      this.dialogReciboVenda = true
-    },
-
-    openImprimirCarne (item) {
-      this.carneId = item.carneId
-      this.vendaId = item.vendaId
-      this.dialogImprimirCarne = true
-    },
-
-    closeImprimirCarne () {
-      this.dialogImprimirCarne = false
+    closeDialogPagar () {
+      this.dialogPagar = false
       this.vendaId = null
-      this.carneId = null
+      this.itemSelecionado = null
     },
-
+    confirmarPagar () {
+      this.loading = true
+      VendaBusiness.cancelarVenda(this.vendaId)
+        .then(response => {
+          this.$root.showSucesso('Operação realizada com sucesso')
+          this.paginar()
+        }).catch(erro => {
+          this.$root.showErro(erro.data)
+        }).finally(() => {
+          this.loading = false
+          this.closeDialogPagar()
+        })
+    },
+    openDialogPagar (item) {
+      this.dialogPagar = true
+      this.vendaId = item.vendaId
+      this.itemSelecionado = { ...item }
+    },
     pesquisar () {
       this.$validator.validate().then(result => {
         if (result) {
@@ -413,6 +365,9 @@ export default {
           this.loadingBtn = false
           this.loading = false
         })
+    },
+    formatValorMonetario (valor) {
+      return numberUtils.formatValorMonetario(valor)
     }
   }
 }

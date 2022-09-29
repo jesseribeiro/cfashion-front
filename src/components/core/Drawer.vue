@@ -84,7 +84,7 @@ export default {
       },
       {
         to: "/lista-loja",
-        icon: "mdi-store",
+        icon: "mdi-shopping",
         text: "Marcas",
         roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
         children: [],
@@ -95,26 +95,12 @@ export default {
         text: "Clientes",
         roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
         children: [],
-      },
+      },   
       {
         to: "/lista-produto",
-        icon: "mdi-card-account-details",
+        icon: "mdi-tshirt-crew",
         text: "Produtos",
         roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
-        children: [],
-      },
-      {
-        to: "/vendas",
-        icon: "mdi-alpha-a-box-outline",
-        text: "Vendas",
-        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
-        children: [],
-      },
-      {
-        to: "/pagamentos",
-        icon: "mdi-credit-card-outline",
-        text: "Pagamentos",
-        roles: ["ADMIN", "SUPERVISOR", "PROPRIETARIO", "COMERCIAL", "NEGOCIADOR"],
         children: [],
       },
       {
@@ -125,10 +111,17 @@ export default {
         children: [],
       },
       {
-        to: "/pagarEmLoja",
+        to: "/vendas",
         icon: "mdi-credit-card-outline",
-        text: "Pagar",
-        roles: ["PROPRIETARIO", "CREDIARISTA"],
+        text: "Vendas",
+        roles: ["ADMIN", "SUPERVISOR", "CREDIARISTA"],
+        children: [],
+      },
+      {
+        to: "/parcelas",
+        icon: "mdi-cash-multiple",
+        text: "Parcelas",
+        roles: ["ADMIN", "CREDIARISTA", "PROPRIETARIO"],
         children: [],
       },
       {

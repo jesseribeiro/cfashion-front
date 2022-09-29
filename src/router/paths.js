@@ -76,14 +76,9 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/vender/Vender.vue')
   },
   {
-    path: '/pagarEmLoja',
-    name: 'Pagar',
-    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/pagamentos/PagarEmLoja.vue')
-  },
-  {
-    path: '/pagamentos',
-    name: 'Pagamentos',
-    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/pagamentos/Pagamentos.vue')
+    path: '/parcelas',
+    name: 'Parcelas',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/parcelas/Parcelas.vue')
   },
   {
     path: '/vendas',
