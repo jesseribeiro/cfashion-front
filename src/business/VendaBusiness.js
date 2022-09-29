@@ -22,11 +22,13 @@ export default {
   getReciboPagamento (pagamentoId) {
     return axios.get(`/v1/venda/recibo-pagamento/${pagamentoId}`)
   },
+
   getReciboVenda (vendaId) {
     return axios.get(`/v1/venda/recibo-venda/${vendaId}`)
   },
-  paginationAutorizacao (pageSize = 10, pageNo = 0, sortBy = 'dataCompra', filtros) {
-    return axios.post(`/v1/autorizacao/autorizacoes`, {
+
+  pagination (pageSize = 10, pageNo = 0, sortBy = 'dataVenda', filtros) {
+    return axios.post(`/v1/venda/pagination`, {
       pageSize, pageNo, sortBy, filtros
     })
   }

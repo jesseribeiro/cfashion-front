@@ -806,10 +806,7 @@ export default {
     GET_RELATORIOS() {
       let roleAtiva = this.$root.roleAtiva().toUpperCase();
       let containerList = [...this.relatorios];
-      let lista = containerList.filter((item) => {
-        if (!item.roles.includes(roleAtiva)) return false;
-        return true;
-      });
+      let lista = containerList;
       return lista;
     },
   },
@@ -818,21 +815,14 @@ export default {
   },
   methods: {
     getLista(lista, code) {
-      let roleAtiva = this.$root.roleAtiva().toUpperCase();
-      let menuItens = lista.filter((it) => {
-        let texto = it.text.toUpperCase();
-        let search = this.search ? this.search.toUpperCase() : "";
-        return it.roles.includes(roleAtiva) && texto.match(search);
-      });
+      let menuItens = lista;
       return menuItens;
     },
     openRel(item) {
       this.$router.push(item.to);
     },
     relatoriosPermitidas(lista) {
-      return lista.filter((a) =>
-        a.roles.includes(this.$root.roleAtiva().toUpperCase())
-      );
+      return lista;
     },
   },
 };

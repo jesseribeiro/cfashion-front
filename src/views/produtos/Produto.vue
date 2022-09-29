@@ -42,12 +42,11 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model.lazy="form.valorProduto"
-                    v-money="money"
+                    v-formata-moeda="form.valorProduto"
                     v-validate="'required'"
-                    :disabled="disabled"
+                    v-model.lazy="form.valorProduto"
                     :error-messages="errors.collect('Valor Produto')"
-                    required
+                    data-vv-name="Valor Produto"
                     suffix="R$"
                     reverse
                     label="Valor Produto"
@@ -57,9 +56,9 @@
                   <v-text-field
                     v-model="form.valorCompra"
                     v-validate="'required'"
-                    v-money="money"
                     v-formata-moeda="form.valorCompra"
                     :error-messages="errors.collect('Valor Compra')"
+                    data-vv-name="Valor Compra"
                     suffix="R$"
                     label="Valor Compra"
                     reverse
@@ -108,6 +107,19 @@
                     reverse
                   />
                 </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="form.marcaId"
+                    v-validate="'required'"
+                    :error-messages="errors.collect('Marca')"
+                    :items="marcas"
+                    label="Marca"
+                    data-vv-name="Marca"
+                    name="Marca"
+                    item-text="nomeFantasia"
+                    item-value="id"
+                  />
+                </v-flex>
               </v-layout>
             </v-card-text>
           </v-card>
@@ -140,8 +152,8 @@
 </template>
 
 <script>
-import { TiposBusiness, ProdutoBusiness } from "../../business";
-import { MONEY,  } from '../../constants'
+import { TiposBusiness, ProdutoBusiness, LojaBusiness } from "../../business";
+import numberUtils from '../../utils/numberUtils'
 
 export default {
   metaInfo: {
@@ -149,7 +161,6 @@ export default {
   },
   data() {
     return {
-      money: MONEY,
       editando: false,
       form: {
         nome: null,
@@ -160,6 +171,7 @@ export default {
         codigo: null,
         valorProduto: null,
         valorCompra: null,
+        marcaId: null,
       },
       rules: {
         required: value => !!value || 'Defina este campo',
@@ -167,6 +179,7 @@ export default {
       },
       tamanhos: [],
       categorias: [],
+      marcas: [],
       filtros: {
         produtoId: null,
       },
@@ -238,7 +251,6 @@ export default {
         this.editando = true;
       }
       if (!this.filtros.produtoId) return;
-      //this.loading = true;
     },
     reset() {
       this.disabled = false;
@@ -250,6 +262,9 @@ export default {
       TiposBusiness.getAllCategoria().then((response) => {
         this.categorias = response.data;
       });
+      LojaBusiness.findAll().then((response) => {
+        this.marcas = response.data;
+      });
       this.reset();
       this.filtros.produtoId = this.$route.params.id;
       // eslint-disable-next-line no-extra-boolean-cast
@@ -258,6 +273,9 @@ export default {
         ProdutoBusiness.getById(this.filtros.produtoId)
           .then((response) => {
             this.form = response.data;
+            console.log(this.formatValorMonetario(this.form.valorProduto))
+            this.form.valorProduto = this.formatValorMonetario(this.form.valorProduto);
+            this.form.valorCompra = this.formatValorMonetario(this.form.valorCompra);
             this.paginar();
           })
           .catch(() =>

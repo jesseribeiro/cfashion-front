@@ -8,7 +8,7 @@
       <v-flex md12>
         <material-card
           color="primary"
-          title="Autorizações de Compras">
+          title="Vendas">
           <v-card class="elevation-0">
             <v-card-text>
               <v-form
@@ -16,36 +16,14 @@
                 <v-layout
                   row
                   wrap>
-                  <v-flex md12>
-                    <core-filtro-rede-empresa-loja
-                      v-model="filtros"
-                    />
-                  </v-flex>
-                  <v-flex md2>
+                  <v-flex md4>
                     <v-text-field
                       v-mask="'###.###.###-##'"
                       v-model="filtros.cpf"
                       label="CPF"
                     />
                   </v-flex>
-                  <v-flex md2>
-                    <v-text-field
-                      v-model="filtros.dataInicial"
-                      label="Data Inicial"
-                      type="date"
-                    />
-                  </v-flex>
-                  <v-flex md1>
-                    <span class="layout fill-height align-center justify-center">a</span>
-                  </v-flex>
-                  <v-flex md2>
-                    <v-text-field
-                      v-model="filtros.dataFinal"
-                      label="Data Final"
-                      type="date"
-                    />
-                  </v-flex>
-                  <v-flex md2>
+                  <v-flex md4>
                     <v-autocomplete
                       v-model="filtros.situacao"
                       :items="situacoes"
@@ -53,6 +31,32 @@
                       item-text="descricao"
                       label="Situação"
                       clearable
+                    />
+                  </v-flex>
+                  <v-flex md4>
+                    <v-autocomplete
+                      v-model="filtros.marcaId"
+                      :error-messages="errors.collect('Marca')"
+                      :items="marcas"
+                      label="Marca"
+                      data-vv-name="Marca"
+                      name="Marca"
+                      item-text="nomeFantasia"
+                      item-value="id"
+                    />
+                  </v-flex>
+                  <v-flex md4>
+                    <v-text-field
+                      v-model="filtros.dataInicial"
+                      label="Data Inicial"
+                      type="date"
+                    />
+                  </v-flex>
+                  <v-flex md4>
+                    <v-text-field
+                      v-model="filtros.dataFinal"
+                      label="Data Final"
+                      type="date"
                     />
                   </v-flex>
                 </v-layout>
@@ -206,7 +210,7 @@
   </v-container>
 </template>
 <script>
-import { VendaBusiness, TiposBusiness } from '../../business'
+import { VendaBusiness, TiposBusiness, LojaBusiness } from '../../business'
 import { MONEY, ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 import DateUtils from '../../utils/dateUtils'
 
@@ -228,13 +232,14 @@ export default {
       pagination: {
         rowsPerPage: ROWS_PER_PAGE,
         rowsPerPageItems: ROWS_PER_PAGE_ITEMS,
-        sortBy: "dataCompra",
+        sortBy: "dataVenda",
       },
       filtros: {
         dataInicial: DateUtils.addDia(new Date(), -1),
         dataFinal: DateUtils.currentDate(),
         situacao: null,
-        cpf: null
+        cpf: null,
+        marcaId: null,
       },
       headers: [
         {
@@ -312,6 +317,7 @@ export default {
       loading: false,
       loadingBtn: false,
       itemSelecionado: null,
+      marcas: [],
       situacoes: []
     }
   },
@@ -323,12 +329,13 @@ export default {
     }
   },
   beforeMount () {
-    TiposBusiness.getAllStatusVenda()
+    TiposBusiness.getAllStatus()
       .then(response => {
         this.situacoes = response.data
-      }).finally(() => {
-        this.loading = false
-      })
+    })
+    LojaBusiness.findAll().then((response) => {
+        this.marcas = response.data;
+    })
   },
   methods: {
     closeDialogCancelar () {
@@ -395,7 +402,7 @@ export default {
     },
     paginar () {
       this.loading = true
-      VendaBusiness.paginationAutorizacao(this.pagination.rowsPerPage, this.pagination.page - 1, this.pagination.sortBy || 'dataCompra', this.filtros)
+      VendaBusiness.pagination(this.pagination.rowsPerPage, this.pagination.page - 1, this.pagination.sortBy || 'dataVenda', this.filtros)
         .then(response => {
           this.items = response.data.content
           this.totalItems = response.data.totalElements

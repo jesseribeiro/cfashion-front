@@ -86,9 +86,9 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/pagamentos/Pagamentos.vue')
   },
   {
-    path: '/autorizacao',
-    name: 'Autorização',
-    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/autorizacao/Autorizacao.vue')
+    path: '/vendas',
+    name: 'Vendas',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/vendas/Vendas.vue')
   },
   {
     path: '/relatorios',

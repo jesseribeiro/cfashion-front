@@ -41,11 +41,11 @@
             color="accent"
             icon
             outline
-            @click="$router.push('autorizacao')"
+            @click="$router.push('vendas')"
           >
             <v-layout column>
               <v-icon>mdi-alpha-a-box-outline</v-icon>
-              Autorizações
+              Vendas
             </v-layout>
           </v-btn>
         </v-flex>

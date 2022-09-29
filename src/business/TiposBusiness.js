@@ -50,8 +50,8 @@ export default {
   getAllSituacaoConta () {
     return axios.get(`/v1/tipos/situacao-conta`)
   },
-  getAllStatusParcela () {
-    return axios.get(`/v1/tipos/status-parcela`)
+  getAllStatus () {
+    return axios.get(`/v1/tipos/status`)
   },
   getAllStatusVenda () {
     return axios.get(`/v1/tipos/status-venda`)

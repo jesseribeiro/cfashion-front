@@ -33,6 +33,18 @@
                   </v-flex>
                   <v-flex md4>
                     <v-autocomplete
+                      v-model="filtros.marcaId"
+                      :error-messages="errors.collect('Marca')"
+                      :items="marcas"
+                      label="Marca"
+                      data-vv-name="Marca"
+                      name="Marca"
+                      item-text="nomeFantasia"
+                      item-value="id"
+                    />
+                  </v-flex>
+                  <v-flex md4>
+                    <v-autocomplete
                       v-model="filtros.tamanho"
                       :items="tamanhos"
                       :error-messages="errors.collect('Tamanho')"
@@ -101,6 +113,7 @@
               ma-5>
               <td>{{ item.codigo }}</td>
               <td>{{ item.nome }}</td>
+              <td>{{ item.marca }}</td>
               <td>{{ item.categoria }}</td>
               <td>{{ item.tamanho }}</td>
               <td>{{ item.qtd }}</td>
@@ -159,7 +172,7 @@
 </template>
 
 <script>
-import { ProdutoBusiness, TiposBusiness } from '../../business'
+import { ProdutoBusiness, TiposBusiness, LojaBusiness } from '../../business'
 import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 import numberUtils from '../../utils/numberUtils'
 
@@ -182,8 +195,10 @@ export default {
         id: null,
         categoria: null,
         tamanho: null,
+        marcaId: null,
       },
       produtos: [],
+      marcas: [],
       tamanhos: [],
       categorias: [],
       headers: [
@@ -195,6 +210,11 @@ export default {
         {
           text: 'Nome',
           value: 'nome',
+          sortable: false
+        },
+        {
+          text: 'Marca',
+          value: 'marca',
           sortable: false
         },
         {
@@ -245,6 +265,9 @@ export default {
       .then(response => {
         this.categorias = response.data
       })
+    LojaBusiness.findAll().then((response) => {
+        this.marcas = response.data;
+      });
     },
     newItem () {
       this.$router.push('cad-produto')
