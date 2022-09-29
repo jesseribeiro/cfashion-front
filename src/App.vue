@@ -16,7 +16,7 @@
 
 export default {
   metaInfo: {
-    title: 'Prático ',
+    title: 'Cristã Fashion ',
     titleTemplate: '%s',
     htmlAttrs: {
       lang: 'en',

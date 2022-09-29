@@ -203,7 +203,7 @@ import numberUtils from '../../utils/numberUtils'
 
 export default {
   metaInfo: {
-    titleTemplate: '%s - Autorização'
+    titleTemplate: '%s - Parcelas'
   },
   data () {
     return {

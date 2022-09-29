@@ -182,7 +182,7 @@ import numberUtils from '../../utils/numberUtils'
 
 export default {
   metaInfo: {
-    titleTemplate: '%s - Lojas'
+    titleTemplate: '%s - Produtos'
   },
   data () {
     return {

@@ -112,9 +112,9 @@
             v-model="dialog"
             max-width="390">
             <v-card>
-              <v-card-title class="headline">Excluir Loja</v-card-title>
+              <v-card-title class="headline">Excluir Marca</v-card-title>
 
-              <v-card-text>Confirma a exclusão da Loja <span class="title">{{ item.razaoSocial }}</span>? Essa operação não poderá ser desfeita.</v-card-text>
+              <v-card-text>Confirma a exclusão da Loja <span class="title">{{ item.nomeFantasia }}</span>? Essa operação não poderá ser desfeita.</v-card-text>
 
               <v-card-actions>
                 <v-spacer />
@@ -144,7 +144,7 @@ import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 
 export default {
   metaInfo: {
-    titleTemplate: '%s - Lojas'
+    titleTemplate: '%s - Marcas'
   },
   data () {
     return {

@@ -98,7 +98,7 @@ import {
 
 export default {
   metaInfo: {
-    titleTemplate: "%s - Loja",
+    titleTemplate: "%s - Marca",
   },
   data() {
     return {
