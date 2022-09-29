@@ -30,7 +30,7 @@
                       :items="situacoes"
                       item-value="id"
                       item-text="descricao"
-                      label="Situação"
+                      label="Status"
                       clearable
                     />
                   </v-flex>
@@ -115,7 +115,7 @@
               <td>{{ item.qtdParcela }}</td>
               <td>{{ item.tipo }}</td>
               <td>{{ item.status }}</td>
-              <td>
+              <td class="text-xs-center">
                 <v-btn
                   v-if="item.status != 'Pago'"
                   color="primary"
@@ -197,7 +197,8 @@
 </template>
 <script>
 import { VendaBusiness, TiposBusiness, LojaBusiness } from '../../business'
-import { MONEY, ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
+import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
+import moment from "moment";
 import DateUtils from '../../utils/dateUtils'
 import numberUtils from '../../utils/numberUtils'
 
@@ -210,6 +211,7 @@ export default {
       selected: [],
       dialogCancelar: false,
       dialogPagar: false,
+      vendaId: null,
       pagination: {
         rowsPerPage: ROWS_PER_PAGE,
         rowsPerPageItems: ROWS_PER_PAGE_ITEMS,
@@ -266,6 +268,7 @@ export default {
         {
           sortable: false,
           text: 'Ações',
+          align: 'center',
         },
       ],
       items: [],
@@ -345,16 +348,17 @@ export default {
         if (result) {
           this.loadingBtn = true
           this.paginar()
-        } else {
-          this.$root.showAlerta(
-            'Informe o CPF!'
-          )
         }
       })
     },
     paginar () {
       this.loading = true
-      VendaBusiness.pagination(this.pagination.rowsPerPage, this.pagination.page - 1, this.pagination.sortBy || 'dataVenda', this.filtros)
+      VendaBusiness.pagination(
+        this.pagination.rowsPerPage, 
+        this.pagination.page - 1, 
+        this.pagination.sortBy || 'dataVenda', 
+        this.filtros
+      )
         .then(response => {
           this.items = response.data.content
           this.totalItems = response.data.totalElements

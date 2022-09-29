@@ -19,6 +19,7 @@
                     <v-text-field
                       v-model="filtros.nomeFantasia"
                       label="Nome Fantasia"
+                      clearable
                     />
                   </v-flex>
                 </v-layout>

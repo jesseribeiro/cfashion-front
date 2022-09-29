@@ -1,9 +1,5 @@
 import axios from 'axios'
 
-/**
- * Business que deverá ser utilizado para centralizar todos os tipos do sistema, geralmente
- * listas fixas, enums, ai fazer um GET para cada tipo
- */
 export default {
   listRepasse () {
     return axios.get('/v1/tipos/repasse')

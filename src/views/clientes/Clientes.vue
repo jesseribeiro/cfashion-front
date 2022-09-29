@@ -18,14 +18,18 @@
                   <v-flex md5>
                     <v-text-field
                       v-model="filtros.nome"
-                      label="Nome"/>
+                      label="Nome"
+                      clearable
+                    />
                   </v-flex>
                   <v-flex md2>
                     <v-text-field
                       v-mask="'###.###.###-##'"
                       v-model.trim="filtros.cpf"
                       label="CPF"
-                      type="text"/>
+                      type="text"
+                      clearable
+                    />
                   </v-flex>
                 </v-layout>
               </v-form>

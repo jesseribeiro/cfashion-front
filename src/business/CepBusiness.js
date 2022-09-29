@@ -4,6 +4,7 @@ export default {
   salvar (valor) {
     return axios.post('/v1/cep', valor)
   },
+  
   consultaCep (valor) {
     // Nova variável "cep" somente com dígitos.
     var cep = valor.replace(/\D/g, '')

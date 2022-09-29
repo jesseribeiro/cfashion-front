@@ -398,12 +398,7 @@
 import { ClienteBusiness, VendaBusiness, TiposBusiness, CarneBusiness } from '../../business'
 import { MONEY } from '../../constants'
 
-const ClienteReciboPagamento = () => import('./ClienteReciboPagamento.vue')
-
 export default {
-  components: {
-    ClienteReciboPagamento
-  },
   props: {
     value: {
       type: Object,

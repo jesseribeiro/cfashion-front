@@ -19,6 +19,7 @@
                     <v-text-field
                       v-model="filtros.id"
                       label="Código"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -29,6 +30,7 @@
                       label="Categoria"
                       item-value="id"
                       item-text="descricao"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -41,6 +43,7 @@
                       name="Marca"
                       item-text="nomeFantasia"
                       item-value="id"
+                      clearable
                     />
                   </v-flex>
                   <v-flex md4>
@@ -51,6 +54,7 @@
                       label="Tamanho"
                       item-value="id"
                       item-text="descricao"
+                      clearable
                     />
                   </v-flex>
                 </v-layout>

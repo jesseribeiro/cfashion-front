@@ -109,12 +109,7 @@
 import { ClienteBusiness } from '../../business'
 import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
 
-const ClienteReciboPagamento = () => import('./ClienteReciboPagamento.vue')
-
 export default {
-  components: {
-    ClienteReciboPagamento
-  },
   props: {
     value: {
       type: Object,

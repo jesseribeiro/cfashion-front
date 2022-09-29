@@ -14,12 +14,6 @@
               <v-stepper-step :complete="e1 > 2" step="2"
                 >Vender</v-stepper-step
               >
-
-              <v-divider />
-
-              <v-stepper-step :complete="e1 > 3" step="3"
-                >Impressão Carnê</v-stepper-step
-              >
             </v-stepper-header>
 
             <v-stepper-items>
@@ -43,16 +37,6 @@
                   />
                 </template>
               </v-stepper-content>
-
-              <v-stepper-content step="3">
-                <template v-if="e1 === 3">
-                  <cliente-imprimir-carne
-                    :value="form"
-                    :disabled="disabled"
-                    :cancelar="cancelar"
-                  />
-                </template>
-              </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
         </v-flex>
@@ -65,7 +49,6 @@ import Endereco from "../../beans/Endereco";
 
 const ClienteConsultaCPF = () => import("../clientes/ClienteConsultaCPF.vue");
 const ClienteVender = () => import("../clientes/ClienteVender.vue");
-const ClienteImprimirCarne = () => import("../clientes/ClienteImprimirCarne");
 
 export default {
   metaInfo: {
@@ -74,7 +57,6 @@ export default {
   components: {
     ClienteConsultaCPF,
     ClienteVender,
-    ClienteImprimirCarne,
   },
   data() {
     return {
