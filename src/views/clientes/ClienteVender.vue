@@ -3,27 +3,7 @@
     fluid
     grid-list-md
   >
-    <template v-if="flgNaoVender">
-      <v-alert
-        :value="true"
-        type="warning"
-      >
-        <span
-          class="subheading"
-        >Cliente em análise de crédito! Não é possível realizar a venda,
-        aguarde o retorno da nossa equipe.</span>
-      </v-alert>
-      <v-layout class="justify-end">
-        <v-btn
-          outline
-          style="color: black !important"
-          @click="cancelar"
-        >
-          Cancelar
-        </v-btn>
-      </v-layout>
-    </template>
-    <template v-else>
+    <template>
       <core-progress-modal :show="loading" />
       <v-layout
         v-if="!loading"
@@ -35,304 +15,173 @@
             class="body-2"
           >Cliente: {{ value.nome }} CPF: {{ value.cpf }}</span>
         </v-flex>
-        <v-flex
-          md4
-          sm6
-          xs12
-        >
-          <v-layout
-            justify-center
-            row
-            wrap
-          >
-            <v-flex
-              md12
-              class="headline text-md-center"
-            >
-              <span>Escolha a forma de pagamento</span>
-            </v-flex>
-            <v-flex
-              v-for="item in formasPagamento"
-              :key="item"
-              sm6
-              xs12
-            >
-              <a @click="selecionaTipoPagamento(item)">
-                <v-btn
-                  :outline="
-                    dadosCalcular.formaPagamento === item ? false : true
-                  "
-                  :color="
-                    dadosCalcular.formaPagamento === item ? '#4caf50' : ''
-                  "
-                  :disabled="
-                    dadosCalcular.formaPagamento === item ? false : true
-                  "
-                  large
-                >
-                  {{ item == 'CARNE' ? 'Carnê' : 'Boleto' }}
-                </v-btn>
-              </a>
-            </v-flex>
-          </v-layout>
+        <v-flex md4>
+          <v-text-field
+            v-model="dadosCalcular.dataVenda"
+            v-validate="'required'"
+            label="Data Venda"
+            type="date"
+            clearable
+          />
         </v-flex>
-
-        <v-flex
-          md4
-          sm6
-          xs12
-        >
-          <v-layout
-            row
-            wrap
-          >
-            <v-flex
-              md12
-              class="headline text-md-center"
-            >
-              <span
-                v-if="!!limite && limite > 0"
-              >Limite Disponível R$
-                {{
-                  limite.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
-                }}</span>
-              <span
-                v-else
-                class="red--text"
-              >Sem Limite Disponível</span>
-            </v-flex>
-            <v-flex md12>
-              <v-text-field
-                v-model.trim="dadosCalcular.nomeProduto"
-                label="Nome do Produto"
-              />
-            </v-flex>
-            <v-flex md12>
-              <v-text-field
-                v-validate="'required'"
-                v-money="money"
-                v-model="dadosCalcular.vlProduto"
-                :error-messages="errors.collect('Valor do Produto')"
-                data-vv-name="Valor do Produto"
-                required
-                prefix="R$"
-                label="Valor do Produto"
-              />
-            </v-flex>
-            <v-flex
-              v-if="listPlanoPagamento.length > 1"
-              md12
-            >
-              <v-autocomplete
-                v-model="dadosCalcular.planoPagamentoId"
-                :items="listPlanoPagamento"
-                label="Parcelar em até (Plano de Pagamento)"
-                item-text="descricao"
-                item-value="id"
-                @change="changePlanoPagamento"
-              />
-            </v-flex>
-            <v-flex md12>
-              <v-btn
-                :loading="loadingBtn"
-                block
-                color="#4caf50"
-                @click="calcular()"
-              >
-                Calcular
-              </v-btn>
-            </v-flex>
-            <v-container
-              v-if="parcelasSimuladas.length > 0"
-              fluid
-            >
-              <v-flex md12>
-                <p class="headline">
-                  Entrada de R$
-                  <span
-                    v-if="!flagIncluir"
-                    class="red--text"
-                  >{{
-                    parcelasSimuladas[0].vlEntrada.toLocaleString('pt-BR', {
-                      minimumFractionDigits: 2
-                    })
-                  }}
-                  </span>
-                  <v-icon
-                    v-if="!$root.isAdmin()"
-                    outline
-                    color="primary"
-                    @click="incluirValor"
-                  >
-                    mdi-pencil
-                  </v-icon>
-                  <template v-if="flagIncluir">
-                    <v-flex md10>
-                      <v-text-field
-                        v-money="money"
-                        v-model="dadosCalcular.vlEntrada"
-                        :error-messages="errors.collect('Valor da Entrada')"
-                        data-vv-name="Valor da Entrada"
-                        prefix="R$"
-                        label="Valor da Entrada"
-                      />
-                      <v-btn
-                        :loading="loadingBtn"
-                        small
-                        color="primary"
-                        elevation="5"
-                        dark
-                        @click="calcular"
-                      >
-                        <v-icon
-                          dark
-                          right
-                        >
-                          mdi-checkbox-marked
-                        </v-icon>
-                      </v-btn>
-                      <v-btn
-                        small
-                        color="error"
-                        elevation="5"
-                        dark
-                        @click="cancelarEntrada"
-                      >
-                        <v-icon
-                          dark
-                          right
-                        >
-                          mdi-close-box
-                        </v-icon>
-                      </v-btn>
-                    </v-flex>
-                  </template>
-                </p>
-              </v-flex>
-              <v-flex 
-                v-if="$root.isAdmin()"
-                md12>
-                <p class="headline"
-                  color="orange"
-                  small>
-                  Qtd dias primeira parcela
-                  <v-icon
-                    v-if="!$root.isAdmin()"
-                    outline
-                    color="orange"
-                    @click="incluirDias"
-                  >
-                    mdi-pencil
-                  </v-icon>
-                  <template v-if="flagIncluirDias">
-                    <v-flex md10>
-                      <v-text-field
-                        v-model="diasPrimeiraParcela"
-                        :error-messages="errors.collect('Dias para vencimento da primeira parcela')"
-                        data-vv-name="Dias para vencimento da primeira parcela"
-                        suffix="dias"
-                        type="number"
-                        min="1"
-                        label="Dias para vencimento da primeira parcela"
-                      />
-                      <v-btn
-                        :loading="loadingBtn"
-                        small
-                        color="primary"
-                        elevation="5"
-                        dark
-                        @click="confirmarIncluirDias"
-                      >
-                        <v-icon
-                          dark
-                          right
-                        >
-                          mdi-checkbox-marked
-                        </v-icon>
-                      </v-btn>
-                      <v-btn
-                        small
-                        color="error"
-                        elevation="5"
-                        dark
-                        @click="cancelarIncluirDias"
-                      >
-                        <v-icon
-                          dark
-                          right
-                        >
-                          mdi-close-box
-                        </v-icon>
-                      </v-btn>
-                    </v-flex>
-                  </template>
-                </p>
-              </v-flex>
-              <v-radio-group v-model="dadosCalcular.parcelaSelecionada">
-                <v-radio
-                  v-for="item in parcelasSimuladas"
-                  :key="item.qtdParcela"
-                  :value="item"
-                >
-                  <template :slot="'label'">
-                    <span class="headline">{{
-                      item.qtdParcela +
-                        'x          R$' +
-                        item.vlPrimeiraParcela.toLocaleString('pt-BR', {
-                          minimumFractionDigits: 2
-                        })
-                    }}</span>
-                  </template>
-                </v-radio>
-              </v-radio-group>
-              <v-btn
-                block
-                color="#4caf50"
-                @click="autorizarCompra"
-              >
-                Autorizar Compra
-              </v-btn>
-
-              <v-btn
-                v-if="$root.isAdmin()"
-                block
-                color="#000"
-                @click="vender"
-              >
-                Autorizar Compra Sem Código
-              </v-btn>
-            </v-container>
-          </v-layout>
+        <v-flex md4>
+          <v-autocomplete
+            v-model="dadosCalcular.marcaId"
+            v-validate="'required'"
+            :error-messages="errors.collect('Marca')"
+            :items="marcas"
+            label="Marca"
+            data-vv-name="Marca"
+            name="Marca"
+            item-text="nomeFantasia"
+            item-value="id"
+            clearable
+            @change="changeCategoria"
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-autocomplete
+            v-model="dadosCalcular.categoria"
+            v-validate="'required'"
+            :items="categorias"
+            :loading="loadingCategorias"
+            :error-messages="errors.collect('Categoria')"
+            label="Categoria"
+            item-value="id"
+            item-text="descricao"
+            clearable
+            @change="changeCodigo"
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-autocomplete
+            v-model="dadosCalcular.codigo"
+            v-validate="'required'"
+            :items="codigos"
+            :loading="loadingCodigos"
+            :error-messages="errors.collect('Código')"
+            label="Código"
+            item-value="id"
+            item-text="descricao"
+            clearable
+            @change="changeProduto"
+          />
+        </v-flex>
+        <v-flex xs12 sm6 md4>
+          <v-text-field
+            v-model="dadosCalcular.nomeProduto"
+            v-validate="'required'"
+            :loading="loadingProduto"
+            :error-messages="errors.collect('Nome Produto')"
+            label="Nome Produto"
+            data-vv-name="Nome Produto"
+            required
+            reverse
+            readonly
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field
+            v-formata-moeda="dadosCalcular.valorProduto"
+            v-validate="'required'"
+            v-model.lazy="dadosCalcular.valorProduto"
+            :loading="loadingProduto"
+            :error-messages="errors.collect('Valor Produto')"
+            data-vv-name="Valor Produto"
+            suffix="R$"
+            reverse
+            label="Valor Produto"
+            readonly
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field
+            v-formata-moeda="dadosCalcular.comissao"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.comissao"
+            :error-messages="errors.collect('Comissao MKT')"
+            data-vv-name="Comissão"
+            suffix="R$"
+            reverse
+            label="Comissão MKT"
+            clearable
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field
+            v-formata-moeda="dadosCalcular.frete"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.frete"
+            :error-messages="errors.collect('Frete')"
+            data-vv-name="Frete"
+            suffix="R$"
+            reverse
+            label="Frete"
+            clearable
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field
+            v-formata-moeda="dadosCalcular.desconto"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.desconto"
+            :error-messages="errors.collect('Desconto')"
+            data-vv-name="Desconto"
+            suffix="R$"
+            reverse
+            label="Desconto"
+            clearable
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-autocomplete
+            v-model="dadosCalcular.tipo"
+            v-validate="'required'"
+            :items="tipos"
+            item-value="id"
+            item-text="descricao"
+            label="Tipo de Pagamento"
+            clearable
+            @change="changeTipo"
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field v-if="flagTipo"
+            v-validate="'required'"
+            v-model="dadosCalcular.qtdParcela"
+            :disabled="disabled"
+            :error-messages="errors.collect('Qtd Parcela')"
+            data-vv-name="Qtd Parcela"
+            :rules="[rules.required]"
+            required
+            min="0"
+            step="1"
+            type="number"
+            oninput="validity.valid||(value='')"
+            label="Qtd Parcela"
+            reverse
+            clearable
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field v-if="flagTipo"
+            v-formata-moeda="dadosCalcular.valorParcela"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.valorParcela"
+            :error-messages="errors.collect('Valor Parcela')"
+            data-vv-name="Valor Parcela"
+            suffix="R$"
+            reverse
+            label="Valor Parcela"
+            clearable
+          />
         </v-flex>
         <v-flex
           md4
-          sm6
-          xs12
-        >
-          <template v-if="!loading">
-            <v-layout
-              wrap
-              row
-              class="justify-center"
-            >
-              <div class="headline mb-3">
-                <span>Possibilidades de Negociação</span>
-              </div>
-              <div class="pa-2">
-                <apexchart
-                  :options="chartOptions"
-                  :series="series"
-                  width="300"
-                  height="300"
-                  type="donut"
-                />
-              </div>
-            </v-layout>
-          </template>
-        </v-flex>
-
-        <v-flex
-          md12
           class="mt-5"
         >
           <v-layout class="justify-end">
@@ -344,69 +193,29 @@
             </v-btn>
           </v-layout>
         </v-flex>
-        <v-flex v-if="dadosCalcular.flagAutorizacao" md12>
-          <v-layout wrap justify-center align-center>
-            <div class="card-login">
-              <v-flex md12>
-                <v-textarea readonly v-html="msgErro" />
-                <span
-                  >É necessária autorização para liberar essa compra!!!</span
-                >
-              </v-flex>
-            </div>
+        <v-flex md4/>
+        <v-flex  
+          md4
+          class="mt-5"
+        >
+          <v-layout class="justify-end">
+            <v-btn
+              :loading="loadingBtn"
+              color="#4caf50"
+              @click="vender()"
+            >
+              Calcular
+            </v-btn>
           </v-layout>
         </v-flex>
-      </v-layout>
-      <core-autorizacao-compra
-        v-if="showDialogAutorizacao"
-        :cliente-nome="value.nome"
-        :cliente-telefone="value.celular"
-        :cliente-loja-id="value.lojaId + ''"
-        :nome-produto="dadosCalcular.nomeProduto"
-        :valor-produto="dadosCalcular.parcelaSelecionada.valorTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})"
-        :cliente-email="value.email"
-        :lojista-email="lojistaEmail"
-        :callback="callbackAutorizacao"
-        :close="closeDialogAutorizacao"
-        :qtd-parcela="dadosCalcular.parcelaSelecionada.qtdParcela + ''"
-        :valor-parcela="dadosCalcular.parcelaSelecionada.vlPrimeiraParcela.toLocaleString('pt-BR', {minimumFractionDigits: 2})"
-      />
-      <core-btn-permissao
-        v-if="autorizaCompra && $root.isAdmin()"
-        :action="calcular"
-        :close="closeDialog"
-        :data-form="value"
-      />
-    </template>
-    <template>
-      <v-layout row justify-center>
-        <v-dialog v-model="flagSolicitarCredito" max-width="390">
-          <v-card>
-            <v-card-title class="headline">Será enviado uma notificação para os operadores da Prático liberar crédito</v-card-title>
-            <v-card-text>
-              <v-layout row wrap>
-                <v-flex md6>
-                  <v-layout>
-                    <v-btn color="error" @click="cancelarSolicitacao"
-                      >Cancelar</v-btn
-                    >
-                  </v-layout>
-                </v-flex>
-                <v-flex md6>
-                  <v-layout class="justify-end">
-                    <v-btn color="primary" @click="confirmarSolicitacao">OK</v-btn>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-            </v-card-text>
-          </v-card>
-        </v-dialog>
       </v-layout>
     </template>
   </v-container>
 </template>
 <script>
-import { LojaBusiness, ClienteBusiness, VendaBusiness } from '../../business'
+import { LojaBusiness, VendaBusiness, TiposBusiness, ProdutoBusiness } from '../../business'
+import DateUtils from '../../utils/dateUtils'
+import numberUtils from "../../utils/numberUtils";
 
 export default {
   props: {
@@ -437,101 +246,39 @@ export default {
       money: {
         decimal: ',',
         thousands: '.',
-        precision: 2,
-        masked: false
+        precision: 2
       },
-      msgErro: null,
-      autorizaCompra: false,
-      flagSolicitarCredito: false,
-      flgNaoVender: false,
-      flagIncluir: false,
-      flagIncluirDias: false,
+      rules: {
+        required: value => !!value || 'Defina este campo',
+        maiorQueZero: value => value > 0 || "Valor não pode ser menor que zero"
+      },
+      marcas: [],
+      tipos: [],
+      codigos: [],
+      produto: [],
+      categorias: [],
       loading: false,
-      diasPrimeiraParcela: null,
+      loadingCategorias: false,
+      loadingCodigos: false,
+      loadingProduto: false,
       loadingBtn: false,
-      formasPagamento: [],
-      listPlanoPagamento: [],
+      flagTipo: false,
       dadosCalcular: {
+        marcaId: null,
+        categoria: null,
+        produtoId: null,
         nomeProduto: null,
-        formaPagamento: 'CARNE',
-        vlProduto: null,
-        vlEntrada: null,
+        codigo: null,
+        valorProduto: null,
+        qtdParcela: 1,
+        valorParcela: null,
+        tipo: null,
+        comissao: null,
+        frete: null,
+        desconto: null,
         clienteId: null,
-        lojaId: null,
-        parcelaSelecionada: null,
-        planoPagamentoId: null,
-        diasPrimeiraParcela: null,
-        autorizacaoId: null,
-        flagAutorizacao: false,
+        dataVenda: DateUtils.currentDate(),
       },
-      limite: 0,
-      series: [30, 40, 30],
-      scoreInicial: null,
-      parcelasSimuladas: [],
-      showDialogAutorizacao: false,
-      lojistaEmail: '',
-      parcelarEm: null,
-      chartOptions: {
-        tooltip: {
-          enabled: false
-        },
-        chart: {
-          dropShadow: {
-            enabled: true,
-            color: '#111',
-            top: -1,
-            left: 3,
-            blur: 3,
-            opacity: 0.2
-          }
-        },
-        labels: [],
-        stroke: {
-          width: 0
-        },
-        dataLabels: {
-          enabled: false,
-          dropShadow: {
-            blur: 3,
-            opacity: 0.8
-          }
-        },
-        plotOptions: {
-          pie: {
-            donut: {
-              labels: {
-                show: true,
-                name: {
-                  show: true,
-                  fontSize: '16px',
-                  fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-                  color: '#000',
-                  offsetY: 20
-                },
-                value: {
-                  show: true,
-                  fontSize: '30px',
-                  fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif',
-                  color: '#000',
-                  offsetY: -30,
-                  formatter: function (val) {
-                    var formatter = new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                      minimumFractionDigits: 2
-                    })
-                    return formatter.format(val)
-                  }
-                }
-              }
-            }
-          }
-        },
-        legend: {
-          show: false
-        },
-        colors: ['#4caf50', '#157DEC', '#FF9800'] //, '#F44336'
-      }
     }
   },
   watch: {
@@ -540,133 +287,103 @@ export default {
     }
   },
   beforeMount () {
-    this.value.flagAutorizacao = false;
-
-    if (this.value.status === 'ANALISE_VISUAL') {
-      this.flgNaoVender = true
-    } else {
-      this.loading = true
-      LojaBusiness.getPlanospagamento(this.value.lojaId)
-        .then(response => {
-          this.listPlanoPagamento = response.data
-          if (
-            this.listPlanoPagamento != null &&
-            this.listPlanoPagamento.length > 0
-          ) {
-            this.dadosCalcular.planoPagamentoId = this.listPlanoPagamento[0].id
-          }
-        })
-        .finally(() => {
-          this.getDadosVenda()
-        })
-    }
-
-    if(this.$root.isAdmin()){
-      this.incluirValor();
-      this.incluirDias();
-    }
+    this.dadosCalcular.clienteId = this.value.id;
+    this.loading = true
+    TiposBusiness.getAllTipoPagamento()
+      .then(response => {
+        this.tipos = response.data
+      })
+    LojaBusiness.findAll().then((response) => {
+        this.marcas = response.data;
+      });
+    this.loading = false;
   },
   methods: {
-    calcular () {
-      this.autorizaCompra = false
-      // this.dadosCalcular.flagAutorizacao = this.value.flagAutorizacao
-      if (!this.dadosCalcular.formaPagamento) {
-        this.$root.showAlerta('Informe a forma de pagamento')
-        return
-      }
-      if (!this.dadosCalcular.nomeProduto) {
-        this.$root.showAlerta('Informe o nome do produto')
-        return
-      }
-      if (this.dadosCalcular.vlProduto === '0,00') {
-        this.$root.showAlerta('Informe o valor do produto')
-        return
-      }
-      this.loadingBtn = true
-      this.dadosCalcular.clienteId = this.value.id
-      this.dadosCalcular.lojaId = this.value.lojaId
-      this.parcelasSimuladas = []
-      VendaBusiness.calcular(this.dadosCalcular)
-        .then(response => {
-          this.parcelasSimuladas = response.data
-        })
-        .catch((erro) => {
-          this.$root.showAlerta(erro.data);
-          if (erro.status === 405) {
-            this.dadosCalcular.flagAutorizacao = true;
-            this.autorizaCompra = true;
-            if (this.$root.isProprietario() || this.$root.isCrediarista()) {
-              this.flagSolicitarCredito = true;
-            }
-          }
-        })
-        .finally(() => {
-          if(!this.$root.isAdmin()){ 
-            this.flagIncluir = false
-          }
-          this.loadingBtn = false
-        })
-    },
-    confirmarIncluirDias () {
-      if (this.diasPrimeiraParcela == null || this.diasPrimeiraParcela < 1) {
-        this.$root.showAlerta('Insira um número válido')
-      } else {
-        this.loadingBtn = true
-        this.dadosCalcular.diasPrimeiraParcela = this.diasPrimeiraParcela;
-        this.loadingBtn = false
-      }
-    },
     cancelar () {
       this.$router.push('/lista-cliente')
     },
-    cancelarEntrada () {
-      this.loadingBtn = true
-      this.flagIncluir = false
-      this.loadingBtn = false
-    },
-    cancelarIncluirDias () {
-      this.loadingBtn = true
-      this.flagIncluirDias = false
-      this.loadingBtn = false
-    },
-    incluirValor () {
-      this.loadingBtn = true
-      this.flagIncluir = true
-      this.loadingBtn = false
-    },
-    incluirDias () {
-      this.loadingBtn = true
-      this.flagIncluirDias = true
-      this.loadingBtn = false
-    },
-    selecionaTipoPagamento (tipo) {
-      this.dadosCalcular.formaPagamento = tipo
-      this.parcelasSimuladas = []
-    },
-    colorPagamento (tipo) {
-      if (tipo === this.dadosCalcular.formaPagamento) {
-        return 'blue-grey darken-2'
-      }
-      return 'grey lighten-3'
-    },
-    autorizarCompra () {
-      if (!this.dadosCalcular.parcelaSelecionada) {
-        this.$root.showAlerta('Selecione a quantidade de parcela')
-      } else {
-        this.showDialogAutorizacao = true
+    changeCategoria(marcaId) {
+      this.dadosCalcular.produtoId = null
+      this.dadosCalcular.nomeProduto = null
+      this.dadosCalcular.valorProduto = null
+      this.dadosCalcular.categoria = null
+      this.dadosCalcular.codigo = null
+      this.dadosCalcular.marcaId = marcaId;
+      if (this.dadosCalcular.marcaId) {
+        this.loadingCategorias = true;
+        ProdutoBusiness.getAllCategoriasByMarca(this.dadosCalcular.marcaId)
+          .then((response) => {
+            this.categorias = response.data;
+          })
+          .catch(() => {
+            this.$root.showAlerta(
+              "Não foi possível buscar as categorias"
+            );
+          })
+          .finally(() => {
+            this.loadingCategorias = false;
+          });
       }
     },
-    callbackAutorizacao (autorizacaoId) {
-      this.closeDialogAutorizacao()
-      this.dadosCalcular.autorizacaoId = autorizacaoId
-      this.vender()
+    changeCodigo(categoria) {
+      this.dadosCalcular.produtoId = null
+      this.dadosCalcular.nomeProduto = null
+      this.dadosCalcular.valorProduto = null
+      this.dadosCalcular.codigo = null
+      this.dadosCalcular.categoria = categoria;
+      if (this.dadosCalcular.categoria) {
+        this.loadingCodigos = true;
+        ProdutoBusiness.getAllCodigos(this.dadosCalcular.marcaId, this.dadosCalcular.categoria)
+          .then((response) => {
+            this.codigos = response.data;
+          })
+          .catch(() => {
+            this.$root.showAlerta(
+              "Não foi possível buscar os códigos"
+            );
+          })
+          .finally(() => {
+            this.loadingCodigos = false;
+          });
+      }
+    },
+    changeProduto(codigo) {
+      this.dadosCalcular.produtoId = null
+      this.dadosCalcular.nomeProduto = null
+      this.dadosCalcular.valorProduto = null
+      this.dadosCalcular.codigo = codigo;
+      if (this.dadosCalcular.codigo) {
+        this.loadingProduto = true;
+        ProdutoBusiness.getProduto(this.dadosCalcular.codigo)
+          .then((response) => {
+            this.produto = response.data;
+            this.dadosCalcular.produtoId = this.produto.id
+            this.dadosCalcular.nomeProduto = this.produto.nome
+            this.dadosCalcular.valorProduto = this.formatValorMonetario(this.produto.valorProduto)
+            this.dadosCalcular.valorParcela = this.formatValorMonetario(this.produto.valorProduto)
+          })
+          .catch(() => {
+            this.$root.showAlerta(
+              "Não foi possível buscar o produto"
+            );
+          })
+          .finally(() => {
+            this.loadingProduto = false;
+          });
+      }
+    },
+    changeTipo(tipo) {
+      this.flagTipo = false;
+      this.dadosCalcular.valorParcela = this.formatValorMonetario(this.dadosCalcular.valorProduto)
+      this.dadosCalcular.qtdParcela = 1;
+      if (tipo === 'CARTAO_CREDITO') {
+        this.flagTipo = true;
+      }
     },
     vender () {
       this.loading = true
       VendaBusiness.vender(this.dadosCalcular)
         .then(response => {
-          this.value.vendaId = response.data.id
-          this.value.carneId = response.data.carneId
           this.nextStep()
         })
         .catch(erro => {
@@ -677,100 +394,9 @@ export default {
           this.loading = false
         })
     },
-    closeDialog() {
-      this.autorizaCompra = false;
+    formatValorMonetario(valor) {
+      return numberUtils.formatValorMonetario(valor);
     },
-    closeDialogAutorizacao () {
-      this.showDialogAutorizacao = false
-    },
-    getDadosVenda () {
-      this.loading = true
-      LojaBusiness.getDadosVenda(
-        this.value.lojaId,
-        this.dadosCalcular.planoPagamentoId
-      )
-        .then(response => {
-          this.formasPagamento = response.data.formasPagamento
-          this.lojistaEmail = response.data.lojistaEmail || ''
-          this.parcelarEm = response.data.parcelarEm
-          if (this.formasPagamento.length > 0) {
-            this.selecionaTipoPagamento(this.formasPagamento[0])
-          }
-        })
-        .finally(() => {
-          ClienteBusiness.getLimiteDisponivel(this.value.id, this.value.lojaId)
-            .then(response => {
-              this.limite = response.data
-            })
-            .finally(() => {
-              ClienteBusiness.consultaScore(this.value.id, this.value.lojaId)
-                .then(response => {
-                  this.scoreInicial = response.data
-                  // this.series[0] = 'R$ ' + this.scoreInicial.faixaFinal1.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
-                  // this.series[1] = 'R$ ' + this.scoreInicial.faixaFinal2.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
-                  // this.series[2] = 'R$ ' + this.scoreInicial.faixaFinal3.toLocaleString('pt-BR', { minimumFractionDigits: 2 })
-                  this.series[0] = this.scoreInicial.faixaFinal1
-                  this.series[1] = this.scoreInicial.faixaFinal2
-                  this.series[2] = this.scoreInicial.faixaFinal3
-                  this.chartOptions.labels[0] = this.scoreInicial.peEntrada1
-                    ? ' 1 + ' + this.parcelarEm + 'x'
-                    : this.parcelarEm + 'x'
-                  this.chartOptions.labels[1] = this.scoreInicial.peEntrada2
-                    ? ' Entrada (' +
-                      this.scoreInicial.peEntrada2 +
-                      '%) + ' +
-                      this.parcelarEm +
-                      'x'
-                    : this.parcelarEm + 'x'
-                  this.chartOptions.labels[2] = this.scoreInicial.peEntrada3
-                    ? ' Entrada (' +
-                      this.scoreInicial.peEntrada3 +
-                      '%) + ' +
-                      this.parcelarEm +
-                      'x'
-                    : this.parcelarEm + 'x'
-                })
-                .catch(() => console.log('Erro na consultaScore'))
-                .finally(() => {
-                  this.loading = false
-                })
-            })
-        })
-    },
-    changePlanoPagamento (planoId) {
-      this.dadosCalcular.planoPagamentoId = planoId
-      this.parcelasSimuladas = []
-      this.getDadosVenda()
-    },
-    cancelarSolicitacao() {
-      this.flagSolicitarCredito = false;
-    },
-    confirmarSolicitacao() {
-      this.loadingBtn = true;
-      ClienteBusiness.solicitarCredito(
-        this.value.id,
-        this.value.lojaId,
-        true
-      )
-        .then((response) => {
-          this.flagSolicitarCredito = false;
-          this.$root.showSucesso(response.data);
-        })
-        .catch((erro) => {
-          this.$root.showErro(erro.data);
-        })
-        .finally(() => {
-          this.loadingBtn = false;
-        });
-    },
-    formatDinheiro (val) {
-      var formatter = new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-        minimumFractionDigits: 0
-      })
-      return formatter.format(val)
-    }
   }
 }
 </script>

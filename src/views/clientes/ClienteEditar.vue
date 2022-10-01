@@ -16,8 +16,8 @@
         <v-icon>mdi-card-account-details</v-icon>
       </v-tab>
 
-      <v-tab href="#carnes" key="carnes">
-        Carnês/Boletos
+      <v-tab href="#vendas" key="vendas">
+        Vendas
         <v-icon>mdi-animation</v-icon>
       </v-tab>
 
@@ -40,11 +40,11 @@
         />
       </v-tab-item>
       <v-tab-item
-        value="carnes"
+        value="vendas"
         lazy
-        key="item-carnes"
+        key="item-vendas"
       >
-        <cliente-carnes
+        <cliente-vendas
           :value="form"
         />
       </v-tab-item>
@@ -65,13 +65,13 @@ import Endereco from '../../beans/Endereco'
 import { ClienteBusiness } from '../../business'
 
 const ClienteDados = () => import('./ClienteDados.vue')
-const ClienteCarnes = () => import('./ClienteCarnes.vue')
+const ClienteVendas = () => import('./ClienteVendas.vue')
 const ClientePagamentos = () => import('./ClientePagamentos')
 
 export default {
   components: {
     ClienteDados,
-    ClienteCarnes,
+    ClienteVendas,
     ClientePagamentos
   },
   data () {

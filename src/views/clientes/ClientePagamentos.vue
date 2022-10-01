@@ -15,21 +15,20 @@
                 <v-layout
                   row
                   wrap>
-                  <v-flex md2>
+                  <v-flex md4>
                     <v-text-field
                       v-model="filtros.dataInicial"
                       label="Data Inicial"
                       type="date"
+                      clearable
                     />
                   </v-flex>
-                  <v-flex md1>
-                    <span class="layout fill-height align-center justify-center">a</span>
-                  </v-flex>
-                  <v-flex md2>
+                  <v-flex md4>
                     <v-text-field
                       v-model="filtros.dataFinal"
                       label="Data Final"
                       type="date"
+                      clearable
                     />
                   </v-flex>
                 </v-layout>
@@ -75,21 +74,14 @@
               slot-scope="{ item }"
               ma-5>
               <tr>
-                <td class="text-xs-center">{{ item.dataPagto }}</td>
-                <td>{{ item.valorPago.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}</td>
-                <td>{{ item.tipoPagto }}</td>
-                <td>
-                  {{ item.formaPagamentoDetalhe ? item.formaPagamentoDetalhe : item.formaPagamento }}
-                </td>
+                <td>{{ item.dataPagamento | moment("DD/MM/YYYY") }}</td>
+                <td>{{ item.valorParcela }}</td>
+                <td>{{ item.tipo }}</td>
+                <td>{{ item.marca }}</td>
                 <td class="text-xs-center">
                   <core-status-pagamento
-                    :status="item.flgCancelado ? 'Cancelado' : 'Pago'"
-                    :motivo-cancelamento="item.motivoCancelamento"
+                    :status="item.status"
                   />
-                </td>
-                <td class="text-xs-center">
-                  <v-icon
-                    @click="openRecibo(item)">mdi-receipt</v-icon>
                 </td>
               </tr>
             </template>
@@ -97,12 +89,6 @@
         </v-card>
       </v-flex>
     </v-layout>
-    <cliente-recibo-pagamento
-      v-if="dialogRecibo"
-      :pagamento-id="pagamentoId"
-      :show="dialogRecibo"
-      :close="closeRecibo"
-    />
   </v-container>
 </template>
 <script>
@@ -129,39 +115,34 @@ export default {
       filtros: {
         dataInicial: null,
         dataFinal: null,
-        lojaId: null
+        tipo: null
       },
       headers: [
         {
           sortable: false,
-          text: 'Data do Pagto',
-          align: 'center',
+          text: 'Data Pagamento',
           value: 'dataPagto'
         },
         {
           sortable: false,
           text: 'Valor Pago',
-          value: 'valorPago'
+          value: 'valorParcela'
         },
         {
           sortable: false,
           text: 'Tipo',
-          value: 'tipoPagto'
+          value: 'tipo'
         },
         {
           sortable: false,
-          text: 'Local Pagto',
-          value: 'nomeLoja'
+          text: 'Marca',
+          value: 'marca'
         },
         {
           sortable: false,
           text: 'Status',
           align: 'center',
           value: 'status'
-        },
-        {
-          sortable: false,
-          text: ''
         }
       ],
       pagamentos: [],
@@ -181,9 +162,6 @@ export default {
   beforeMount () {
     this.loading = true
     this.loadingBtn = true
-    // if (this.$root.isCrediarista() || this.$root.isProprietario()) {
-    this.filtros.lojaId = Number(this.value.lojaId)
-    // }
   },
   methods: {
     reload () {
@@ -202,15 +180,6 @@ export default {
         this.loading = false
       })
     },
-    closeRecibo () {
-      this.dialogRecibo = false
-      this.pagamentoId = null
-    },
-    openRecibo (item) {
-      this.pagamentoId = item.id
-      this.dialogRecibo = true
-    }
-
   }
 }
 </script>

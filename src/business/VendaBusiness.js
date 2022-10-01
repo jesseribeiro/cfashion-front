@@ -1,10 +1,6 @@
 import axios from 'axios'
 
 export default {
-  calcular (dadosCalcular) {
-    return axios.post(`/v1/venda/calcular`, dadosCalcular)
-  },
-
   vender (dadosCalcular) {
     return axios.post(`/v1/venda/vender`, dadosCalcular)
   },

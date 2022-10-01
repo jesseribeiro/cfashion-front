@@ -26,7 +26,7 @@
                   </v-flex>
                   <v-flex md4>
                     <v-autocomplete
-                      v-model="filtros.situacao"
+                      v-model="filtros.status"
                       :items="situacoes"
                       item-value="id"
                       item-text="descricao"
@@ -111,9 +111,13 @@
               <td>{{ item.nomeCliente }}</td>
               <td>{{ item.nomeProduto }}</td>
               <td>{{ item.marca }}</td>
-              <td>{{ formatValorMonetario(item.valorParcela) }}</td>
+              <td>{{ item.valorParcela.toLocaleString("pt-BR", { minimumFractionDigits: 2 }) }}</td>
               <td>{{ item.numero }}</td>
-              <td>{{ item.status }}</td>
+              <td class="text-xs-center">
+                <core-status-pagamento
+                  :status="item.status"
+                />
+              </td>
               <td class="text-xs-center">
                 <v-btn
                   v-if="item.status != 'Pago'"
@@ -218,7 +222,7 @@ export default {
       filtros: {
         dataInicial: DateUtils.addDia(new Date(), -1),
         dataFinal: DateUtils.currentDate(),
-        situacao: null,
+        status: null,
         cpf: null,
         marcaId: null,
       },
@@ -282,7 +286,7 @@ export default {
   },
   beforeMount () {
     TiposBusiness.getAllStatus()
-      .then(response => {ss
+      .then(response => {
         this.situacoes = response.data
     })
     LojaBusiness.findAll().then((response) => {

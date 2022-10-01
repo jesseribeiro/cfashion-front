@@ -261,7 +261,7 @@ export default {
   },
   methods: {
     reload () {
-      TiposBusiness.getAllTamanho()
+    TiposBusiness.getAllTamanho()
       .then(response => {
         this.tamanhos = response.data
       })

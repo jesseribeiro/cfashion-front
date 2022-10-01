@@ -34,4 +34,16 @@ export default {
   getById (id) {
     return axios.get(`/v1/produto/${id}`)
   },
+
+  getAllCategoriasByMarca (id) {
+    return axios.get(`/v1/produto/categorias/${id}`)
+  },
+
+  getAllCodigos (id, categoria) {
+    return axios.post(`/v1/produto/${id}/codigos/${categoria}`)
+  },
+
+  getProduto (codigo) {
+    return axios.post(`/v1/produto/codigo/${codigo}`)
+  },
 }

@@ -19,8 +19,12 @@ export default {
     })
   },
 
-  parcelasCliente (pageSize = 10, pageNo = 0, sortBy = 'dataCadastro', cpf, filtros) {
-    return axios.post(`/v1/cliente/${cpf}/parcelas`, {
+  vendasCliente (id, filtros) {
+    return axios.post(`/v1/cliente/${id}/vendas`, filtros)
+  },
+
+  pagamentosCliente (pageSize = 10, pageNo = 0, sortBy = 'dataPagamento', id, filtros) {
+    return axios.post(`/v1/cliente/${id}/pagamentos`, {
       pageSize, pageNo, sortBy, filtros
     })
   },
