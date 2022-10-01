@@ -191,26 +191,6 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/UltimasCobrancas.vue')
   },
   {
-    path: '/cobranca-retorno-por-usuario',
-    name: "Cobrança - Retorno por usuario",
-    component: ()=> import(/* webpackNameChuck: "relatorios" */ '@/views/relatorios/CobrancaRetornoPorUsuario.vue')
-  },
-  {
-    path: '/cobranca-por-usuario-analitico',
-    name: "Cobrança - Por Usuário Analítico",
-    component: ()=> import(/* webpackNameChuck: "relatorios" */ '@/views/relatorios/CobrancaPorUsuarioAnalitico.vue')
-  },
-  {
-    path: '/cobranca-por-usuario-sintetico',
-    name: "Cobrança - Por Usuário Sintético",
-    component: ()=> import(/* webpackNameChuck: "relatorios" */ '@/views/relatorios/CobrancaPorUsuarioSintetico.vue')
-  },
-  {
-    path: '/acordos-efetuados',
-    name: "Acordos Efetuados",
-    component: ()=> import(/* webpackNameChuck: "relatorios" */ '@/views/relatorios/AcordosEfetuados.vue')
-  },
-  {
     path: '/recompra-loja',
     name: "Recompra Loja",
     component: ()=> import(/* webpackNameChuck: "relatorios" */ '@/views/relatorios/RecompraLoja.vue')
