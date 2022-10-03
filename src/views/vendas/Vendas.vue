@@ -301,6 +301,11 @@ export default {
     })
   },
   methods: {
+    openDialogCancelar (item) {
+      this.dialogCancelar = true
+      this.vendaId = item.id
+      this.itemSelecionado = { ...item }
+    },
     closeDialogCancelar () {
       this.dialogCancelar = false
       this.vendaId = null
@@ -319,9 +324,9 @@ export default {
           this.closeDialogCancelar()
         })
     },
-    openDialogCancelar (item) {
-      this.dialogCancelar = true
-      this.vendaId = item.vendaId
+    openDialogPagar (item) {
+      this.dialogPagar = true
+      this.vendaId = item.id
       this.itemSelecionado = { ...item }
     },
     closeDialogPagar () {
@@ -331,7 +336,9 @@ export default {
     },
     confirmarPagar () {
       this.loading = true
-      VendaBusiness.cancelarVenda(this.vendaId)
+      console.log(this.vendaId)
+      console.log(this.itemSelecionado)
+      VendaBusiness.pagarVenda(this.vendaId)
         .then(response => {
           this.$root.showSucesso('Operação realizada com sucesso')
           this.paginar()
@@ -341,11 +348,6 @@ export default {
           this.loading = false
           this.closeDialogPagar()
         })
-    },
-    openDialogPagar (item) {
-      this.dialogPagar = true
-      this.vendaId = item.vendaId
-      this.itemSelecionado = { ...item }
     },
     pesquisar () {
       this.$validator.validate().then(result => {

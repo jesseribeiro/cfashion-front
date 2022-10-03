@@ -13,6 +13,10 @@ export default {
     return axios.post(`/v1/venda/pagar-carne`, item)
   },
 
+  pagarVenda (vendaId) {
+    return axios.post(`/v1/venda/pagar-venda/${vendaId}`)
+  },
+
   pagination (pageSize = 10, pageNo = 0, sortBy = 'dataVenda', filtros) {
     return axios.post(`/v1/venda/pagination`, {
       pageSize, pageNo, sortBy, filtros

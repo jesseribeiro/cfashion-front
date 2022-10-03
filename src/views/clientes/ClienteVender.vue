@@ -204,7 +204,7 @@
               color="#4caf50"
               @click="vender()"
             >
-              Calcular
+              Confirmar
             </v-btn>
           </v-layout>
         </v-flex>
@@ -384,10 +384,10 @@ export default {
       this.loading = true
       VendaBusiness.vender(this.dadosCalcular)
         .then(response => {
+          this.$root.showSucesso("Venda cadastrada");
           this.nextStep()
         })
         .catch(erro => {
-          console.log('Erro ao vender', erro)
           this.$root.showErro(erro.data)
         })
         .finally(() => {
