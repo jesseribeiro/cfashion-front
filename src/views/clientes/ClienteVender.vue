@@ -96,20 +96,6 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-formata-moeda="dadosCalcular.comissao"
-            v-validate="'required'"
-            v-money="money"
-            v-model.lazy="dadosCalcular.comissao"
-            :error-messages="errors.collect('Comissao MKT')"
-            data-vv-name="Comissão"
-            suffix="R$"
-            reverse
-            label="Comissão MKT"
-            clearable
-          />
-        </v-flex>
-        <v-flex md4>
-          <v-text-field
             v-formata-moeda="dadosCalcular.frete"
             v-validate="'required'"
             v-money="money"
@@ -120,6 +106,7 @@
             reverse
             label="Frete"
             clearable
+            @change="changeFrete"
           />
         </v-flex>
         <v-flex md4>
@@ -134,6 +121,7 @@
             reverse
             label="Desconto"
             clearable
+            @change="changeDesconto"
           />
         </v-flex>
         <v-flex md4>
@@ -147,11 +135,26 @@
             clearable
             @change="changeTipo"
           />
+        </v-flex>    
+        <v-flex md4 v-if="flagComissao">
+          <v-text-field
+            v-formata-moeda="dadosCalcular.comissao"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.comissao"
+            :error-messages="errors.collect('Comissao MKT')"
+            data-vv-name="Comissão"
+            suffix="R$"
+            reverse
+            label="Comissão MKT"
+            readonly
+          />
         </v-flex>
         <v-flex md4>
           <v-text-field v-if="flagTipo"
             v-validate="'required'"
             v-model="dadosCalcular.qtdParcela"
+            :loading="loadingTipo"
             :disabled="disabled"
             :error-messages="errors.collect('Qtd Parcela')"
             data-vv-name="Qtd Parcela"
@@ -164,10 +167,25 @@
             label="Qtd Parcela"
             reverse
             clearable
+            @change="changeParcela"
           />
         </v-flex>
         <v-flex md4>
           <v-text-field v-if="flagTipo"
+            v-formata-moeda="dadosCalcular.valorTarifa"
+            v-validate="'required'"
+            v-model.lazy="dadosCalcular.valorTarifa"
+            :loading="loadingProduto"
+            :error-messages="errors.collect('Valor Tarifa')"
+            data-vv-name="Valor Tarifa"
+            suffix="R$"
+            reverse
+            label="Valor Tarifa"
+            readonly
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field v-if="flagParcela"
             v-formata-moeda="dadosCalcular.valorParcela"
             v-validate="'required'"
             v-money="money"
@@ -177,9 +195,10 @@
             suffix="R$"
             reverse
             label="Valor Parcela"
-            clearable
+            readonly
           />
         </v-flex>
+        <v-flex md12/>
         <v-flex
           md4
           class="mt-5"
@@ -261,8 +280,13 @@ export default {
       loadingCategorias: false,
       loadingCodigos: false,
       loadingProduto: false,
+      loadingTipo: false,
       loadingBtn: false,
       flagTipo: false,
+      flagComissao: false,
+      flagParcela: false,
+      valorParcela: null,
+      valorComissao: null,
       dadosCalcular: {
         marcaId: null,
         categoria: null,
@@ -272,8 +296,11 @@ export default {
         valorProduto: null,
         qtdParcela: 1,
         valorParcela: null,
+        valorVenda: null,
+        valorTarifa: 0,
         tipo: null,
         comissao: null,
+        flagParcela: null,
         frete: null,
         desconto: null,
         clienteId: null,
@@ -360,6 +387,7 @@ export default {
             this.dadosCalcular.produtoId = this.produto.id
             this.dadosCalcular.nomeProduto = this.produto.nome
             this.dadosCalcular.valorProduto = this.formatValorMonetario(this.produto.valorProduto)
+            this.dadosCalcular.valorVenda = this.formatValorMonetario(this.produto.valorProduto)
             this.dadosCalcular.valorParcela = this.formatValorMonetario(this.produto.valorProduto)
           })
           .catch(() => {
@@ -373,12 +401,82 @@ export default {
       }
     },
     changeTipo(tipo) {
+      this.flagComissao = false;
+      this.flagParcela = false;
       this.flagTipo = false;
-      this.dadosCalcular.valorParcela = this.formatValorMonetario(this.dadosCalcular.valorProduto)
+      this.dadosCalcular.valorTarifa = 0;
+      this.dadosCalcular.comissao = 0;
+      this.dadosCalcular.tipo = tipo;
+      this.changeFreteDesconto(this.dadosCalcular);   
+      this.dadosCalcular.valorParcela = this.formatValorMonetario(this.dadosCalcular.valorVenda)
       this.dadosCalcular.qtdParcela = 1;
       if (tipo === 'CARTAO_CREDITO') {
         this.flagTipo = true;
+        this.changeParcela(this.dadosCalcular.qtdParcela);
       }
+      if (tipo === 'MAGALU' || tipo === 'AMERICANAS' || tipo === 'MERCADO_LIVRE') {
+        this.flagTipo = false;
+        this.changeComissao(this.dadosCalcular);
+      } else {
+        this.dadosCalcular.comissao = 0;
+        this.valorComissao = this.dadosCalcular.comissao
+      }
+    },
+    changeComissao(dadosCalcular) {
+      VendaBusiness.calcularComissao(dadosCalcular)
+        .then(response => {
+          console.log("ta aqui")
+          this.dadosCalcular.comissao = response.data.comissao
+          this.valorComissao = this.dadosCalcular.comissao
+          console.log(this.valorComissao);
+          console.log(this.dadosCalcular.comissao);
+        })
+        .catch(erro => {
+          this.$root.showErro(erro.data)
+        })
+        .finally(() => {
+          this.flagComissao = true;
+        })
+    },
+    changeFreteDesconto(dadosCalcular) {
+      this.flagComissao = false;
+      this.flagParcela = false;
+      this.flagTipo = false;
+      this.dadosCalcular.tipo = null;
+      this.loadingTipo = true;
+      VendaBusiness.calcularFreteDesconto(dadosCalcular)
+        .then(response => {
+          this.dadosCalcular.valorVenda = this.formatValorMonetario(response.data.valorVenda)
+        })
+        .catch(erro => {
+          this.$root.showErro(erro.data)
+        })
+        .finally(() => {
+          this.loadingTipo = false;
+        })
+    },
+    changeDesconto(valor) {
+      this.dadosCalcular.desconto = valor;
+      this.changeFreteDesconto(this.dadosCalcular);
+    },
+    changeFrete(valor) {
+      this.dadosCalcular.frete = valor;
+      this.changeFreteDesconto(this.dadosCalcular);
+    },
+    changeParcela(qtd) {
+      this.flagComissao = false;
+      this.flagParcela = false;
+      this.dadosCalcular.qtdParcela = qtd;
+      VendaBusiness.calcularParcela(this.dadosCalcular)
+        .then(response => {
+          this.dadosCalcular.valorTarifa = this.formatValorMonetario(response.data.valorTarifa)
+          this.dadosCalcular.valorParcela = this.formatValorMonetario(response.data.valorParcela)
+          this.valorParcela = this.dadosCalcular.valorParcela
+          this.flagParcela = true;
+        })
+        .catch(erro => {
+          this.$root.showErro(erro.data)
+        })
     },
     vender () {
       this.loading = true

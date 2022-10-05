@@ -111,7 +111,7 @@
               <td>{{ item.cpf }}</td>
               <td>{{ item.nomeProduto }}</td>
               <td>{{ item.marca }}</td>
-              <td>{{ formatValorMonetario(item.vlProduto) }}</td>
+              <td>{{ formatValorMonetario(item.vlTotal) }}</td>
               <td>{{ item.qtdParcela }}</td>
               <td>{{ item.tipo }}</td>
               <td class="text-xs-center">
@@ -252,7 +252,7 @@ export default {
         {
           sortable: false,
           text: 'Valor',
-          value: 'vlProduto'
+          value: 'vlTotal'
         },
         {
           sortable: false,

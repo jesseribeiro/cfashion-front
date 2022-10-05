@@ -89,7 +89,7 @@
                   </v-icon>
                 </td>
                 <td>{{ item.dataVenda | moment("DD/MM/YYYY") }}</td>
-                <td class="font-weight-black">{{ formatValorMonetario(item.vlProduto) }}</td>
+                <td class="font-weight-black">{{ formatValorMonetario(item.vlTotal) }}</td>
                 <td>{{ item.nomeProduto }}</td>
                 <td>{{ item.qtdParcela }}</td>
                 <td>{{ item.marca }}</td>
@@ -279,7 +279,7 @@ export default {
         {
           sortable: false,
           text: 'Valor',
-          value: 'vlProduto'
+          value: 'vlTotal'
         },
         {
           sortable: false,
