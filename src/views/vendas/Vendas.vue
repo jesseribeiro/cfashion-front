@@ -336,8 +336,6 @@ export default {
     },
     confirmarPagar () {
       this.loading = true
-      console.log(this.vendaId)
-      console.log(this.itemSelecionado)
       VendaBusiness.pagarVenda(this.vendaId)
         .then(response => {
           this.$root.showSucesso('Operação realizada com sucesso')

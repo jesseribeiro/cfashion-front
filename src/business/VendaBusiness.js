@@ -9,10 +9,6 @@ export default {
     return axios.get(`/v1/venda/cancelar-venda/${vendaId}`)
   },
 
-  pagarParcela (item) {
-    return axios.post(`/v1/venda/pagar-carne`, item)
-  },
-
   pagarVenda (vendaId) {
     return axios.post(`/v1/venda/pagar-venda/${vendaId}`)
   },

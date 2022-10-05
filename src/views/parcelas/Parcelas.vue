@@ -301,6 +301,7 @@ export default {
     },
     confirmarCancelar () {
       this.loading = true
+      console.log(this.parcelaId)
       ParcelaBusiness.cancelarParcela(this.parcelaId)
         .then(response => {
           this.$root.showSucesso('Operação realizada com sucesso')
@@ -314,7 +315,7 @@ export default {
     },
     openDialogCancelar (item) {
       this.dialogCancelar = true
-      this.parcelaId = item.parcelaId
+      this.parcelaId = item.id
       this.itemSelecionado = { ...item }
     },
     closeDialogPagar () {
@@ -324,7 +325,8 @@ export default {
     },
     confirmarPagar () {
       this.loading = true
-      ParcelaBusiness.cancelarParcela(this.parcelaId)
+      console.log(this.parcelaId)
+      ParcelaBusiness.pagarParcela(this.parcelaId)
         .then(response => {
           this.$root.showSucesso('Operação realizada com sucesso')
           this.paginar()
@@ -337,7 +339,7 @@ export default {
     },
     openDialogPagar (item) {
       this.dialogPagar = true
-      this.parcelaId = item.parcelaId
+      this.parcelaId = item.id
       this.itemSelecionado = { ...item }
     },
     pesquisar () {

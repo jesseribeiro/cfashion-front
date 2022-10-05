@@ -5,5 +5,13 @@ export default {
     return axios.post(`/v1/parcela/pagination`, {
       pageSize, pageNo, sortBy, filtros
     })
+  },
+
+  pagarParcela (parcelaId) {
+    return axios.post(`/v1/parcela/pagar-parcela/${parcelaId}`)
+  },
+
+  cancelarParcela (parcelaId) {
+    return axios.post(`/v1/parcela/cancelar-parcela/${parcelaId}`)
   }
 }

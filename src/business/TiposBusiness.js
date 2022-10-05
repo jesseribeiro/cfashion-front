@@ -16,6 +16,9 @@ export default {
   getAllTamanho () {
     return axios.get(`/v1/tipos/tamanhos`)
   },
+  getAllBalanco () {
+    return axios.get(`/v1/tipos/balancos`)
+  },
   getAllCategoria () {
     return axios.get(`/v1/tipos/categorias`)
   }

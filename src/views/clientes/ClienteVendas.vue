@@ -103,7 +103,7 @@
                   <v-icon
                     v-if="(item.status != 'Cancelado')"
                     color="error"
-                    title="Cancelar Carnê"
+                    title="Cancelar Venda"
                     @click="openDialogCancelar(item)">mdi-delete-outline
                   </v-icon>
                 </td>
@@ -238,7 +238,7 @@
   </v-container>
 </template>
 <script>
-import { ClienteBusiness, VendaBusiness, TiposBusiness } from '../../business'
+import { ClienteBusiness, VendaBusiness, TiposBusiness, ParcelaBusiness } from '../../business'
 import { MONEY } from '../../constants'
 import numberUtils from '../../utils/numberUtils'
 
@@ -253,6 +253,7 @@ export default {
     return {
       money: MONEY,
       vendaId: null,
+      parcelaId: null,
       expanded: false,
       currentPage: 0,
       pageCount: 0,
@@ -385,7 +386,7 @@ export default {
     },
     confirmarPagar () {
       this.loadingBtn = true
-      VendaBusiness.pagarParcela(this.itemSelecionado)
+      ParcelaBusiness.pagarParcela(this.parcelaId)
         .then(response => {
           this.$root.showSucesso('Operação realizada com sucesso')
           this.paginar()
@@ -411,12 +412,12 @@ export default {
     },
     openDialogPagar (item) {
       this.dialogPagar = true
-      this.vendaId = item.vendaId
+      this.parcelaId = item.id
       this.itemSelecionado = { ...item }
     },
     openDialogCancelar (item) {
       this.dialogCancelar = true
-      this.vendaId = item.vendaId
+      this.vendaId = item.id
       this.itemSelecionado = { ...item }
     },
     paginar () {

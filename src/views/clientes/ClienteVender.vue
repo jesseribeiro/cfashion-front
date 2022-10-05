@@ -425,11 +425,8 @@ export default {
     changeComissao(dadosCalcular) {
       VendaBusiness.calcularComissao(dadosCalcular)
         .then(response => {
-          console.log("ta aqui")
           this.dadosCalcular.comissao = response.data.comissao
           this.valorComissao = this.dadosCalcular.comissao
-          console.log(this.valorComissao);
-          console.log(this.dadosCalcular.comissao);
         })
         .catch(erro => {
           this.$root.showErro(erro.data)
