@@ -14,8 +14,8 @@ export default [
           ],
           lista: [
             {
-              to: "/resumo-gerencial",
-              text: "Resumo Gerencial",
+              to: "/lista-produtos",
+              text: "Lista de Produtos",
               roles: [
                 "ADMIN",
                 "SUPERVISOR",
@@ -23,7 +23,19 @@ export default [
                 "NEGOCIADOR",
                 "PROPRIETARIO",
                 "CREDIARISTA",
-              ]
+              ],
+            },
+            {
+              to: "/lista-clientes",
+              text: "Lista de Clientes",
+              roles: [
+                "ADMIN",
+                "SUPERVISOR",
+                "COMERCIAL",
+                "NEGOCIADOR",
+                "PROPRIETARIO",
+                "CREDIARISTA",
+              ],
             },
             {
               to: "/resumo-auditoria",
@@ -476,19 +488,6 @@ export default [
             "CREDIARISTA",
           ],
           lista: [
-            {
-              to: "/rel-clientes",
-              text: "Relação de Clientes",
-              roles: [
-                "ADMIN",
-                "SUPERVISOR",
-                "COMERCIAL",
-                "NEGOCIADOR",
-                "PROPRIETARIO",
-                "PROPRIETARIO_RELATORIO",
-                "CREDIARISTA",
-              ],
-            },
             {
               to: "/clientes-atraso",
               text: "Clientes em Atraso",

@@ -68,8 +68,20 @@ export default {
           ],
           lista: [
             {
-              to: "/recupera-atrasados",
-              text: "Recuperação de Atrasados",
+              to: "/lista-produtos",
+              text: "Lista de Produtos",
+              roles: [
+                "ADMIN",
+                "SUPERVISOR",
+                "COMERCIAL",
+                "NEGOCIADOR",
+                "PROPRIETARIO",
+                "CREDIARISTA",
+              ],
+            },
+            {
+              to: "/lista-clientes",
+              text: "Lista de Clientes",
               roles: [
                 "ADMIN",
                 "SUPERVISOR",
@@ -417,18 +429,6 @@ export default {
             "CREDIARISTA",
           ],
           lista: [
-            {
-              to: "/rel-clientes",
-              text: "Relação de Clientes",
-              roles: [
-                "ADMIN",
-                "SUPERVISOR",
-                "COMERCIAL",
-                "NEGOCIADOR",
-                "PROPRIETARIO",
-                "CREDIARISTA",
-              ],
-            },
             {
               to: "/clientes-atraso",
               text: "Clientes em Atraso",

@@ -380,4 +380,14 @@ export default [
     name: 'Relatório - Repasse Previsão de Pagamento',
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/RelRepassePrevisaoPagamento.vue')
   },
+  {
+    path: '/lista-produtos',
+    name: 'Relatório - Lista de Produtos',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ListaProdutos.vue')
+  },
+  {
+    path: '/lista-clientes',
+    name: 'Relatório - Lista de Clientes',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ListaClientes.vue')
+  },
 ]
