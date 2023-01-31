@@ -40,7 +40,6 @@
                     label="Cor"
                   />
                 </v-flex>
-                <!--
                 <v-flex md4>
                   <v-text-field
                     v-formata-moeda="form.valorProduto"
@@ -53,7 +52,7 @@
                     label="Valor Produto"
                   />
                 </v-flex>
-              -->
+                <!--
                 <v-flex md4>
                   <v-text-field
                     v-model="form.valorCompra"
@@ -66,6 +65,7 @@
                     reverse
                   />
                 </v-flex>
+                -->
                 <v-flex md4>
                   <v-autocomplete
                     v-model="form.tamanho"
