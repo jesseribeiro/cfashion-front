@@ -121,7 +121,7 @@
               <td>{{ item.categoria }}</td>
               <td>{{ item.tamanho }}</td>
               <td>{{ item.qtd }}</td>
-              <td>{{ formatValorMonetario(item.valorProduto) }}</td>
+              <td>{{ formatValorMonetario(item.valorCompra) }}</td>
               <td class="justify-end layout ma-2">
                 <v-icon
                   class="mr-2"
@@ -239,7 +239,7 @@ export default {
         {
           sortable: false,
           text: 'Valor',
-          value: 'valorProduto'
+          value: 'valorCompra'
         },
         {
           sortable: false,

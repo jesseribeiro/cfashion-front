@@ -42,19 +42,6 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-formata-moeda="form.valorProduto"
-                    v-validate="'required'"
-                    v-model.lazy="form.valorProduto"
-                    :error-messages="errors.collect('Valor Produto')"
-                    data-vv-name="Valor Produto"
-                    suffix="R$"
-                    reverse
-                    label="Valor Produto"
-                  />
-                </v-flex>
-                <!--
-                <v-flex md4>
-                  <v-text-field
                     v-model="form.valorCompra"
                     v-validate="'required'"
                     v-formata-moeda="form.valorCompra"
@@ -65,7 +52,6 @@
                     reverse
                   />
                 </v-flex>
-                -->
                 <v-flex md4>
                   <v-autocomplete
                     v-model="form.tamanho"
@@ -171,7 +157,6 @@ export default {
         cor: null,
         qtd: null,
         codigo: null,
-        valorProduto: null,
         valorCompra: null,
         marcaId: null,
       },

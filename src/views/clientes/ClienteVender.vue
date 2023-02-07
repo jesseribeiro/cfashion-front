@@ -1,19 +1,12 @@
 <template>
-  <v-container
-    fluid
-    grid-list-md
-  >
+  <v-container fluid grid-list-md>
     <template>
       <core-progress-modal :show="loading" />
-      <v-layout
-        v-if="!loading"
-        row
-        wrap
-      >
+      <v-layout v-if="!loading" row wrap>
         <v-flex md12>
-          <span
-            class="body-2"
-          >Cliente: {{ value.nome }} CPF: {{ value.cpf }}</span>
+          <span class="body-2"
+            >Cliente: {{ value.nome }} CPF: {{ value.cpf }}</span
+          >
         </v-flex>
         <v-flex md4>
           <v-text-field
@@ -91,22 +84,36 @@
             suffix="R$"
             reverse
             label="Valor Produto"
-            readonly
           />
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-formata-moeda="dadosCalcular.frete"
+            v-formata-moeda="dadosCalcular.freteReceber"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.frete"
-            :error-messages="errors.collect('Frete')"
-            data-vv-name="Frete"
+            v-model.lazy="dadosCalcular.freteReceber"
+            :error-messages="errors.collect('Frete Receber')"
+            data-vv-name="Frete Receber"
             suffix="R$"
             reverse
-            label="Frete"
+            label="Frete Receber"
             clearable
-            @change="changeFrete"
+            @change="changeFreteReceber"
+          />
+        </v-flex>
+        <v-flex md4>
+          <v-text-field
+            v-formata-moeda="dadosCalcular.fretePagar"
+            v-validate="'required'"
+            v-money="money"
+            v-model.lazy="dadosCalcular.fretePagar"
+            :error-messages="errors.collect('Frete Pagar')"
+            data-vv-name="Frete Pagar"
+            suffix="R$"
+            reverse
+            label="Frete Pagar"
+            clearable
+            @change="changeFretePagar"
           />
         </v-flex>
         <v-flex md4>
@@ -135,7 +142,7 @@
             clearable
             @change="changeTipo"
           />
-        </v-flex>    
+        </v-flex>
         <v-flex md4 v-if="flagComissao">
           <v-text-field
             v-formata-moeda="dadosCalcular.comissao"
@@ -151,7 +158,8 @@
           />
         </v-flex>
         <v-flex md4>
-          <v-text-field v-if="flagTipo"
+          <v-text-field
+            v-if="flagTipo"
             v-validate="'required'"
             v-model="dadosCalcular.qtdParcela"
             :loading="loadingTipo"
@@ -171,7 +179,8 @@
           />
         </v-flex>
         <v-flex md4>
-          <v-text-field v-if="flagTipo"
+          <v-text-field
+            v-if="flagTipo"
             v-formata-moeda="dadosCalcular.valorTarifa"
             v-validate="'required'"
             v-model.lazy="dadosCalcular.valorTarifa"
@@ -185,7 +194,8 @@
           />
         </v-flex>
         <v-flex md4>
-          <v-text-field v-if="flagParcela"
+          <v-text-field
+            v-if="flagParcela"
             v-formata-moeda="dadosCalcular.valorParcela"
             v-validate="'required'"
             v-money="money"
@@ -198,31 +208,16 @@
             readonly
           />
         </v-flex>
-        <v-flex md12/>
-        <v-flex
-          md4
-          class="mt-5"
-        >
+        <v-flex md12 />
+        <v-flex md4 class="mt-5">
           <v-layout class="justify-end">
-            <v-btn
-              dark
-              @click="goBack"
-            >
-              Voltar
-            </v-btn>
+            <v-btn dark @click="goBack"> Voltar </v-btn>
           </v-layout>
         </v-flex>
-        <v-flex md4/>
-        <v-flex  
-          md4
-          class="mt-5"
-        >
+        <v-flex md4 />
+        <v-flex md4 class="mt-5">
           <v-layout class="justify-end">
-            <v-btn
-              :loading="loadingBtn"
-              color="#4caf50"
-              @click="vender()"
-            >
+            <v-btn :loading="loadingBtn" color="#4caf50" @click="vender()">
               Confirmar
             </v-btn>
           </v-layout>
@@ -232,44 +227,48 @@
   </v-container>
 </template>
 <script>
-import { LojaBusiness, VendaBusiness, TiposBusiness, ProdutoBusiness } from '../../business'
-import DateUtils from '../../utils/dateUtils'
+import {
+  LojaBusiness,
+  VendaBusiness,
+  TiposBusiness,
+  ProdutoBusiness,
+} from "../../business";
+import DateUtils from "../../utils/dateUtils";
 import numberUtils from "../../utils/numberUtils";
 
 export default {
   props: {
     value: {
       type: Object,
-      required: true
+      required: true,
     },
     // eslint-disable-next-line vue/require-default-prop
     nextStep: {
       type: Function,
-      requided: true
+      requided: true,
     },
     // eslint-disable-next-line vue/require-default-prop
     goBack: {
       type: Function,
-      requided: true
+      requided: true,
     },
     // eslint-disable-next-line vue/require-default-prop
     setData: {
       type: Function,
-      requided: true
+      requided: true,
     },
-    // eslint-disable-next-line vue/require-default-prop
-    disabled: false
   },
-  data () {
+  data() {
     return {
       money: {
-        decimal: ',',
-        thousands: '.',
-        precision: 2
+        decimal: ",",
+        thousands: ".",
+        precision: 2,
       },
       rules: {
-        required: value => !!value || 'Defina este campo',
-        maiorQueZero: value => value > 0 || "Valor não pode ser menor que zero"
+        required: (value) => !!value || "Defina este campo",
+        maiorQueZero: (value) =>
+          value > 0 || "Valor não pode ser menor que zero",
       },
       marcas: [],
       tipos: [],
@@ -301,40 +300,40 @@ export default {
         tipo: null,
         comissao: null,
         flagParcela: null,
-        frete: null,
+        freteReceber: null,
+        fretePagar: null,
         desconto: null,
         clienteId: null,
         dataVenda: DateUtils.currentDate(),
       },
-    }
+    };
   },
   watch: {
-    value () {
-      this.$emit('input', this.value)
-    }
+    value() {
+      this.$emit("input", this.value);
+    },
   },
-  beforeMount () {
+  beforeMount() {
     this.dadosCalcular.clienteId = this.value.id;
-    this.loading = true
-    TiposBusiness.getAllTipoPagamento()
-      .then(response => {
-        this.tipos = response.data
-      })
+    this.loading = true;
+    TiposBusiness.getAllTipoPagamento().then((response) => {
+      this.tipos = response.data;
+    });
     LojaBusiness.findAll().then((response) => {
-        this.marcas = response.data;
-      });
+      this.marcas = response.data;
+    });
     this.loading = false;
   },
   methods: {
-    cancelar () {
-      this.$router.push('/lista-cliente')
+    cancelar() {
+      this.$router.push("/lista-cliente");
     },
     changeCategoria(marcaId) {
-      this.dadosCalcular.produtoId = null
-      this.dadosCalcular.nomeProduto = null
-      this.dadosCalcular.valorProduto = null
-      this.dadosCalcular.categoria = null
-      this.dadosCalcular.codigo = null
+      this.dadosCalcular.produtoId = null;
+      this.dadosCalcular.nomeProduto = null;
+      this.dadosCalcular.valorProduto = null;
+      this.dadosCalcular.categoria = null;
+      this.dadosCalcular.codigo = null;
       this.dadosCalcular.marcaId = marcaId;
       if (this.dadosCalcular.marcaId) {
         this.loadingCategorias = true;
@@ -343,9 +342,7 @@ export default {
             this.categorias = response.data;
           })
           .catch(() => {
-            this.$root.showAlerta(
-              "Não foi possível buscar as categorias"
-            );
+            this.$root.showAlerta("Não foi possível buscar as categorias");
           })
           .finally(() => {
             this.loadingCategorias = false;
@@ -353,21 +350,22 @@ export default {
       }
     },
     changeCodigo(categoria) {
-      this.dadosCalcular.produtoId = null
-      this.dadosCalcular.nomeProduto = null
-      this.dadosCalcular.valorProduto = null
-      this.dadosCalcular.codigo = null
+      this.dadosCalcular.produtoId = null;
+      this.dadosCalcular.nomeProduto = null;
+      this.dadosCalcular.valorProduto = null;
+      this.dadosCalcular.codigo = null;
       this.dadosCalcular.categoria = categoria;
       if (this.dadosCalcular.categoria) {
         this.loadingCodigos = true;
-        ProdutoBusiness.getAllCodigos(this.dadosCalcular.marcaId, this.dadosCalcular.categoria)
+        ProdutoBusiness.getAllCodigos(
+          this.dadosCalcular.marcaId,
+          this.dadosCalcular.categoria
+        )
           .then((response) => {
             this.codigos = response.data;
           })
           .catch(() => {
-            this.$root.showAlerta(
-              "Não foi possível buscar os códigos"
-            );
+            this.$root.showAlerta("Não foi possível buscar os códigos");
           })
           .finally(() => {
             this.loadingCodigos = false;
@@ -375,25 +373,29 @@ export default {
       }
     },
     changeProduto(codigo) {
-      this.dadosCalcular.produtoId = null
-      this.dadosCalcular.nomeProduto = null
-      this.dadosCalcular.valorProduto = null
+      this.dadosCalcular.produtoId = null;
+      this.dadosCalcular.nomeProduto = null;
+      this.dadosCalcular.valorProduto = null;
       this.dadosCalcular.codigo = codigo;
       if (this.dadosCalcular.codigo) {
         this.loadingProduto = true;
         ProdutoBusiness.getProduto(this.dadosCalcular.codigo)
           .then((response) => {
             this.produto = response.data;
-            this.dadosCalcular.produtoId = this.produto.id
-            this.dadosCalcular.nomeProduto = this.produto.nome
-            this.dadosCalcular.valorProduto = this.formatValorMonetario(this.produto.valorProduto)
-            this.dadosCalcular.valorVenda = this.formatValorMonetario(this.produto.valorProduto)
-            this.dadosCalcular.valorParcela = this.formatValorMonetario(this.produto.valorProduto)
+            this.dadosCalcular.produtoId = this.produto.id;
+            this.dadosCalcular.nomeProduto = this.produto.nome;
+            this.dadosCalcular.valorProduto = this.formatValorMonetario(
+              this.produto.valorProduto
+            );
+            this.dadosCalcular.valorVenda = this.formatValorMonetario(
+              this.produto.valorProduto
+            );
+            this.dadosCalcular.valorParcela = this.formatValorMonetario(
+              this.produto.valorProduto
+            );
           })
           .catch(() => {
-            this.$root.showAlerta(
-              "Não foi possível buscar o produto"
-            );
+            this.$root.showAlerta("Não foi possível buscar o produto");
           })
           .finally(() => {
             this.loadingProduto = false;
@@ -407,33 +409,39 @@ export default {
       this.dadosCalcular.valorTarifa = 0;
       this.dadosCalcular.comissao = 0;
       this.dadosCalcular.tipo = tipo;
-      this.changeFreteDesconto(this.dadosCalcular);   
-      this.dadosCalcular.valorParcela = this.formatValorMonetario(this.dadosCalcular.valorVenda)
+      this.changeFreteDesconto(this.dadosCalcular);
+      this.dadosCalcular.valorParcela = this.formatValorMonetario(
+        this.dadosCalcular.valorVenda
+      );
       this.dadosCalcular.qtdParcela = 1;
-      if (tipo === 'CARTAO_CREDITO') {
+      if (tipo === "CARTAO_CREDITO") {
         this.flagTipo = true;
         this.changeParcela(this.dadosCalcular.qtdParcela);
       }
-      if (tipo === 'MAGALU' || tipo === 'AMERICANAS' || tipo === 'MERCADO_LIVRE') {
+      if (
+        tipo === "MAGALU" ||
+        tipo === "AMERICANAS" ||
+        tipo === "MERCADO_LIVRE"
+      ) {
         this.flagTipo = false;
         this.changeComissao(this.dadosCalcular);
       } else {
         this.dadosCalcular.comissao = 0;
-        this.valorComissao = this.dadosCalcular.comissao
+        this.valorComissao = this.dadosCalcular.comissao;
       }
     },
     changeComissao(dadosCalcular) {
       VendaBusiness.calcularComissao(dadosCalcular)
-        .then(response => {
-          this.dadosCalcular.comissao = response.data.comissao
-          this.valorComissao = this.dadosCalcular.comissao
+        .then((response) => {
+          this.dadosCalcular.comissao = response.data.comissao;
+          this.valorComissao = this.dadosCalcular.comissao;
         })
-        .catch(erro => {
-          this.$root.showErro(erro.data)
+        .catch((erro) => {
+          this.$root.showErro(erro.data);
         })
         .finally(() => {
           this.flagComissao = true;
-        })
+        });
     },
     changeFreteDesconto(dadosCalcular) {
       this.flagComissao = false;
@@ -442,22 +450,28 @@ export default {
       this.dadosCalcular.tipo = null;
       this.loadingTipo = true;
       VendaBusiness.calcularFreteDesconto(dadosCalcular)
-        .then(response => {
-          this.dadosCalcular.valorVenda = this.formatValorMonetario(response.data.valorVenda)
+        .then((response) => {
+          this.dadosCalcular.valorVenda = this.formatValorMonetario(
+            response.data.valorVenda
+          );
         })
-        .catch(erro => {
-          this.$root.showErro(erro.data)
+        .catch((erro) => {
+          this.$root.showErro(erro.data);
         })
         .finally(() => {
           this.loadingTipo = false;
-        })
+        });
     },
     changeDesconto(valor) {
       this.dadosCalcular.desconto = valor;
       this.changeFreteDesconto(this.dadosCalcular);
     },
-    changeFrete(valor) {
-      this.dadosCalcular.frete = valor;
+    changeFreteReceber(valor) {
+      this.dadosCalcular.freteReceber = valor;
+      this.changeFreteDesconto(this.dadosCalcular);
+    },
+    changeFretePagar(valor) {
+      this.dadosCalcular.fretePagar = valor;
       this.changeFreteDesconto(this.dadosCalcular);
     },
     changeParcela(qtd) {
@@ -465,33 +479,37 @@ export default {
       this.flagParcela = false;
       this.dadosCalcular.qtdParcela = qtd;
       VendaBusiness.calcularParcela(this.dadosCalcular)
-        .then(response => {
-          this.dadosCalcular.valorTarifa = this.formatValorMonetario(response.data.valorTarifa)
-          this.dadosCalcular.valorParcela = this.formatValorMonetario(response.data.valorParcela)
-          this.valorParcela = this.dadosCalcular.valorParcela
+        .then((response) => {
+          this.dadosCalcular.valorTarifa = this.formatValorMonetario(
+            response.data.valorTarifa
+          );
+          this.dadosCalcular.valorParcela = this.formatValorMonetario(
+            response.data.valorParcela
+          );
+          this.valorParcela = this.dadosCalcular.valorParcela;
           this.flagParcela = true;
         })
-        .catch(erro => {
-          this.$root.showErro(erro.data)
-        })
+        .catch((erro) => {
+          this.$root.showErro(erro.data);
+        });
     },
-    vender () {
-      this.loading = true
+    vender() {
+      this.loading = true;
       VendaBusiness.vender(this.dadosCalcular)
-        .then(response => {
+        .then((response) => {
           this.$root.showSucesso("Venda cadastrada");
-          this.nextStep()
+          this.nextStep();
         })
-        .catch(erro => {
-          this.$root.showErro(erro.data)
+        .catch((erro) => {
+          this.$root.showErro(erro.data);
         })
         .finally(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
     },
     formatValorMonetario(valor) {
       return numberUtils.formatValorMonetario(valor);
     },
-  }
-}
+  },
+};
 </script>
