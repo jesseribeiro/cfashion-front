@@ -84,6 +84,8 @@
             suffix="R$"
             reverse
             label="Valor Produto"
+            clearable
+            @change="changeValorProduto"
           />
         </v-flex>
         <v-flex md4>
@@ -372,6 +374,14 @@ export default {
           });
       }
     },
+    changeValorProduto(valor) {
+      this.dadosCalcular.valorVenda = this.formatValorMonetario(
+        valor
+      );
+      this.dadosCalcular.valorParcela = this.formatValorMonetario(
+        valor
+      );
+    },
     changeProduto(codigo) {
       this.dadosCalcular.produtoId = null;
       this.dadosCalcular.nomeProduto = null;
@@ -385,13 +395,13 @@ export default {
             this.dadosCalcular.produtoId = this.produto.id;
             this.dadosCalcular.nomeProduto = this.produto.nome;
             this.dadosCalcular.valorProduto = this.formatValorMonetario(
-              this.produto.valorProduto
+              this.produto.valorCompra
             );
             this.dadosCalcular.valorVenda = this.formatValorMonetario(
-              this.produto.valorProduto
+              this.produto.valorCompra
             );
             this.dadosCalcular.valorParcela = this.formatValorMonetario(
-              this.produto.valorProduto
+              this.produto.valorCompra
             );
           })
           .catch(() => {
