@@ -1,15 +1,23 @@
 /* eslint-disable no-extra-boolean-cast */
 <template>
-  <v-container fluid grid-list-md>
-    <v-form ref="form1" @submit.prevent="validateBeforeSubmit">
-      <v-layout row wrap>
+  <v-container 
+    fluid 
+    grid-list-md>
+    <v-form 
+      ref="form1" 
+      @submit.prevent="validateBeforeSubmit">
+      <v-layout 
+        row 
+        wrap>
         <v-flex md12>
           <h3 class="subheading">
             <span v-html="descricao" />
           </h3>
           <v-card class="elevation-0">
             <v-card-text>
-              <v-layout row wrap>
+              <v-layout 
+                row 
+                wrap>
                 <v-flex md3>
                   <v-text-field
                     v-mask="'###.###.###-##'"
@@ -26,11 +34,17 @@
         </v-flex>
         <v-flex md12>
           <v-layout class="justify-end">
-            <v-btn outline style="color: black !important" @click="cancelar"
-              >Cancelar</v-btn
+            <v-btn 
+              outline 
+              style="color: black !important" 
+              @click="cancelar"
+            >Cancelar</v-btn
             >
-            <v-btn :loading="loadingBtn" type="submit" color="primary"
-              >Continuar</v-btn
+            <v-btn 
+              :loading="loadingBtn" 
+              type="submit" 
+              color="primary"
+            >Continuar</v-btn
             >
           </v-layout>
         </v-flex>

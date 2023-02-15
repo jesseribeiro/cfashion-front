@@ -1,12 +1,20 @@
 <template>
-  <v-container fluid grid-list-md>
+  <v-container 
+    fluid 
+    grid-list-md>
     <vTitulo> Resumo Faturamento </vTitulo>
-    <v-form ref="form2" @submit.prevent="validateBeforeSubmit">
-      <v-layout row wrap>
+    <v-form 
+      ref="form2" 
+      @submit.prevent="validateBeforeSubmit">
+      <v-layout 
+        row 
+        wrap>
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
-              <v-layout row wrap>
+              <v-layout 
+                row 
+                wrap>
                 <v-flex xs12>
                   <core-filtro-rede-empresa-loja
                     v-model="filtros"
@@ -14,7 +22,10 @@
                     :obrigatorio="true"
                   />
                 </v-flex>
-                <v-flex v-if="!customizarTempo" xs12 md8>
+                <v-flex 
+                  v-if="!customizarTempo" 
+                  xs12 
+                  md8>
                   <v-autocomplete
                     v-validate="'required'"
                     v-model="filtros.tpPeriodo"
@@ -25,7 +36,9 @@
                     item-text="descricao"
                   />
                 </v-flex>
-                <v-flex v-if="customizarTempo" md4>
+                <v-flex 
+                  v-if="customizarTempo" 
+                  md4>
                   <v-text-field
                     v-validate="'required'"
                     v-model="filtros.dataInicio"
@@ -34,7 +47,9 @@
                     clearable
                   />
                 </v-flex>
-                <v-flex v-if="customizarTempo" md4>
+                <v-flex 
+                  v-if="customizarTempo" 
+                  md4>
                   <v-text-field
                     v-validate="'required'"
                     v-model="filtros.dataFim"
@@ -43,13 +58,19 @@
                     clearable
                   />
                 </v-flex>
-                <v-flex xs12 sm12 md4>
+                <v-flex 
+                  xs12 
+                  sm12 
+                  md4>
                   <v-checkbox
                     v-model="customizarTempo"
                     label="Customizar tempo de atraso"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-autocomplete
                     v-model="filtros.totalizacao"
                     :items="listaTotalizacoes"
@@ -58,7 +79,10 @@
                     item-text="descricao"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-autocomplete
                     v-model="filtros.tipoRel"
                     :items="tiposRel"
@@ -67,7 +91,9 @@
                     item-text="descricao"
                   />
                 </v-flex>
-                <v-flex xs12 md4>
+                <v-flex 
+                  xs12 
+                  md4>
                   <v-checkbox
                     v-model="filtros.listarEstornos"
                     label="Incluir Estornos de Compras / Pagamentos"
@@ -79,8 +105,11 @@
         </v-flex>
         <v-flex md12>
           <v-layout class="justify-end">
-            <v-btn :loading="loadingBtn" type="submit" color="primary"
-              >Gerar</v-btn
+            <v-btn 
+              :loading="loadingBtn" 
+              type="submit" 
+              color="primary"
+            >Gerar</v-btn
             >
           </v-layout>
         </v-flex>

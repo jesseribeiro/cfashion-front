@@ -1,20 +1,25 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout
       row
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <material-card
           color="primary"
-          title="Pesquisar Cliente">
+          title="Pesquisar Cliente"
+        >
           <v-card class="elevation-0">
             <v-card-text>
               <v-form>
                 <v-layout
                   row
-                  wrap>
+                  wrap
+                >
                   <v-flex md5>
                     <v-text-field
                       v-model="filtros.nome"
@@ -24,8 +29,8 @@
                   </v-flex>
                   <v-flex md2>
                     <v-text-field
-                      v-mask="'###.###.###-##'"
                       v-model.trim="filtros.cpf"
+                      v-mask="'###.###.###-##'"
                       label="CPF"
                       type="text"
                       clearable
@@ -39,7 +44,10 @@
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="pesquisar">Pesquisar</v-btn>
+                @click="pesquisar"
+              >
+                Pesquisar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -48,18 +56,23 @@
         <v-card>
           <v-toolbar
             flat
-            color="white">
+            color="white"
+          >
             <v-toolbar-title>Clientes</v-toolbar-title>
             <v-divider
               class="mx-2"
               inset
-              vertical />
+              vertical
+            />
             <v-spacer />
             <v-btn
               small
               fab
-              color="primary">
-              <v-icon @click="newItem()">mdi-plus</v-icon>
+              color="primary"
+            >
+              <v-icon @click="newItem()">
+                mdi-plus
+              </v-icon>
             </v-btn>
           </v-toolbar>
           <v-progress-linear
@@ -80,22 +93,34 @@
             <template
               slot="items"
               slot-scope="{ item }"
-              ma-5>
+              ma-5
+            >
               <td>{{ item.nome }}</td>
               <td>{{ item.celular }}</td>
               <td>{{ item.cpf }}</td>
-              <td v-if="!!item.dataNascimento">{{ item.dataNascimento | moment("DD/MM/YYYY") }}</td>
-              <td v-else>{{ '-' }}</td>
+              <td v-if="!!item.dataNascimento">
+                {{ item.dataNascimento | moment("DD/MM/YYYY") }}
+              </td>
+              <td v-else>
+                {{ '-' }}
+              </td>
               <td>{{ item.email }}</td>
               <td>{{ item.sexo }}</td>
-              <td v-if="!!item.dataCadastro">{{ item.dataCadastro | moment("DD/MM/YYYY") }}</td>
-              <td v-else>{{ '-' }}</td>
+              <td v-if="!!item.dataCadastro">
+                {{ item.dataCadastro | moment("DD/MM/YYYY") }}
+              </td>
+              <td v-else>
+                {{ '-' }}
+              </td>
               <td class="justify-end layout ma-2">
                 <v-icon
                   class="mr-2"
                   color="primary"
                   title="Editar dados da cliente"
-                  @click="editItem(item)">mdi-pencil</v-icon>
+                  @click="editItem(item)"
+                >
+                  mdi-pencil
+                </v-icon>
               </td>
             </template>
           </v-data-table>

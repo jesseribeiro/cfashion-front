@@ -1,14 +1,22 @@
 <template>
-  <v-container fluid grid-list-md>
+  <v-container 
+    fluid 
+    grid-list-md>
     <vTitulo>
       Resumo Inadimplência
     </vTitulo>
-    <v-form ref="form2" @submit.prevent="validateBeforeSubmit">
-      <v-layout row wrap>
+    <v-form 
+      ref="form2" 
+      @submit.prevent="validateBeforeSubmit">
+      <v-layout 
+        row 
+        wrap>
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
-              <v-layout row wrap>
+              <v-layout 
+                row 
+                wrap>
                 <v-flex xs12>
                   <core-filtro-rede-empresa-loja
                     v-model="filtros"
@@ -49,8 +57,11 @@
         </v-flex>
         <v-flex md12>
           <v-layout class="justify-end">
-            <v-btn :loading="loadingBtn" type="submit" color="primary"
-              >Gerar</v-btn>
+            <v-btn 
+              :loading="loadingBtn" 
+              type="submit" 
+              color="primary"
+            >Gerar</v-btn>
           </v-layout>
         </v-flex>
         <core-progress-modal :show="loading" />

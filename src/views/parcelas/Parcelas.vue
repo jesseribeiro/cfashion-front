@@ -1,25 +1,30 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout
       row
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <material-card
           color="primary"
-          title="Parcelas dos Clientes">
+          title="Parcelas dos Clientes"
+        >
           <v-card class="elevation-0">
             <v-card-text>
               <v-form
-                @submit.prevent="pesquisar">
+                @submit.prevent="pesquisar"
+              >
                 <v-layout
                   row
-                  wrap>
+                  wrap
+                >
                   <v-flex md4>
                     <v-text-field
-                      v-mask="'###.###.###-##'"
                       v-model="filtros.cpf"
+                      v-mask="'###.###.###-##'"
                       label="CPF"
                       clearable
                     />
@@ -71,7 +76,10 @@
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="pesquisar">Pesquisar</v-btn>
+                @click="pesquisar"
+              >
+                Pesquisar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -80,12 +88,14 @@
         <v-card>
           <v-toolbar
             flat
-            color="white">
+            color="white"
+          >
             <v-toolbar-title>PARCELAS DAS VENDAS</v-toolbar-title>
             <v-divider
               class="mx-2"
               inset
-              vertical />
+              vertical
+            />
           </v-toolbar>
           <v-progress-linear
             :active="loading"
@@ -106,7 +116,8 @@
             <template
               slot="items"
               slot-scope="{ item }"
-              ma-5>
+              ma-5
+            >
               <td>{{ item.dataVencimento | moment("DD/MM/YYYY H:mm") }}</td>
               <td>{{ item.nomeCliente }}</td>
               <td>{{ item.nomeProduto }}</td>
@@ -130,7 +141,8 @@
                   v-if="item.status == 'Pago'"
                   title="Cancelar"
                   color="error"
-                  @click="openDialogCancelar(item)">
+                  @click="openDialogCancelar(item)"
+                >
                   mdi-delete-outline
                 </v-icon>
               </td>
@@ -139,28 +151,39 @@
         </v-card>
       </v-flex>
       <template
-        v-if="dialogCancelar">
+        v-if="dialogCancelar"
+      >
         <v-layout
           row
-          justify-center>
+          justify-center
+        >
           <v-dialog
             v-model="dialogCancelar"
             persistent
-            max-width="390">
+            max-width="390"
+          >
             <v-card>
-              <v-card-title class="headline">Cancelar Pagamento</v-card-title>
+              <v-card-title class="headline">
+                Cancelar Pagamento
+              </v-card-title>
 
               <v-card-actions>
                 <v-btn
                   outline
                   style="color: black !important"
-                  @click="closeDialogCancelar">Cancelar</v-btn>
-                <v-spacer/>
+                  @click="closeDialogCancelar"
+                >
+                  Cancelar
+                </v-btn>
+                <v-spacer />
 
                 <v-btn
                   :loading="loadingBtn"
                   color="red"
-                  @click="confirmarCancelar">Confirmar</v-btn>
+                  @click="confirmarCancelar"
+                >
+                  Confirmar
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -168,28 +191,39 @@
       </template>
 
       <template
-        v-if="dialogPagar">
+        v-if="dialogPagar"
+      >
         <v-layout
           row
-          justify-center>
+          justify-center
+        >
           <v-dialog
             v-model="dialogPagar"
             persistent
-            max-width="390">
+            max-width="390"
+          >
             <v-card>
-              <v-card-title class="headline">Realizar pagamento da parcela</v-card-title>
+              <v-card-title class="headline">
+                Realizar pagamento da parcela
+              </v-card-title>
 
               <v-card-actions>
                 <v-btn
                   outline
                   style="color: black !important"
-                  @click="closeDialogPagar">Cancelar</v-btn>
-                <v-spacer/>
+                  @click="closeDialogPagar"
+                >
+                  Cancelar
+                </v-btn>
+                <v-spacer />
 
                 <v-btn
                   :loading="loadingBtn"
                   color="red"
-                  @click="confirmarPagar">Confirmar</v-btn>
+                  @click="confirmarPagar"
+                >
+                  Confirmar
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>

@@ -36,8 +36,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model.trim="filtros.cnpj"
                     v-mask="'##.###.###/####-##'"
+                    v-model.trim="filtros.cnpj"
                     :error-messages="errors.collect('CNPJ')"
                     :return-masked-value="false"
                     label="CNPJ"

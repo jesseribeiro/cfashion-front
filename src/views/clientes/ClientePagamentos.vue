@@ -1,20 +1,24 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout
       row
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <material-card
           color="primary"
-          title="Pesquisar Pagamentos">
+          title="Pesquisar Pagamentos"
+        >
           <v-card class="elevation-0">
             <v-card-text>
               <v-form>
                 <v-layout
                   row
-                  wrap>
+                  wrap
+                >
                   <v-flex md4>
                     <v-text-field
                       v-model="filtros.dataInicial"
@@ -39,7 +43,10 @@
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="pesquisar">Pesquisar</v-btn>
+                @click="pesquisar"
+              >
+                Pesquisar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -48,12 +55,14 @@
         <v-card>
           <v-toolbar
             flat
-            color="white">
+            color="white"
+          >
             <v-toolbar-title>Pagamentos</v-toolbar-title>
             <v-divider
               class="mx-2"
               inset
-              vertical />
+              vertical
+            />
           </v-toolbar>
           <v-progress-linear
             :active="loading"
@@ -72,7 +81,8 @@
             <template
               slot="items"
               slot-scope="{ item }"
-              ma-5>
+              ma-5
+            >
               <tr>
                 <td>{{ item.dataPagamento | moment("DD/MM/YYYY") }}</td>
                 <td>{{ item.valorParcela }}</td>

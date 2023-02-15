@@ -1,20 +1,24 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <span class="title">Lista de Produtos</span>
     <v-form
       ref="form2"
-      @submit.prevent="validateBeforeSubmit">
+      @submit.prevent="validateBeforeSubmit"
+    >
       <v-layout
         row
-        wrap>
+        wrap
+      >
         <v-flex md12>
-          <v-card class="elevation-0">''
+          <v-card class="elevation-0">
             <v-card-text>
               <v-layout
                 row
-                wrap>
+                wrap
+              >
                 <v-flex md4>
                   <v-text-field
                     v-model="filtros.dataInicio"
@@ -55,7 +59,10 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary">Gerar</v-btn>
+              color="primary"
+            >
+              Gerar
+            </v-btn>
           </v-layout>
         </v-flex>
         <core-progress-modal :show="loading" />
@@ -67,7 +74,8 @@
           width="100%"
           height="1000px"
           name="plugin"
-          type="application/pdf">
+          type="application/pdf"
+        >
       </v-layout>
     </v-form>
   </v-container>

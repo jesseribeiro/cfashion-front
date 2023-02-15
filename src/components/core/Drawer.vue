@@ -15,7 +15,7 @@
           :title="link.text"
           class="v-list-item"
         >
-        <v-list-tile-action>
+          <v-list-tile-action>
             <v-icon>{{ link.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-title v-text="link.text" />
@@ -28,15 +28,30 @@
         :close="closeAlterarSenha"
       />
     </v-navigation-drawer>
-    <v-toolbar color="#FFFFFF" app clipped-left tile flat>
+    <v-toolbar 
+      color="#FFFFFF" 
+      app 
+      clipped-left 
+      tile 
+      flat
+    >
       <v-btn icon>
-        <v-icon large color="#6B778C" @click="mini = !mini">mdi-menu</v-icon>
+        <v-icon 
+          large 
+          color="#6B778C" 
+          @click="mini = !mini"
+        >
+          mdi-menu
+        </v-icon>
       </v-btn>
       <v-spacer />
     </v-toolbar>
     <core-progress-modal :show="loading" />
     <template v-if="dialog">
-      <core-dialog-notificacao :item="item" :close="closeDialog" />
+      <core-dialog-notificacao 
+        :item="item" 
+        :close="closeDialog"
+      />
     </template>
   </div>
 </template>
@@ -123,6 +138,18 @@ export default {
         text: "Parcelas",
         roles: ["ADMIN", "CREDIARISTA", "PROPRIETARIO"],
         children: [],
+      },
+      {
+        to: "/comissao",
+        icon: "mdi-cards-outline",
+        text: "Comissões",
+        roles: [
+          "ADMIN",
+          "SUPERVISOR",
+          "NEGOCIADOR",
+          "PROPRIETARIO",
+          "PROPRIETARIO_RELATORIO",
+        ],
       },
       {
         to: "/relatorios",

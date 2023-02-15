@@ -1,9 +1,15 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap>
+  <v-container 
+    fluid 
+    grid-list-md>
+    <v-layout 
+      row 
+      wrap>
       <template>
         <v-flex md12>
-          <v-stepper v-model="e1" non-linear>
+          <v-stepper 
+            v-model="e1" 
+            non-linear>
             <v-stepper-header>
               <v-stepper-step
                 :complete="e1 > 1"
@@ -11,7 +17,7 @@
                 class="body-2 mt-1"
                 step="1"
                 @click="e1 = 1"
-                >Consulta CPF</v-stepper-step
+              >Consulta CPF</v-stepper-step
               >
 
               <v-divider />
@@ -22,7 +28,7 @@
                 class="body-2 mt-1"
                 step="2"
                 @click="clickable(2)"
-                >Dados Cadastrais</v-stepper-step
+              >Dados Cadastrais</v-stepper-step
               >
               <v-divider />
 
@@ -32,7 +38,7 @@
                 class="body-2 mt-1"
                 step="3"
                 @click="clickable(3)"
-                >Vender</v-stepper-step
+              >Vender</v-stepper-step
               >
             </v-stepper-header>
 

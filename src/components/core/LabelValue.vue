@@ -1,11 +1,13 @@
 <template>
   <div>
     <span
-      :class="classLabel">{{ label }}</span>
+      :class="classLabel"
+    >{{ label }}</span>
     <br>
     <span
       v-negative="value"
-      :class="classValue">{{ value }}
+      :class="classValue"
+    >{{ value }}
     </span>
   </div>
 </template>

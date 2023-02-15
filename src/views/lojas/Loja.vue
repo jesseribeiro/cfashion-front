@@ -1,6 +1,10 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap>
+  <v-container 
+    fluid 
+    grid-list-md>
+    <v-layout 
+      row 
+      wrap>
       <v-flex md12>
         <v-form
           v-model="valid"
@@ -8,52 +12,75 @@
           @submit.prevent="validateBeforeSubmit"
         >
           <v-card class="Card">
-            <v-card-title class="cardTitle" color="error">
-              <h3 class="headline mb-0" color="error">Identificação</h3>
+            <v-card-title 
+              class="cardTitle" 
+              color="error">
+              <h3 
+                class="headline mb-0" 
+                color="error">Identificação</h3>
             </v-card-title>
             <v-card-text color="error">
-              <v-layout row wrap color="error">
-                <v-flex xs12 sm6 md4 color="error">
+              <v-layout 
+                row 
+                wrap 
+                color="error">
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4 
+                  color="error">
                   <v-text-field
-                    v-model="form.nomeFantasia"
                     v-validate="'required'"
+                    v-model="form.nomeFantasia"
                     :error-messages="errors.collect('Nome Fantasia')"
                     label="Nome Fantasia"
                     data-vv-name="Nome Fantasia"
                     required
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-text-field
-                    v-model="form.telefone"
                     v-mask="['(##) #### - ####', '(##) ##### - ####']"
                     v-validate="'required'"
+                    v-model="form.telefone"
                     :error-messages="errors.collect('Telefone')"
                     label="Telefone"
                     type="text"
                     data-vv-name="Telefone"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-text-field
-                    v-model="form.whatsapp"
                     v-mask="['(##) ##### - ####']"
+                    v-model="form.whatsapp"
                     label="Whatsapp"
                     type="text"
                     prepend-inner-icon="mdi-whatsapp"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-text-field
                     v-model="form.pessoaContato"
                     label="Pessoa Contato"
                     type="text"
                   />
                 </v-flex>
-                <v-flex xs12 sm6 md4>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-text-field
-                    v-model="form.email"
                     v-validate="'email'"
+                    v-model="form.email"
                     :error-messages="errors.collect('E-mail')"
                     label="Email"
                     type="email"

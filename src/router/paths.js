@@ -86,6 +86,11 @@ export default [
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/vendas/Vendas.vue')
   },
   {
+    path: '/comissao',
+    name: 'Comissão',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/comissao/Comissao.vue')
+  },
+  {
     path: '/relatorios',
     name: 'Relatórios',
     component: () => import(/* webpackNameChuck: "relatorios" */'../views/relatorios/Relatorios')

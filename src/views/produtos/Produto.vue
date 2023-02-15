@@ -1,6 +1,10 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap>
+  <v-container 
+    fluid 
+    grid-list-md>
+    <v-layout 
+      row 
+      wrap>
       <v-flex md12>
         <v-form
           v-model="valid"
@@ -12,11 +16,16 @@
               <h3 class="headline mb-0">Identificação</h3>
             </v-card-title>
             <v-card-text>
-              <v-layout row wrap>
-                <v-flex xs12 sm6 md4>
+              <v-layout 
+                row 
+                wrap>
+                <v-flex 
+                  xs12 
+                  sm6 
+                  md4>
                   <v-text-field
-                    v-model="form.nome"
                     v-validate="'required'"
+                    v-model="form.nome"
                     :error-messages="errors.collect('Nome')"
                     label="Nome"
                     data-vv-name="Nome"
@@ -25,8 +34,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model="form.codigo"
                     v-validate="'required'"
+                    v-model="form.codigo"
                     :error-messages="errors.collect('Código')"
                     name="codigo"
                     data-vv-name="Codigo"
@@ -42,9 +51,9 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model="form.valorCompra"
                     v-validate="'required'"
                     v-formata-moeda="form.valorCompra"
+                    v-model="form.valorCompra"
                     :error-messages="errors.collect('Valor Compra')"
                     data-vv-name="Valor Compra"
                     suffix="R$"
@@ -54,8 +63,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.tamanho"
                     v-validate="'required'"
+                    v-model="form.tamanho"
                     :error-messages="errors.collect('Tamanho')"
                     :items="tamanhos"
                     label="Tamanho"
@@ -67,8 +76,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.categoria"
                     v-validate="'required'"
+                    v-model="form.categoria"
                     :error-messages="errors.collect('Categoria')"
                     :items="categorias"
                     label="Categoria"
@@ -84,8 +93,8 @@
                     v-model="form.qtd"
                     :disabled="disabled"
                     :error-messages="errors.collect('Qtd')"
-                    data-vv-name="Qtd"
                     :rules="[rules.required]"
+                    data-vv-name="Qtd"
                     required
                     min="0"
                     step="1"
@@ -97,8 +106,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.marcaId"
                     v-validate="'required'"
+                    v-model="form.marcaId"
                     :error-messages="errors.collect('Marca')"
                     :items="marcas"
                     label="Marca"

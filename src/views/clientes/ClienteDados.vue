@@ -40,8 +40,8 @@
                   >
                     <v-flex md4>
                       <v-text-field
-                        v-model="value.nome"
                         v-validate="'required'"
+                        v-model="value.nome"
                         :error-messages="errors.collect('Nome')"
                         name="nome"
                         data-vv-name="Nome"
@@ -51,9 +51,9 @@
 
                     <v-flex md4>
                       <v-text-field
-                        v-model.trim="value.cpf"
                         v-mask="['###.###.###-##']"
                         v-validate="'required'"
+                        v-model.trim="value.cpf"
                         :error-messages="errors.collect('CPF')"
                         readonly
                         type="text"
@@ -88,8 +88,8 @@
 
                     <v-flex md4>
                       <v-text-field
-                        v-model="value.celular"
                         v-mask="['(##) #### - ####', '(##) ##### - ####']"
+                        v-model="value.celular"
                         :error-messages="errors.collect('Celular')"
                         label="Celular"
                         name="celular"
@@ -119,8 +119,7 @@
               v-model="value.endereco"
               :loading="loading"
               :disabled="disabled"
-            >
-            </core-endereco>
+            />
           </v-expansion-panel>
         </v-flex>
         <v-flex

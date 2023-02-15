@@ -1,12 +1,20 @@
+<!-- eslint-disable vue/no-lone-template -->
 <template>
-  <v-container fluid grid-list-md>
+  <v-container 
+    fluid 
+    grid-list-md
+  >
     <template>
       <core-progress-modal :show="loading" />
-      <v-layout v-if="!loading" row wrap>
+      <v-layout 
+        v-if="!loading" 
+        row 
+        wrap
+      >
         <v-flex md12>
-          <span class="body-2"
-            >Cliente: {{ value.nome }} CPF: {{ value.cpf }}</span
-          >
+          <span 
+            class="body-2"
+          >Cliente: {{ value.nome }} CPF: {{ value.cpf }}</span>
         </v-flex>
         <v-flex md4>
           <v-text-field
@@ -60,7 +68,11 @@
             @change="changeProduto"
           />
         </v-flex>
-        <v-flex xs12 sm6 md4>
+        <v-flex 
+          xs12 
+          sm6 
+          md4
+        >
           <v-text-field
             v-model="dadosCalcular.nomeProduto"
             v-validate="'required'"
@@ -75,9 +87,9 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
+            v-model.lazy="dadosCalcular.valorProduto"
             v-formata-moeda="dadosCalcular.valorProduto"
             v-validate="'required'"
-            v-model.lazy="dadosCalcular.valorProduto"
             :loading="loadingProduto"
             :error-messages="errors.collect('Valor Produto')"
             data-vv-name="Valor Produto"
@@ -90,10 +102,10 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
+            v-model.lazy="dadosCalcular.freteReceber"
             v-formata-moeda="dadosCalcular.freteReceber"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.freteReceber"
             :error-messages="errors.collect('Frete Receber')"
             data-vv-name="Frete Receber"
             suffix="R$"
@@ -105,10 +117,10 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
+            v-model.lazy="dadosCalcular.fretePagar"
             v-formata-moeda="dadosCalcular.fretePagar"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.fretePagar"
             :error-messages="errors.collect('Frete Pagar')"
             data-vv-name="Frete Pagar"
             suffix="R$"
@@ -120,10 +132,10 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
+            v-model.lazy="dadosCalcular.desconto"
             v-formata-moeda="dadosCalcular.desconto"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.desconto"
             :error-messages="errors.collect('Desconto')"
             data-vv-name="Desconto"
             suffix="R$"
@@ -145,12 +157,15 @@
             @change="changeTipo"
           />
         </v-flex>
-        <v-flex md4 v-if="flagComissao">
+        <v-flex 
+          v-if="flagComissao" 
+          md4
+        >
           <v-text-field
+            v-model.lazy="dadosCalcular.comissao"
             v-formata-moeda="dadosCalcular.comissao"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.comissao"
             :error-messages="errors.collect('Comissao MKT')"
             data-vv-name="Comissão"
             suffix="R$"
@@ -162,13 +177,13 @@
         <v-flex md4>
           <v-text-field
             v-if="flagTipo"
-            v-validate="'required'"
             v-model="dadosCalcular.qtdParcela"
+            v-validate="'required'"
             :loading="loadingTipo"
             :disabled="disabled"
             :error-messages="errors.collect('Qtd Parcela')"
-            data-vv-name="Qtd Parcela"
             :rules="[rules.required]"
+            data-vv-name="Qtd Parcela"
             required
             min="0"
             step="1"
@@ -183,9 +198,9 @@
         <v-flex md4>
           <v-text-field
             v-if="flagTipo"
+            v-model.lazy="dadosCalcular.valorTarifa"
             v-formata-moeda="dadosCalcular.valorTarifa"
             v-validate="'required'"
-            v-model.lazy="dadosCalcular.valorTarifa"
             :loading="loadingProduto"
             :error-messages="errors.collect('Valor Tarifa')"
             data-vv-name="Valor Tarifa"
@@ -198,10 +213,10 @@
         <v-flex md4>
           <v-text-field
             v-if="flagParcela"
+            v-model.lazy="dadosCalcular.valorParcela"
             v-formata-moeda="dadosCalcular.valorParcela"
             v-validate="'required'"
             v-money="money"
-            v-model.lazy="dadosCalcular.valorParcela"
             :error-messages="errors.collect('Valor Parcela')"
             data-vv-name="Valor Parcela"
             suffix="R$"
@@ -211,15 +226,30 @@
           />
         </v-flex>
         <v-flex md12 />
-        <v-flex md4 class="mt-5">
+        <v-flex 
+          md4 
+          class="mt-5"
+        >
           <v-layout class="justify-end">
-            <v-btn dark @click="goBack"> Voltar </v-btn>
+            <v-btn 
+              dark 
+              @click="goBack"
+            >
+              Voltar
+            </v-btn>
           </v-layout>
         </v-flex>
         <v-flex md4 />
-        <v-flex md4 class="mt-5">
+        <v-flex 
+          md4 
+          class="mt-5"
+        >
           <v-layout class="justify-end">
-            <v-btn :loading="loadingBtn" color="#4caf50" @click="vender()">
+            <v-btn 
+              :loading="loadingBtn" 
+              color="#4caf50" 
+              @click="vender()"
+            >
               Confirmar
             </v-btn>
           </v-layout>

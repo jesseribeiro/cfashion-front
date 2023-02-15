@@ -45,7 +45,7 @@
     "@vue/cli-service": "3.0.1",
     "@vue/eslint-config-standard": "3.0.1",
     "axios": "0.17.1",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^7.14.0",

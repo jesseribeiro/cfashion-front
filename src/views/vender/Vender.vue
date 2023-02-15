@@ -1,19 +1,32 @@
+<!-- eslint-disable vue/no-lone-template -->
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap>
+  <v-container 
+    fluid 
+    grid-list-md
+  >
+    <v-layout 
+      row 
+      wrap
+    >
       <template>
         <v-flex md12>
           <v-stepper v-model="e1">
             <v-stepper-header>
-              <v-stepper-step :complete="e1 > 1" step="1"
-                >Consulta CPF</v-stepper-step
+              <v-stepper-step 
+                :complete="e1 > 1" 
+                step="1"
               >
+                Consulta CPF
+              </v-stepper-step>
 
               <v-divider />
 
-              <v-stepper-step :complete="e1 > 2" step="2"
-                >Vender</v-stepper-step
+              <v-stepper-step 
+                :complete="e1 > 2" 
+                step="2"
               >
+                Vender
+              </v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>

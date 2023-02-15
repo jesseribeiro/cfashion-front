@@ -1,20 +1,24 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <span class="title">Compras Canceladas</span>
     <v-form
       ref="form2"
-      @submit.prevent="validateBeforeSubmit">
+      @submit.prevent="validateBeforeSubmit"
+    >
       <v-layout
         row
-        wrap>
+        wrap
+      >
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
               <v-layout
                 row
-                wrap>
+                wrap
+              >
                 <v-flex md12>
                   <core-filtro-rede-empresa-loja
                     v-model="filtros"
@@ -50,8 +54,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-validate="'required'"
                     v-model="filtros.tpLanc"
+                    v-validate="'required'"
                     :items="tiposLanc"
                     :error-messages="errors.collect('Tipos de carnês')"
                     data-vv-name="Tipos de carnês"
@@ -62,10 +66,10 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
+                    v-model.lazy="filtros.valor"
                     v-formata-moeda="filtros.valor"
                     v-money="money"
                     v-validate="'required'"
-                    v-model.lazy="filtros.valor"
                     :error-messages="errors.collect('Valor')"
                     label="Valor a partir"
                     type="tel"
@@ -92,7 +96,10 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary">Gerar</v-btn>
+              color="primary"
+            >
+              Gerar
+            </v-btn>
           </v-layout>
         </v-flex>
         <core-progress-modal :show="loading" />
@@ -104,7 +111,8 @@
           width="100%"
           height="1000px"
           name="plugin"
-          type="application/pdf">
+          type="application/pdf"
+        >
       </v-layout>
     </v-form>
   </v-container>

@@ -1,20 +1,39 @@
+<!-- eslint-disable vue/require-prop-type-constructor -->
+<!-- eslint-disable vue/no-lone-template -->
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
-  <v-expansion-panel v-model="panel" :class="classPanel" expand v-if="!loading">
-    <v-expansion-panel-content :key="0" class="primary">
+  <v-expansion-panel 
+    v-if="!loading" 
+    v-model="panel" 
+    :class="classPanel" 
+    expand
+  >
+    <v-expansion-panel-content 
+      :key="0" 
+      class="primary"
+    >
       <template slot="actions">
-        <v-icon color="white">mdi-chevron-down</v-icon>
+        <v-icon color="white">
+          mdi-chevron-down
+        </v-icon>
       </template>
       <template slot="header">
         <span class="title white--text">Endereço</span>
       </template>
       <v-card class="elevation-0">
         <v-card-text>
-          <v-layout row wrap>
-            <v-flex md3 sm6>
+          <v-layout 
+            row 
+            wrap
+          >
+            <v-flex 
+              md3 
+              sm6
+            >
               <v-text-field
+                v-model="value.cep"
                 v-mask="'#####-###'"
                 v-validate="'required'"
-                v-model="value.cep"
                 :error-messages="errors.collect('CEP')"
                 data-vv-name="CEP"
                 label="CEP"
@@ -28,28 +47,48 @@
                   dark
                   color="primary"
                   @click="incluirCEP"
-                  >Incluir CEP</v-btn
                 >
+                  Incluir CEP
+                </v-btn>
 
-                <v-btn outline style="color: black !important" @click="cancelar"
-                  >Cancelar</v-btn
+                <v-btn 
+                  outline 
+                  style="color: black !important" 
+                  @click="cancelar"
                 >
+                  Cancelar
+                </v-btn>
               </v-flex>
             </template>
             <template v-else>
-              <v-flex md3 sm6>
+              <v-flex 
+                md3 
+                sm6
+              >
                 <v-btn
                   :loading="loadingBtn"
                   dark
                   color="primary"
                   @click="consultarCEP"
-                  >Consultar CEP</v-btn
                 >
+                  Consultar CEP
+                </v-btn>
               </v-flex>
-              <v-flex md6 sm12>
-                <v-layout align-center row fill-height wrap>
+              <v-flex 
+                md6 
+                sm12
+              >
+                <v-layout 
+                  align-center 
+                  row 
+                  fill-height 
+                  wrap
+                >
                   <v-label>ou pesquise pelo endereço nos</v-label>&nbsp;&nbsp;
-                  <a href="http://www.buscacep.correios.com.br" target="_blank">
+                  <a 
+                    href="http://www.buscacep.correios.com.br" 
+                    target="_blank"
+                  >
                     <v-img
                       src="/img/correios-logo.png"
                       height="20"
@@ -62,8 +101,8 @@
 
             <v-flex md7>
               <v-text-field
-                v-validate="'required'"
                 v-model="value.logradouro"
+                v-validate="'required'"
                 :error-messages="errors.collect('Endereço (Rua,Av.,etc)')"
                 data-vv-name="Endereço (Rua,Av.,etc)"
                 label="Endereço (Rua,Av.,etc)"
@@ -71,8 +110,8 @@
             </v-flex>
             <v-flex md2>
               <v-text-field
-                v-validate="'required'"
                 v-model="value.numero"
+                v-validate="'required'"
                 :error-messages="errors.collect('Número')"
                 data-vv-name="Número"
                 label="Número"
@@ -88,8 +127,8 @@
 
             <v-flex md2>
               <v-autocomplete
-                v-validate="'required'"
                 v-model="value.estado"
+                v-validate="'required'"
                 :items="estados"
                 :error-messages="errors.collect('Estado')"
                 label="Estado"
@@ -103,8 +142,8 @@
 
             <v-flex md5>
               <v-autocomplete
-                v-validate="'required'"
                 v-model="value.cidadeIbge"
+                v-validate="'required'"
                 :error-messages="errors.collect('Cidade')"
                 :items="cidades"
                 :loading="loadingCidades"
@@ -118,8 +157,8 @@
 
             <v-flex md5>
               <v-text-field
-                v-validate="'required'"
                 v-model="value.bairro"
+                v-validate="'required'"
                 :error-messages="errors.collect('Bairro')"
                 data-vv-name="Bairro"
                 label="Bairro"
@@ -131,10 +170,18 @@
           </v-layout>
         </v-card-text>
         <template>
-          <v-layout row justify-center>
-            <v-dialog v-model="dialog" max-width="390">
+          <v-layout 
+            row 
+            justify-center
+          >
+            <v-dialog 
+              v-model="dialog" 
+              max-width="390"
+            >
               <v-card>
-                <v-card-title class="headline">CEP Não Encontrado</v-card-title>
+                <v-card-title class="headline">
+                  CEP Não Encontrado
+                </v-card-title>
 
                 <v-card-text>
                   <p>Não foi encontrado endereço com esse CEP.</p>
@@ -150,7 +197,12 @@
 
                 <v-card-actions>
                   <v-spacer />
-                  <v-btn color="primary" @click="dialog = false">Ok</v-btn>
+                  <v-btn 
+                    color="primary" 
+                    @click="dialog = false"
+                  >
+                    Ok
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -166,7 +218,7 @@
 <script>
 import { EstadoBusiness, CepBusiness } from "../../business";
 export default {
-  name: "vEndereco",
+  name: "VEndereco",
   // https://zaengle.com/blog/using-v-model-on-nested-vue-components
   props: {
     value: {
@@ -260,9 +312,9 @@ export default {
         CepBusiness.consultaCep(this.value.cep)
           .then((response) => {
             this.carregarCidades(response.data.uf);
-            this.value.bairro = response.data.bairro;
-            this.value.cidadeIbge = Number(response.data.ibge);
-            this.value.logradouro = response.data.logradouro;
+            this.value.bairro = response.data.bairro
+            this.value.cidadeIbge = Number(response.data.ibge)
+            this.value.logradouro = response.data.logradouro
           })
           .catch(() => {
             this.dialog = true;

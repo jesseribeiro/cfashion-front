@@ -1,20 +1,25 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout
       row
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <material-card
           color="primary"
-          title="Pesquisar Loja">
+          title="Pesquisar Loja"
+        >
           <v-card class="elevation-0">
             <v-card-text>
               <v-form>
                 <v-layout
                   row
-                  wrap>
+                  wrap
+                >
                   <v-flex md4>
                     <v-text-field
                       v-model="filtros.nomeFantasia"
@@ -31,7 +36,9 @@
                 :loading="loadingBtn"
                 color="primary"
                 @click="pesquisar"
-              >Pesquisar</v-btn>
+              >
+                Pesquisar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -40,7 +47,8 @@
         <v-card>
           <v-toolbar
             flat
-            color="white">
+            color="white"
+          >
             <v-toolbar-title>Lojas</v-toolbar-title>
             <v-divider
               class="mx-2"
@@ -51,8 +59,11 @@
             <v-btn
               small
               fab
-              color="primary">
-              <v-icon @click="newItem()">mdi-plus</v-icon>
+              color="primary"
+            >
+              <v-icon @click="newItem()">
+                mdi-plus
+              </v-icon>
             </v-btn>
           </v-toolbar>
           <v-progress-linear
@@ -71,15 +82,18 @@
           >
             <template
               slot="headerCell"
-              slot-scope="{ header }">
+              slot-scope="{ header }"
+            >
               <span
                 class="subheading font-weight-light text--darken-3"
-                v-text="header.text" />
+                v-text="header.text"
+              />
             </template>
             <template
               slot="items"
               slot-scope="{ item }"
-              ma-5>
+              ma-5
+            >
               <td>{{ item.dataCadastro }}</td>
               <td>{{ item.nomeFantasia }}</td>
               <td>{{ item.email }}</td>
@@ -91,12 +105,16 @@
                   color="blue"
                   title="Editar dados da loja"
                   @click="editItem(item)"
-                >mdi-pencil</v-icon>
+                >
+                  mdi-pencil
+                </v-icon>
                 <v-icon
                   color="red"
                   title="Excluir loja"
                   @click="openDialogDelete(item)"
-                >mdi-delete</v-icon>
+                >
+                  mdi-delete
+                </v-icon>
               </td>
             </template>
           </v-data-table>
@@ -107,12 +125,16 @@
       >
         <v-layout
           row
-          justify-center>
+          justify-center
+        >
           <v-dialog
             v-model="dialog"
-            max-width="390">
+            max-width="390"
+          >
             <v-card>
-              <v-card-title class="headline">Excluir Marca</v-card-title>
+              <v-card-title class="headline">
+                Excluir Marca
+              </v-card-title>
 
               <v-card-text>Confirma a exclusão da Loja <span class="title">{{ item.nomeFantasia }}</span>? Essa operação não poderá ser desfeita.</v-card-text>
 
@@ -123,12 +145,16 @@
                   outline
                   style="color: black !important"
                   @click="closeDialogDelete"
-                >Cancelar</v-btn>
+                >
+                  Cancelar
+                </v-btn>
 
                 <v-btn
                   color="red"
                   @click="deleteItem"
-                >Excluir</v-btn>
+                >
+                  Excluir
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>

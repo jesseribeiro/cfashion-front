@@ -1,20 +1,25 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <v-container
     fluid
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout
       row
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <material-card
           color="primary"
-          title="Pesquisar Vendas">
+          title="Pesquisar Vendas"
+        >
           <v-card class="elevation-0">
             <v-card-text>
               <v-form>
                 <v-layout
                   row
-                  wrap>
+                  wrap
+                >
                   <v-flex md4>
                     <v-text-field
                       v-model="filtros.dataInicial"
@@ -49,7 +54,10 @@
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="pesquisar">Pesquisar</v-btn>
+                @click="pesquisar"
+              >
+                Pesquisar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </material-card>
@@ -58,12 +66,14 @@
         <v-card>
           <v-toolbar
             flat
-            color="white">
+            color="white"
+          >
             <v-toolbar-title>Vendas</v-toolbar-title>
             <v-divider
               class="mx-2"
               inset
-              vertical />
+              vertical
+            />
           </v-toolbar>
           <v-progress-linear
             :active="loading"
@@ -81,7 +91,8 @@
             <template
               slot="items"
               slot-scope="{ item }"
-              ma-5>
+              ma-5
+            >
               <tr :active="item.expanded">
                 <td class="justify-center layout">
                   <v-icon @click="item.expanded = !item.expanded">
@@ -89,7 +100,9 @@
                   </v-icon>
                 </td>
                 <td>{{ item.dataVenda | moment("DD/MM/YYYY") }}</td>
-                <td class="font-weight-black">{{ formatValorMonetario(item.vlTotal) }}</td>
+                <td class="font-weight-black">
+                  {{ formatValorMonetario(item.vlTotal) }}
+                </td>
                 <td>{{ item.nomeProduto }}</td>
                 <td>{{ item.qtdParcela }}</td>
                 <td>{{ item.marca }}</td>
@@ -104,7 +117,9 @@
                     v-if="(item.status != 'Cancelado')"
                     color="error"
                     title="Cancelar Venda"
-                    @click="openDialogCancelar(item)">mdi-delete-outline
+                    @click="openDialogCancelar(item)"
+                  >
+                    mdi-delete-outline
                   </v-icon>
                 </td>
               </tr>
@@ -119,13 +134,18 @@
                     <template
                       slot="items"
                       slot-scope="{ item }"
-                      ma-5>
+                      ma-5
+                    >
                       <tr>
                         <td>{{ item.numero }}</td>
                         <td>{{ item.dataVencimento | moment("DD/MM/YYYY") }}</td>
                         <td>{{ formatValorMonetario(item.valorParcela) }}</td>    
-                        <td v-if="!!item.dataPagamento">{{ item.dataPagamento | moment("DD/MM/YYYY") }}</td>
-                        <td v-else>-</td>
+                        <td v-if="!!item.dataPagamento">
+                          {{ item.dataPagamento | moment("DD/MM/YYYY") }}
+                        </td>
+                        <td v-else>
+                          -
+                        </td>
                         <td class="text-xs-center">
                           <core-status-pagamento
                             :status="item.status"
@@ -135,7 +155,8 @@
                           <v-btn
                             v-if="item.status === 'Em Aberto'"
                             color="primary"
-                            @click="openDialogPagar(item)">
+                            @click="openDialogPagar(item)"
+                          >
                             <span class="white--text">Pagar</span>
                           </v-btn>
                         </td>
@@ -150,20 +171,26 @@
       </v-flex>
     </v-layout>
     <template
-      v-if="dialogCancelar">
+      v-if="dialogCancelar"
+    >
       <v-layout
         row
-        justify-center>
+        justify-center
+      >
         <v-dialog
           v-model="dialogCancelar"
           persistent
-          max-width="390">
+          max-width="390"
+        >
           <v-card>
-            <v-card-title class="headline">Cancelar Venda</v-card-title>
+            <v-card-title class="headline">
+              Cancelar Venda
+            </v-card-title>
             <v-card-text>
               <v-layout
                 row
-                wrap>
+                wrap
+              >
                 <v-flex md12>
                   <v-alert
                     :value="true"
@@ -178,37 +205,49 @@
               <v-btn
                 outline
                 style="color: black !important"
-                @click="closeDialogCancelar">Cancelar</v-btn>
-              <v-spacer/>
+                @click="closeDialogCancelar"
+              >
+                Cancelar
+              </v-btn>
+              <v-spacer />
               <v-btn
                 :loading="loadingBtn"
                 color="red"
-                @click="confirmarCancelar">Confirmar</v-btn>
+                @click="confirmarCancelar"
+              >
+                Confirmar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-layout>
     </template>
     <template
-      v-if="dialogPagar">
+      v-if="dialogPagar"
+    >
       <v-layout
         row
-        justify-center>
+        justify-center
+      >
         <v-dialog
           v-model="dialogPagar"
           persistent
-          max-width="400">
+          max-width="400"
+        >
           <v-card>
-            <v-card-title class="headline">Pagar Parcela</v-card-title>
+            <v-card-title class="headline">
+              Pagar Parcela
+            </v-card-title>
             <v-card-text>
               <v-layout
                 row
-                wrap>
+                wrap
+              >
                 <v-flex md12>
                   <v-text-field
+                    v-model.lazy="itemSelecionado.valorParcela"
                     v-formata-moeda="itemSelecionado.valorParcela"
                     v-money="money"
-                    v-model.lazy="itemSelecionado.valorParcela"
                     box
                     readonly
                     type="tel"
@@ -223,13 +262,19 @@
               <v-btn
                 outline
                 style="color: black !important"
-                @click="closeDialogPagar">Cancelar</v-btn>
+                @click="closeDialogPagar"
+              >
+                Cancelar
+              </v-btn>
 
-              <v-spacer/>
+              <v-spacer />
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="confirmarPagar">Confirmar Pagamento</v-btn>
+                @click="confirmarPagar"
+              >
+                Confirmar Pagamento
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

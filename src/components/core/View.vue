@@ -1,12 +1,13 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-content>
     <div id="core-view">
       <!-- Esse é para mostrar os aletas em geral -->
       <div>
         <v-snackbar
+          v-model="$root.alert"
           :color="$root.type"
           :timeout="$root.timeout"
-          v-model="$root.alert"
           top
           right
           dark
@@ -57,7 +58,7 @@
         <router-view />
       </v-fade-transition>
     </div>
-    <core-footer/>
+    <core-footer />
   </v-content>
 </template>
 

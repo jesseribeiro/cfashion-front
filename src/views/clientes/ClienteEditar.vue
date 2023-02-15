@@ -3,33 +3,39 @@
     <core-progress-modal :show="loading" />
     <v-tabs
       v-if="!loading"
+      v-model="tab"
       centered
       color="primary"
       dark
       icons-and-text
-      v-model="tab"
     >
       <v-tabs-slider color="white" />
 
-      <v-tab href="#dados-cliente" key="dados-cliente">
+      <v-tab 
+        key="dados-cliente" 
+        href="#dados-cliente">
         Dados Cliente
         <v-icon>mdi-card-account-details</v-icon>
       </v-tab>
 
-      <v-tab href="#vendas" key="vendas">
+      <v-tab 
+        key="vendas" 
+        href="#vendas">
         Vendas
         <v-icon>mdi-animation</v-icon>
       </v-tab>
 
-      <v-tab href="#pagamentos" key="pagamentos">
+      <v-tab 
+        key="pagamentos" 
+        href="#pagamentos">
         Pagamentos
         <v-icon>mdi-cash-multiple</v-icon>
       </v-tab>
 
       <v-tab-item
+        key="item-dados-cliente"
         value="dados-cliente"
         lazy
-        key="item-dados-cliente"
       >
         <cliente-dados
           :value="form"
@@ -40,18 +46,18 @@
         />
       </v-tab-item>
       <v-tab-item
+        key="item-vendas"
         value="vendas"
         lazy
-        key="item-vendas"
       >
         <cliente-vendas
           :value="form"
         />
       </v-tab-item>
       <v-tab-item
+        key="item-pagamentos"
         value="pagamentos"
         lazy
-        key="item-pagamentos"
       >
         <cliente-pagamentos
           :value="form"
@@ -90,9 +96,6 @@ export default {
       loading: true
     }
   },
-  beforeMount () {
-    this.reload(this.$route.params.id)
-  },
   watch: {
     tab: {
       handler (val) {
@@ -100,6 +103,9 @@ export default {
       },
       deep: true
     }
+  },
+  beforeMount () {
+    this.reload(this.$route.params.id)
   },
   methods: {
     reload (clienteId) {

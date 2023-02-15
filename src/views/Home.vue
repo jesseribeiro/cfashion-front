@@ -1,8 +1,22 @@
 <template>
-  <v-container fluid grid-list-md>
-    <material-card color="primary" flat full-width title="Funcionalidades">
-      <v-layout row wrap>
-        <v-flex md3 lg2>
+  <v-container 
+    fluid 
+    grid-list-md
+  >
+    <material-card 
+      color="primary" 
+      flat 
+      full-width 
+      title="Funcionalidades"
+    >
+      <v-layout 
+        row 
+        wrap
+      >
+        <v-flex 
+          md3 
+          lg2
+        >
           <v-btn
             color="accent"
             icon
@@ -15,7 +29,10 @@
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex md3 lg2>
+        <v-flex 
+          md3 
+          lg2
+        >
           <v-btn
             color="accent"
             icon
@@ -28,7 +45,10 @@
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex md3 lg2>
+        <v-flex 
+          md3 
+          lg2
+        >
           <v-btn
             color="accent"
             icon
@@ -36,14 +56,19 @@
             @click="$router.push('lista-produto')"
           >
             <v-layout
-              column>
+              column
+            >
               <v-icon>mdi-tshirt-crew</v-icon>
               Produtos
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex md3 lg2>
-          <v-btn color="accent" 
+        <v-flex 
+          md3 
+          lg2
+        >
+          <v-btn 
+            color="accent" 
             icon 
             outline 
             @click="$router.push('vender')"
@@ -54,7 +79,10 @@
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex md3 lg2>
+        <v-flex 
+          md3 
+          lg2
+        >
           <v-btn
             color="accent"
             icon
@@ -67,7 +95,10 @@
             </v-layout>
           </v-btn>
         </v-flex>
-        <v-flex md3 lg2>
+        <v-flex 
+          md3 
+          lg2
+        >
           <v-btn
             color="accent"
             icon

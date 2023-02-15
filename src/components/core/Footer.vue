@@ -4,8 +4,8 @@
     absolute
     height="82"
   >
-    <div class="footer-items"/>
-    <v-spacer/>
+    <div class="footer-items" />
+    <v-spacer />
   </v-footer>
 </template>
 

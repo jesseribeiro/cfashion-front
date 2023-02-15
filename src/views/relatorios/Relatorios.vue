@@ -3,12 +3,14 @@
 <template>
   <div class="">
     <div class="containWave">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 1440 320">
         <path
           fill="rgb(0, 99, 175)"
           fill-opacity="1"
           d="M0,224L40,229.3C80,235,160,245,240,250.7C320,256,400,256,480,229.3C560,203,640,149,720,128C800,107,880,117,960,144C1040,171,1120,213,1200,245.3C1280,277,1360,299,1400,309.3L1440,320L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
-        ></path>
+        />
       </svg>
     </div>
     <div style="margin-top: -150px; margin-left: 30px">
@@ -19,15 +21,19 @@
           solo
           clear-icon="mdi-close-circle"
           clearable
-          @click:clear="search = ''"
           placeholder="Buscar por relatório"
           style="width: 70%"
+          @click:clear="search = ''"
         />
       </div>
     </div>
     <div class="mt-1 ml-4 menuList">
-      <div v-for="(rel, i) in GET_RELATORIOS" :key="i">
-        <div class="menu-item" v-if="getLista(rel.lista, rel.code).length > 0">
+      <div 
+        v-for="(rel, i) in GET_RELATORIOS" 
+        :key="i">
+        <div 
+          v-if="getLista(rel.lista, rel.code).length > 0" 
+          class="menu-item">
           <v-icon class="menu-icone">{{ rel.icon }}</v-icon>
           <span class="menu-titulo">{{ rel.titulo }}</span>
         </div>
@@ -37,7 +43,9 @@
             :key="i"
             class="submenu-item"
           >
-            <a class="submenu-link" @click="openRel(item)">{{ item.text }}</a>
+            <a 
+              class="submenu-link" 
+              @click="openRel(item)">{{ item.text }}</a>
           </div>
         </div>
       </div>
