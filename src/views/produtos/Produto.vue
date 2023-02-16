@@ -1,10 +1,13 @@
+<!-- eslint-disable vue/no-lone-template -->
 <template>
   <v-container 
     fluid 
-    grid-list-md>
+    grid-list-md
+  >
     <v-layout 
       row 
-      wrap>
+      wrap
+    >
       <v-flex md12>
         <v-form
           v-model="valid"
@@ -13,19 +16,23 @@
         >
           <v-card class="Card">
             <v-card-title class="cardTitle">
-              <h3 class="headline mb-0">Identificação</h3>
+              <h3 class="headline mb-0">
+                Identificação
+              </h3>
             </v-card-title>
             <v-card-text>
               <v-layout 
                 row 
-                wrap>
+                wrap
+              >
                 <v-flex 
                   xs12 
                   sm6 
-                  md4>
+                  md4
+                >
                   <v-text-field
-                    v-validate="'required'"
                     v-model="form.nome"
+                    v-validate="'required'"
                     :error-messages="errors.collect('Nome')"
                     label="Nome"
                     data-vv-name="Nome"
@@ -34,8 +41,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-validate="'required'"
                     v-model="form.codigo"
+                    v-validate="'required'"
                     :error-messages="errors.collect('Código')"
                     name="codigo"
                     data-vv-name="Codigo"
@@ -51,20 +58,24 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
+                    v-model.lazy="form.valorCompra"
+                    v-money="money"
                     v-validate="'required'"
                     v-formata-moeda="form.valorCompra"
-                    v-model="form.valorCompra"
                     :error-messages="errors.collect('Valor Compra')"
                     data-vv-name="Valor Compra"
                     suffix="R$"
                     label="Valor Compra"
                     reverse
+                    clearable  
+                    :disabled="disabled"                 
+                    type="tel"
                   />
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-validate="'required'"
                     v-model="form.tamanho"
+                    v-validate="'required'"
                     :error-messages="errors.collect('Tamanho')"
                     :items="tamanhos"
                     label="Tamanho"
@@ -76,8 +87,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-validate="'required'"
                     v-model="form.categoria"
+                    v-validate="'required'"
                     :error-messages="errors.collect('Categoria')"
                     :items="categorias"
                     label="Categoria"
@@ -89,8 +100,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-validate="'required'"
                     v-model="form.qtd"
+                    v-validate="'required'"
                     :disabled="disabled"
                     :error-messages="errors.collect('Qtd')"
                     :rules="[rules.required]"
@@ -106,8 +117,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-validate="'required'"
                     v-model="form.marcaId"
+                    v-validate="'required'"
                     :error-messages="errors.collect('Marca')"
                     :items="marcas"
                     label="Marca"
@@ -150,6 +161,7 @@
 
 <script>
 import { TiposBusiness, ProdutoBusiness, LojaBusiness } from "../../business";
+import { MONEY } from '../../constants'
 import numberUtils from '../../utils/numberUtils'
 
 export default {
@@ -158,6 +170,7 @@ export default {
   },
   data() {
     return {
+      money: MONEY,
       editando: false,
       form: {
         nome: null,

@@ -152,6 +152,18 @@ export default {
         ],
       },
       {
+        to: "/movimentacao",
+        icon: "mdi-code-tags-check",
+        text: "Movimentações",
+        roles: [
+          "ADMIN",
+          "SUPERVISOR",
+          "NEGOCIADOR",
+          "PROPRIETARIO",
+          "PROPRIETARIO_RELATORIO",
+        ],
+      },
+      {
         to: "/relatorios",
         icon: "mdi-file-document",
         text: "Relatórios",

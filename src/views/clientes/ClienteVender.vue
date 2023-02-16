@@ -265,6 +265,7 @@ import {
   TiposBusiness,
   ProdutoBusiness,
 } from "../../business";
+import { MONEY } from '../../constants'
 import DateUtils from "../../utils/dateUtils";
 import numberUtils from "../../utils/numberUtils";
 
@@ -292,11 +293,7 @@ export default {
   },
   data() {
     return {
-      money: {
-        decimal: ",",
-        thousands: ".",
-        precision: 2,
-      },
+      money: MONEY,
       rules: {
         required: (value) => !!value || "Defina este campo",
         maiorQueZero: (value) =>

@@ -11,7 +11,7 @@
       <v-flex md12>
         <material-card
           color="primary"
-          title="Pesquisar Produto"
+          title="Adicionar Movimentação"
         >
           <v-card class="elevation-0">
             <v-card-text>
@@ -20,45 +20,48 @@
                   row
                   wrap
                 >
+                  <v-flex md8>
+                    <v-text-field
+                      v-model="filtros.descricao"
+                      v-validate="'required'"
+                      :error-messages="errors.collect('Descrição')"
+                      label="Descrição"
+                      data-vv-name="Descrição"
+                      required
+                    />
+                  </v-flex>
                   <v-flex md4>
                     <v-text-field
-                      v-model="filtros.id"
-                      label="Código"
+                      v-model.lazy="filtros.valor"
+                      v-formata-moeda="filtros.valor"
+                      v-money="money"
+                      v-validate="'required'"
+                      :error-messages="errors.collect('Valor')"
+                      data-vv-name="Valor"
+                      suffix="R$"
+                      reverse
+                      label="Valor"
                       clearable
                     />
                   </v-flex>
                   <v-flex md4>
                     <v-autocomplete
-                      v-model="filtros.categoria"
-                      :items="categorias"
-                      :error-messages="errors.collect('Categoria')"
-                      label="Categoria"
-                      item-value="id"
+                      v-model="filtros.tipo"
+                      v-validate="'required'"
+                      :items="tipos"
+                      :error-messages="errors.collect('Tipo')"
+                      label="Tipo"
+                      item-value="descricao"
                       item-text="descricao"
                       clearable
                     />
                   </v-flex>
                   <v-flex md4>
-                    <v-autocomplete
-                      v-model="filtros.marcaId"
-                      :error-messages="errors.collect('Marca')"
-                      :items="marcas"
-                      label="Marca"
-                      data-vv-name="Marca"
-                      name="Marca"
-                      item-text="nomeFantasia"
-                      item-value="id"
-                      clearable
-                    />
-                  </v-flex>
-                  <v-flex md4>
-                    <v-autocomplete
-                      v-model="filtros.tamanho"
-                      :items="tamanhos"
-                      :error-messages="errors.collect('Tamanho')"
-                      label="Tamanho"
-                      item-value="id"
-                      item-text="descricao"
+                    <v-text-field
+                      v-model="filtros.dataLancamento"
+                      v-validate="'required'"
+                      label="Data"
+                      type="date"
                       clearable
                     />
                   </v-flex>
@@ -70,9 +73,9 @@
               <v-btn
                 :loading="loadingBtn"
                 color="primary"
-                @click="pesquisar"
+                @click="adicionar"
               >
-                Pesquisar
+                Adicionar
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -84,22 +87,7 @@
             flat
             color="white"
           >
-            <v-toolbar-title>Produtos</v-toolbar-title>
-            <v-divider
-              class="mx-2"
-              inset
-              vertical
-            />
-            <v-spacer />
-            <v-btn
-              small
-              fab
-              color="primary"
-            >
-              <v-icon @click="newItem()">
-                mdi-plus
-              </v-icon>
-            </v-btn>
+            <v-toolbar-title>Movimentações</v-toolbar-title>
           </v-toolbar>
           <v-progress-linear
             :active="loading"
@@ -129,22 +117,11 @@
               slot-scope="{ item }"
               ma-5
             >
-              <td>{{ item.codigo }}</td>
-              <td>{{ item.nome }}</td>
-              <td>{{ item.marca }}</td>
-              <td>{{ item.categoria }}</td>
-              <td>{{ item.tamanho }}</td>
-              <td>{{ item.qtd }}</td>
-              <td>{{ formatValorMonetario(item.valorCompra) }}</td>
+              <td>{{ item.descricao }}</td>
+              <td>{{ item.dataLancamento | moment("DD/MM/YYYY") }}</td>
+              <td>{{ item.tipo }}</td>
+              <td>{{ formatValorMonetario(item.valor) }}</td>
               <td class="justify-end layout ma-2">
-                <v-icon
-                  class="mr-2"
-                  color="blue"
-                  title="Editar dados do produto"
-                  @click="editItem(item)"
-                >
-                  mdi-pencil
-                </v-icon>
                 <v-icon
                   color="red"
                   title="Excluir Produto"
@@ -173,7 +150,7 @@
                 Excluir Produto
               </v-card-title>
 
-              <v-card-text>Confirma a exclusão da Produto <span class="title">{{ item.nome }}</span>? Essa operação não poderá ser desfeita.</v-card-text>
+              <v-card-text>Confirma a exclusão da Produto <span class="title">{{ item.tipo }}</span>? Essa operação não poderá ser desfeita.</v-card-text>
 
               <v-card-actions>
                 <v-spacer />
@@ -202,70 +179,60 @@
 </template>
 
 <script>
-import { ProdutoBusiness, TiposBusiness, LojaBusiness } from '../../business'
-import { ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
+import { MovimentacaoBusiness } from '../../business'
+import { MONEY, ROWS_PER_PAGE, ROWS_PER_PAGE_ITEMS } from '../../constants'
+import DateUtils from '../../utils/dateUtils'
 import numberUtils from '../../utils/numberUtils'
 
 export default {
   metaInfo: {
-    titleTemplate: '%s - Produtos'
+    titleTemplate: '%s - Movimentações'
   },
   data () {
     return {
+      money: MONEY,
       dialog: false,
+      dialogAdd: false,
       item: null,
       loading: false,
       totalItems: 0,
       pagination: {
         rowsPerPage: ROWS_PER_PAGE,
 	      rowsPerPageItems: ROWS_PER_PAGE_ITEMS,
-        sortBy: 'id'
+        sortBy: 'dataLancamento'
       },
       filtros: {
         id: null,
-        categoria: null,
-        tamanho: null,
-        marcaId: null,
+        descricao: null,
+        tipo: null,
+        valor: null,
+        dataLancamento: DateUtils.currentDate(),
       },
       produtos: [],
-      marcas: [],
-      tamanhos: [],
-      categorias: [],
+      tipos: [
+        { id: 1, descricao: 'ENTRADA' },
+        { id: 2, descricao: 'SAIDA' }
+      ],
       headers: [
         {
-          text: 'Código',
-          value: 'codigo',
+          text: 'Nota',
+          value: 'descricao',
           sortable: false
         },
         {
-          text: 'Nome',
-          value: 'nome',
+          text: 'Data',
+          value: 'dataLancamento',
           sortable: false
         },
         {
-          text: 'Marca',
-          value: 'marca',
+          text: 'Tipo',
+          value: 'tipo',
           sortable: false
         },
         {
-          text: 'Categoria',
-          value: 'categoria',
-          sortable: false
-        },
-        {
-          text: 'Tamanho',
-          value: 'tamanho',
-          sortable: false
-        },
-        {
-          sortable: false,
-          text: 'Qtd',
-          value: 'qtd'
-        },
-        {
-          sortable: false,
           text: 'Valor',
-          value: 'valorCompra'
+          value: 'valor',
+          sortable: false
         },
         {
           sortable: false,
@@ -287,23 +254,6 @@ export default {
   },
   methods: {
     reload () {
-    TiposBusiness.getAllTamanho()
-      .then(response => {
-        this.tamanhos = response.data
-      })
-    TiposBusiness.getAllCategoria()
-      .then(response => {
-        this.categorias = response.data
-      })
-    LojaBusiness.findAll().then((response) => {
-        this.marcas = response.data;
-      });
-    },
-    newItem () {
-      this.$router.push('cad-produto')
-    },
-    editItem (item) {
-      this.$router.push(`cad-produto/${item.id}`)
     },
     openDialogDelete (item) {
       this.item = item
@@ -314,10 +264,18 @@ export default {
       this.dialog = false
     },
     deleteItem () {
-      ProdutoBusiness.delete(this.item.id)
+      MovimentacaoBusiness.delete(this.item.id)
         .then(response => {
           this.$root.showSucesso(response.data)
           this.closeDialogDelete()
+          this.paginar()
+        })
+        .catch(error => this.$root.showErro(error.data))
+    },
+    adicionar () {
+      MovimentacaoBusiness.create(this.filtros)
+        .then(response => {
+          this.$root.showSucesso(response.data)
           this.paginar()
         })
         .catch(error => this.$root.showErro(error.data))
@@ -328,7 +286,11 @@ export default {
     },
     paginar () {
       this.loading = true
-      ProdutoBusiness.pagination(this.pagination.rowsPerPage, this.pagination.page - 1, this.pagination.sortBy || 'id', this.filtros)
+      MovimentacaoBusiness.pagination(
+        this.pagination.rowsPerPage, 
+        this.pagination.page - 1, 
+        this.pagination.sortBy || 'dataLancamento', 
+        this.filtros)
         .then(response => {
           this.produtos = response.data.content
           this.totalItems = response.data.totalElements
