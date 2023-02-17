@@ -17,4 +17,20 @@ export default {
       data: filtros
     })
   },
+  geraListaMovimentacao (filtros) {
+    return axios({
+      url: `/v1/relatorio/lista-movimentacao`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
+  geraListaVendas (filtros) {
+    return axios({
+      url: `/v1/relatorio/lista-vendas`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
 }

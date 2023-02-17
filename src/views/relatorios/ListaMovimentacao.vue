@@ -1,39 +1,24 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
-    <span class="title">Recuperação de Atrasados (Carnê - V2)</span>
+    grid-list-md
+  >
+    <span class="title">Lista de Movimentações</span>
     <v-form
       ref="form2"
-      @submit.prevent="validateBeforeSubmit">
+      @submit.prevent="validateBeforeSubmit"
+    >
       <v-layout
         row
-        wrap>
+        wrap
+      >
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
               <v-layout
                 row
-                wrap>
-                <v-flex md12>
-                  <core-filtro-rede-empresa-loja
-                    v-model="filtros"
-                    :show-todas="true"
-                    :obrigatorio="true"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-autocomplete
-                    v-validate="'required'"
-                    v-model="filtros.tpLanc"
-                    :items="tiposLanc"
-                    :error-messages="errors.collect('Cliente acordos')"
-                    data-vv-name="Cliente acordos"
-                    label="Tipo"
-                    item-value="id"
-                    item-text="descricao"
-                  />
-                </v-flex>
+                wrap
+              >
                 <v-flex md4>
                   <v-text-field
                     v-model="filtros.dataInicio"
@@ -52,23 +37,22 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
+                    v-model="filtros.tipo"
+                    :items="tipos"
+                    :error-messages="errors.collect('Tipo')"
+                    label="Tipo"
+                    item-value="descricao"
+                    item-text="descricao"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
                     v-model="filtros.tipoRel"
                     :items="tiposRel"
                     label="Relatório em"
                     item-value="id"
                     item-text="descricao"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.totalizarCliente"
-                    label="Totalizar por mês"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.inadimplencia"
-                    label="Inadimplência por safra"
                   />
                 </v-flex>
               </v-layout>
@@ -80,7 +64,10 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary">Gerar</v-btn>
+              color="primary"
+            >
+              Gerar
+            </v-btn>
           </v-layout>
         </v-flex>
         <core-progress-modal :show="loading" />
@@ -92,7 +79,8 @@
           width="100%"
           height="1000px"
           name="plugin"
-          type="application/pdf">
+          type="application/pdf"
+        >
       </v-layout>
     </v-form>
   </v-container>
@@ -100,7 +88,6 @@
 
 <script>
 import { TiposBusiness, RelatorioBusiness } from '../../business'
-import { TODAS_ID } from '../../constants'
 import reportUtils from '../../utils/reportUtils'
 
 export default {
@@ -110,30 +97,22 @@ export default {
   data () {
     return {
       filtros: {
-        status: 2,
-        redeId: null,
-        empresaId: null,
-        lojaId: null,
-        tpLanc: '0',
         tipoRel: 'PDF',
         dataInicio: null,
         dataFim: null,
-        inadimplencia: false,
-        totalizarCliente: false
+        tipo: null
       },
       filePDF: null,
       tiposRel: [],
-      tiposLanc: [
-        { id: '1', descricao: 'Apenas em acordo' },
-        { id: '2', descricao: 'Exceto em acordo' },
-        { id: '0', descricao: 'Todos' }
+      tipos: [
+        { id: 1, descricao: 'ENTRADA' },
+        { id: 2, descricao: 'SAIDA' }
       ],
       loadingBtn: false,
       loading: false
     }
   },
   beforeMount () {
-    console.log('Chamando beforeMount')
     TiposBusiness.getAllTiposRelatorio()
       .then(response => {
         this.tiposRel = response.data
@@ -143,21 +122,9 @@ export default {
     validateBeforeSubmit () {
       this.$validator.validate().then(result => {
         if (result) {
-          if (!this.filtros.redeId && this.filtros.redeId === TODAS_ID) {
-            this.$root.showAlerta('Selecione uma rede!')
-            return
-          }
-          if (!this.filtros.empresaId && this.filtros.empresaId === TODAS_ID) {
-            this.$root.showAlerta('Selecione uma empresa!')
-            return
-          }
-          if (!this.filtros.lojaId) {
-            this.$root.showAlerta('Selecione uma loja!')
-            return
-          }
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraRecuperaAtrasados(this.filtros)
+          RelatorioBusiness.geraListaMovimentacao(this.filtros)
             .then(response => {
               if (this.filtros.tipoRel === 'PDF') {
                 this.filePDF = window.URL.createObjectURL(response.data)
@@ -166,6 +133,7 @@ export default {
               }
             })
             .catch(erro => {
+              console.log(erro);
               if (erro && erro.response.data) {
                 this.$root.showAlerta(erro.response.data.message)
               } else {

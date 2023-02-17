@@ -1,11 +1,14 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
   <v-container 
     fluid 
-    grid-list-md>
+    grid-list-md
+  >
     <span class="title">Relatorios</span>
     <v-layout 
       row 
-      wrap>
+      wrap
+    >
       <v-flex
         v-for="(rel, i) in relatoriosPermitidas(relatorios)"
         :key="i"
@@ -29,7 +32,10 @@
                   <v-btn 
                     flat 
                     small 
-                    color="primary">{{ item.text }}</v-btn>
+                    color="primary"
+                  >
+                    {{ item.text }}
+                  </v-btn>
                 </v-list-tile-content>
               </v-list-tile>
             </v-list>

@@ -1,23 +1,28 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <v-container 
     fluid 
-    grid-list-md>
+    grid-list-md
+  >
     <!-- eslint-disable-next-line vue/no-mutating-props -->
     <div class="title pb-3">
       {{ titulo }}
     </div>
     <v-form 
       ref="form2" 
-      @submit.prevent="emitSubmit()">
+      @submit.prevent="emitSubmit()"
+    >
       <v-layout 
         row 
-        wrap>
+        wrap
+      >
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
               <v-layout 
                 row 
-                wrap>
+                wrap
+              >
                 <v-flex md12>
                   <core-filtro-rede-empresa-loja
                     v-model="filtros"
@@ -35,7 +40,8 @@
             <v-btn 
               :loading="loadingBtn" 
               type="submit" 
-              color="primary">
+              color="primary"
+            >
               Gerar
             </v-btn>
           </v-layout>

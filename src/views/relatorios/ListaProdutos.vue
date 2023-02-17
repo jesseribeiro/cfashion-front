@@ -156,15 +156,11 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          console.log("ta aqui");
           RelatorioBusiness.geraListaProdutos(this.filtros)
             .then(response => {
-              console.log("ta aqui 2");
               if (this.filtros.tipoRel === 'PDF') {
-                console.log("ta aqui 2");
                 this.filePDF = window.URL.createObjectURL(response.data)
               } else {
-                console.log("ta aqui 2");
                 reportUtils.downloadExcel(response)
               }
             })

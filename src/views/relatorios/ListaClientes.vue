@@ -116,7 +116,6 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          console.log("ta aqui");
           RelatorioBusiness.geraListaClientes(this.filtros)
             .then(response => {           
               if (this.filtros.tipoRel === 'PDF') {            

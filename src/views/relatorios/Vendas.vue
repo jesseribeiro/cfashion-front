@@ -1,65 +1,60 @@
 <template>
   <v-container
     fluid
-    grid-list-md>
-    <span class="title">Repasse Pagto Efetuado</span>
+    grid-list-md
+  >
+    <span class="title">Lista de Vendas</span>
     <v-form
       ref="form2"
-      @submit.prevent="validateBeforeSubmit">
+      @submit.prevent="validateBeforeSubmit"
+    >
       <v-layout
         row
-        wrap>
+        wrap
+      >
         <v-flex md12>
           <v-card class="elevation-0">
             <v-card-text>
               <v-layout
                 row
-                wrap>
-                <v-flex md12>
-                  <core-filtro-rede-empresa-loja
-                    v-model="filtros"
-                    :show-todas="true"
-                    :obrigatorio="false"
-                  />
-                </v-flex>
+                wrap
+              >
                 <v-flex md4>
                   <v-text-field
-                    v-validate="'required'"
                     v-model="filtros.dataInicio"
-                    :error-messages="errors.collect('Pagamento de')"
-                    data-vv-name="Pagamento de"
-                    label="Pagamento de"
+                    label="Data Inicial"
                     type="date"
                     clearable
                   />
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-validate="'required'"
                     v-model="filtros.dataFim"
-                    :error-messages="errors.collect('Pagamento até')"
-                    data-vv-name="Pagamento até"
-                    label="Pagamento até"
+                    label="Data Final"
                     type="date"
                     clearable
                   />
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="filtros.tpAnalise"
-                    :items="tiposAnalise"
-                    label="Tipo"
+                    v-model="filtros.categoria"
+                    :items="categorias"
+                    label="Categoria"
+                    name="categoria"
+                    data-vv-name="Categoria"
                     item-value="id"
                     item-text="descricao"
+                    clearable
                   />
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="filtros.tipoLancamentoId"
-                    :items="tiposLancamento"
-                    label="Tipo Lançamento Extra"
+                    v-model="filtros.tipo"
+                    :items="tipos"
                     item-value="id"
                     item-text="descricao"
+                    label="Tipo de Pagamento"
+                    clearable
                   />
                 </v-flex>
                 <v-flex md4>
@@ -71,24 +66,6 @@
                     item-text="descricao"
                   />
                 </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.listarContas"
-                    label="Listar contas bancárias"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.listarVencimentos"
-                    label="Listar vencimentos"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.listarLancamentos"
-                    label="Listar lançamentos"
-                  />
-                </v-flex>
               </v-layout>
             </v-card-text>
           </v-card>
@@ -98,10 +75,12 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary">Gerar</v-btn>
+              color="primary"
+            >
+              Gerar
+            </v-btn>
           </v-layout>
         </v-flex>
-
         <core-progress-modal :show="loading" />
 
         <embed
@@ -111,14 +90,16 @@
           width="100%"
           height="1000px"
           name="plugin"
-          type="application/pdf">
+          type="application/pdf"
+        >
       </v-layout>
     </v-form>
   </v-container>
 </template>
 
 <script>
-import { TiposBusiness, RelatorioBusiness } from '../../business'
+import { TiposBusiness, RelatorioBusiness, LojaBusiness } from '../../business'
+import { TODAS_ID } from '../../constants'
 import reportUtils from '../../utils/reportUtils'
 
 export default {
@@ -128,56 +109,35 @@ export default {
   data () {
     return {
       filtros: {
-        redeId: null,
-        empresaId: null,
-        lojaId: null,
-        tipo: null,
+        categoria: "TODAS",
+        tipo: "TODAS",
         tipoRel: 'PDF',
-        vencimentoAte: null,
-        tpRepasse: null,
-        tpAnalise: 'A',
-        tipoLancamentoId: null,
-        listarContas: false,
-        listarVencimentos: false,
-        listarLancamentos: false,
         dataInicio: null,
-        dataFim: null
+        dataFim: null,
       },
-      tiposRepasse: [],
-      tiposLancamento: [],
-      tiposAnalise: [
-        { id: 'S', descricao: 'Sintético' },
-        { id: 'A', descricao: 'Analítico' }
-      ],
-      ordenacao: [
-        { id: 'razaoSocial', descricao: 'Razão Social' },
-        { id: 'nomeFantasia', descricao: 'Nome Fantasia' },
-        { id: 'banco', descricao: 'Banco' }
-      ],
       filePDF: null,
-      tiposRel: [],
       tipos: [],
+      categorias: [],
+      tiposRel: [],
       loadingBtn: false,
       loading: false
     }
   },
   beforeMount () {
-    this.tiposLancamento.push({ id: null, descricao: 'Todos Lançamentos' })
     TiposBusiness.getAllTiposRelatorio()
       .then(response => {
         this.tiposRel = response.data
       })
-    TiposBusiness.listRepasse()
-      .then(response => {
-        this.tiposRepasse = response.data
-      })
-    TiposBusiness.tiposLancamentoRepasse()
-      .then(response => {
-        this.tiposLancamento = this.tiposLancamento.concat(response.data)
-      })
-    if (this.$root.isProprietario()) {
-      this.filtros.empresaId = this.$root.empresaId()
-    }
+    TiposBusiness.getAllTipoPagamento()
+      .then((response) => {
+        this.tipos = response.data;
+        this.tipos.push({ id: "TODAS", descricao: 'Todas' })
+    });
+    TiposBusiness.getAllCategoria()
+      .then((response) => {
+        this.categorias = response.data;
+        this.categorias.push({ id: "TODAS", descricao: 'Todas' })
+    });
   },
   methods: {
     validateBeforeSubmit () {
@@ -185,15 +145,16 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraRelatorioPagamentoEfetuado(this.filtros)
-            .then(response => {
-              if (this.filtros.tipoRel === 'PDF') {
+          RelatorioBusiness.geraListaVendas(this.filtros)
+            .then(response => {           
+              if (this.filtros.tipoRel === 'PDF') {            
                 this.filePDF = window.URL.createObjectURL(response.data)
               } else {
                 reportUtils.downloadExcel(response)
               }
             })
             .catch(erro => {
+              console.log(erro);
               if (erro && erro.response.data) {
                 this.$root.showAlerta(erro.response.data.message)
               } else {
