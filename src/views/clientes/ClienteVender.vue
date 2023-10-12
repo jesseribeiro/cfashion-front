@@ -104,7 +104,6 @@
           <v-text-field
             v-model.lazy="dadosCalcular.freteReceber"
             v-formata-moeda="dadosCalcular.freteReceber"
-            v-validate="'required'"
             v-money="money"
             :error-messages="errors.collect('Frete Receber')"
             data-vv-name="Frete Receber"
@@ -119,7 +118,6 @@
           <v-text-field
             v-model.lazy="dadosCalcular.fretePagar"
             v-formata-moeda="dadosCalcular.fretePagar"
-            v-validate="'required'"
             v-money="money"
             :error-messages="errors.collect('Frete Pagar')"
             data-vv-name="Frete Pagar"

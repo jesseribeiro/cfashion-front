@@ -37,23 +37,59 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
+                    v-model="filtros.categoria"
+                    :items="categorias"
+                    label="Categoria"
+                    name="categoria"
+                    data-vv-name="Categoria"
+                    item-value="id"
+                    item-text="descricao"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-text-field
+                    v-model="filtros.nomeCliente"
+                    label="Nome do Cliente"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-text-field
+                    v-model.trim="filtros.cpf"
+                    v-mask="'###.###.###-##'"
+                    label="CPF"
+                    type="text"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.tipo"
+                    :items="tipos"
+                    item-value="id"
+                    item-text="descricao"
+                    label="Tipo de Pagamento"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.status"
+                    :items="situacoes"
+                    item-value="id"
+                    item-text="descricao"
+                    label="Status"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
                     v-model="filtros.tipoRel"
                     :items="tiposRel"
                     label="Relatório em"
                     item-value="id"
                     item-text="descricao"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.temEstoque"
-                    label="Apenas clientes com vendas"
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-checkbox
-                    v-model="filtros.ordenarClientes"
-                    label="Ordenar clientes por vendas"
                   />
                 </v-flex>
               </v-layout>
@@ -101,11 +137,17 @@ export default {
         tipoRel: 'PDF',
         dataInicio: null,
         dataFim: null,
-        temEstoque: false,
-        ordenarClientes: false
+        categoria: "TODAS",
+        tipo: "TODAS",
+        cpf: null,
+        nomeCliente: null,
+        status: "TODAS"
       },
       filePDF: null,
       tiposRel: [],
+      tipos: [],
+      categorias: [],
+      situacoes: [],
       loadingBtn: false,
       loading: false
     }
@@ -114,7 +156,22 @@ export default {
     TiposBusiness.getAllTiposRelatorio()
       .then(response => {
         this.tiposRel = response.data
-      })
+    })
+    TiposBusiness.getAllTipoPagamento()
+      .then((response) => {
+        this.tipos = response.data;
+        this.tipos.push({ id: "TODAS", descricao: 'Todas' })
+    });
+    TiposBusiness.getAllCategoria()
+      .then((response) => {
+        this.categorias = response.data;
+        this.categorias.push({ id: "TODAS", descricao: 'Todas' })
+    });
+    TiposBusiness.getAllStatus()
+      .then((response) => {
+        this.situacoes = response.data;
+        this.situacoes.push({ id: "TODAS", descricao: 'Todas' })
+    });    
   },
   methods: {
     validateBeforeSubmit () {
@@ -122,7 +179,7 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraListaClientes(this.filtros)
+          RelatorioBusiness.geraComprasClientes(this.filtros)
             .then(response => {           
               if (this.filtros.tipoRel === 'PDF') {            
                 this.filePDF = window.URL.createObjectURL(response.data)

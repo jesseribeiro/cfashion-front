@@ -33,4 +33,12 @@ export default {
       data: filtros
     })
   },
+  geraComprasClientes (filtros) {
+    return axios({
+      url: `/v1/relatorio/compras-clientes`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
 }
