@@ -3,7 +3,7 @@
     fluid
     grid-list-md
   >
-    <span class="title">Compras por Clientes</span>
+    <span class="title">Compras por Lojas</span>
     <v-form
       ref="form2"
       @submit.prevent="validateBeforeSubmit"
@@ -48,22 +48,6 @@
                   />
                 </v-flex>
                 <v-flex md4>
-                  <v-text-field
-                    v-model="filtros.nomeCliente"
-                    label="Nome do Cliente"
-                    clearable
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-text-field
-                    v-model.trim="filtros.cpf"
-                    v-mask="'###.###.###-##'"
-                    label="CPF"
-                    type="text"
-                    clearable
-                  />
-                </v-flex>
-                <v-flex md4>
                   <v-autocomplete
                     v-model="filtros.tipo"
                     :items="tipos"
@@ -80,6 +64,16 @@
                     item-value="id"
                     item-text="descricao"
                     label="Status"
+                    clearable
+                  />
+                </v-flex>
+                <v-flex md4>
+                  <v-autocomplete
+                    v-model="filtros.lojaId"
+                    :items="marcas"
+                    label="Marca"
+                    item-text="nomeFantasia"
+                    item-value="id"
                     clearable
                   />
                 </v-flex>
@@ -139,15 +133,15 @@ export default {
         dataFim: null,
         categoria: "TODAS",
         tipo: "TODAS",
-        cpf: null,
-        nomeCliente: null,
-        status: "TODAS"
+        status: "TODAS",
+        lojaId: -1
       },
       filePDF: null,
       tiposRel: [],
       tipos: [],
       categorias: [],
       situacoes: [],
+      marcas: [],
       loadingBtn: false,
       loading: false
     }
@@ -171,6 +165,11 @@ export default {
       .then((response) => {
         this.situacoes = response.data;
         this.situacoes.push({ id: "TODAS", descricao: 'Todas' })
+    });
+    LojaBusiness.findAll()
+      .then((response) => {
+        this.marcas = response.data;
+        this.marcas.push({ id: -1, nomeFantasia: 'Todas' })
     });    
   },
   methods: {
@@ -179,7 +178,7 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraComprasClientes(this.filtros)
+          RelatorioBusiness.geraComprasLojas(this.filtros)
             .then(response => {           
               if (this.filtros.tipoRel === 'PDF') {            
                 this.filePDF = window.URL.createObjectURL(response.data)

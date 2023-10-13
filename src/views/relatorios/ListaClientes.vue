@@ -3,7 +3,7 @@
     fluid
     grid-list-md
   >
-    <span class="title">Lista de Produtos</span>
+    <span class="title">Lista de Clientes</span>
     <v-form
       ref="form2"
       @submit.prevent="validateBeforeSubmit"

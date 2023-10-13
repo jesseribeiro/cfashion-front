@@ -118,11 +118,16 @@ export default [
   {
     path: '/lista-vendas',
     name: 'Relatório - Lista de Vendas',
-    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/Vendas.vue')
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ListaVendas.vue')
   },
   {
     path: '/compras-clientes',
     name: 'Relatório - Lista de Compras por Clientes',
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ComprasClientes.vue')
+  },
+  {
+    path: '/compras-lojas',
+    name: 'Relatório - Lista de Compras por Lojas',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ComprasLojas.vue')
   },
 ]

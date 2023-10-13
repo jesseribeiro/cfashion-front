@@ -41,4 +41,12 @@ export default {
       data: filtros
     })
   },
+  geraComprasLojas (filtros) {
+    return axios({
+      url: `/v1/relatorio/compras-lojas`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
 }
