@@ -3,7 +3,7 @@
     fluid
     grid-list-md
   >
-    <span class="title">Compras por Clientes</span>
+    <span class="title">Compras por Origem</span>
     <v-form
       ref="form2"
       @submit.prevent="validateBeforeSubmit"
@@ -44,22 +44,6 @@
                     data-vv-name="Categoria"
                     item-value="id"
                     item-text="descricao"
-                    clearable
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-text-field
-                    v-model="filtros.nomeCliente"
-                    label="Nome do Cliente"
-                    clearable
-                  />
-                </v-flex>
-                <v-flex md4>
-                  <v-text-field
-                    v-model.trim="filtros.cpf"
-                    v-mask="'###.###.###-##'"
-                    label="CPF"
-                    type="text"
                     clearable
                   />
                 </v-flex>
@@ -124,7 +108,7 @@
 </template>
 
 <script>
-import { TiposBusiness, RelatorioBusiness } from '../../business'
+import { TiposBusiness, RelatorioBusiness, LojaBusiness } from '../../business'
 import reportUtils from '../../utils/reportUtils'
 
 export default {
@@ -139,8 +123,6 @@ export default {
         dataFim: null,
         categoria: "TODAS",
         tipo: "TODAS",
-        cpf: null,
-        nomeCliente: null,
         status: "TODAS"
       },
       filePDF: null,
@@ -171,7 +153,7 @@ export default {
       .then((response) => {
         this.situacoes = response.data;
         this.situacoes.push({ id: "TODAS", descricao: 'Todas' })
-    });    
+    });
   },
   methods: {
     validateBeforeSubmit () {
@@ -179,7 +161,7 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraComprasClientes(this.filtros)
+          RelatorioBusiness.geraComprasOrigem(this.filtros)
             .then(response => {           
               if (this.filtros.tipoRel === 'PDF') {            
                 this.filePDF = window.URL.createObjectURL(response.data)

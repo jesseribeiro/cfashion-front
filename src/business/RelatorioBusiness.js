@@ -49,4 +49,20 @@ export default {
       data: filtros
     })
   },
+  geraComprasOrigem (filtros) {
+    return axios({
+      url: `/v1/relatorio/compras-origem`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
+  geraParcelasClientes (filtros) {
+    return axios({
+      url: `/v1/relatorio/parcelas-clientes`,
+      method: 'POST',
+      responseType: 'blob',
+      data: filtros
+    })
+  },
 }

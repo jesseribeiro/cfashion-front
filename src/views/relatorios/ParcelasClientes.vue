@@ -3,7 +3,7 @@
     fluid
     grid-list-md
   >
-    <span class="title">Compras por Clientes</span>
+    <span class="title">Parcelas por Clientes</span>
     <v-form
       ref="form2"
       @submit.prevent="validateBeforeSubmit"
@@ -179,7 +179,7 @@ export default {
         if (result) {
           this.loading = true
           this.loadingBtn = true
-          RelatorioBusiness.geraComprasClientes(this.filtros)
+          RelatorioBusiness.geraParcelasClientes(this.filtros)
             .then(response => {           
               if (this.filtros.tipoRel === 'PDF') {            
                 this.filePDF = window.URL.createObjectURL(response.data)

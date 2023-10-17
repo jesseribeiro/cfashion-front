@@ -116,6 +116,19 @@ export default [
                 "CREDIARISTA",
               ],
             },
+            {
+              to: "/parcelas-clientes",
+              text: "Parcelas por Clientes",
+              roles: [
+                "ADMIN",
+                "SUPERVISOR",
+                "COMERCIAL",
+                "NEGOCIADOR",
+                "PROPRIETARIO",
+                "PROPRIETARIO_RELATORIO",
+                "CREDIARISTA",
+              ],
+            },
           ]
         },
       ];

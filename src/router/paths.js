@@ -130,4 +130,14 @@ export default [
     name: 'Relatório - Lista de Compras por Lojas',
     component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ComprasLojas.vue')
   },
+  {
+    path: '/compras-origem',
+    name: 'Relatório - Lista de Compras por Origem',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ComprasOrigem.vue')
+  },
+  {
+    path: '/parcelas-clientes',
+    name: 'Relatório - Lista de Parcelas por Clientes',
+    component: () => import(/* webpackNameChuck: "nome-chuck" */'../views/relatorios/ParcelasClientes.vue')
+  },
 ]
