@@ -9,7 +9,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Parcelas dos Clientes"
         >
           <v-card class="elevation-0">
@@ -23,8 +23,8 @@
                 >
                   <v-flex md4>
                     <v-text-field
-                      v-model="filtros.cpf"
                       v-mask="'###.###.###-##'"
+                      v-model="filtros.cpf"
                       label="CPF"
                       clearable
                     />
@@ -75,7 +75,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="pesquisar"
               >
                 Pesquisar
@@ -99,7 +99,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -132,7 +132,7 @@
               <td class="text-xs-center">
                 <v-btn
                   v-if="item.status != 'Pago'"
-                  color="primary"
+                  color="pink"
                   @click="openDialogPagar(item)"
                 >
                   Pagar
@@ -140,7 +140,7 @@
                 <v-icon
                   v-if="item.status == 'Pago'"
                   title="Cancelar"
-                  color="error"
+                  color="brown"
                   @click="openDialogCancelar(item)"
                 >
                   mdi-delete-outline

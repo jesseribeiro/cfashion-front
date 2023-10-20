@@ -95,7 +95,7 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary"
+              color="pink"
             >
               Gerar
             </v-btn>

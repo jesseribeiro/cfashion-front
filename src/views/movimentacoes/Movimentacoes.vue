@@ -10,7 +10,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Adicionar Movimentação"
         >
           <v-card class="elevation-0">
@@ -22,8 +22,8 @@
                 >
                   <v-flex md8>
                     <v-text-field
-                      v-model="filtros.descricao"
                       v-validate="'required'"
+                      v-model="filtros.descricao"
                       :error-messages="errors.collect('Descrição')"
                       label="Descrição"
                       data-vv-name="Descrição"
@@ -32,10 +32,10 @@
                   </v-flex>
                   <v-flex md4>
                     <v-text-field
-                      v-model.lazy="filtros.valor"
                       v-formata-moeda="filtros.valor"
                       v-money="money"
                       v-validate="'required'"
+                      v-model.lazy="filtros.valor"
                       :error-messages="errors.collect('Valor')"
                       data-vv-name="Valor"
                       suffix="R$"
@@ -46,8 +46,8 @@
                   </v-flex>
                   <v-flex md4>
                     <v-autocomplete
-                      v-model="filtros.tipo"
                       v-validate="'required'"
+                      v-model="filtros.tipo"
                       :items="tipos"
                       :error-messages="errors.collect('Tipo')"
                       label="Tipo"
@@ -58,8 +58,8 @@
                   </v-flex>
                   <v-flex md4>
                     <v-text-field
-                      v-model="filtros.dataLancamento"
                       v-validate="'required'"
+                      v-model="filtros.dataLancamento"
                       label="Data"
                       type="date"
                       clearable
@@ -72,7 +72,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="adicionar"
               >
                 Adicionar
@@ -91,7 +91,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -123,7 +123,7 @@
               <td>{{ formatValorMonetario(item.valor) }}</td>
               <td class="justify-end layout ma-2">
                 <v-icon
-                  color="red"
+                  color="brown"
                   title="Excluir Produto"
                   @click="openDialogDelete(item)"
                 >

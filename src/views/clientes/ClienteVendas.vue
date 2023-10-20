@@ -10,7 +10,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Pesquisar Vendas"
         >
           <v-card class="elevation-0">
@@ -53,7 +53,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="pesquisar"
               >
                 Pesquisar
@@ -77,7 +77,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -115,7 +115,7 @@
                 <td class="text-xs-center">
                   <v-icon
                     v-if="(item.status != 'Cancelado')"
-                    color="error"
+                    color="brown"
                     title="Cancelar Venda"
                     @click="openDialogCancelar(item)"
                   >
@@ -154,7 +154,7 @@
                         <td class="text-xs-center">
                           <v-btn
                             v-if="item.status === 'Em Aberto'"
-                            color="primary"
+                            color="pink"
                             @click="openDialogPagar(item)"
                           >
                             <span class="white--text">Pagar</span>
@@ -245,9 +245,9 @@
               >
                 <v-flex md12>
                   <v-text-field
-                    v-model.lazy="itemSelecionado.valorParcela"
                     v-formata-moeda="itemSelecionado.valorParcela"
                     v-money="money"
+                    v-model.lazy="itemSelecionado.valorParcela"
                     box
                     readonly
                     type="tel"
@@ -270,7 +270,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="green"
                 @click="confirmarPagar"
               >
                 Confirmar Pagamento

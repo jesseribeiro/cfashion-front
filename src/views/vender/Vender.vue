@@ -12,7 +12,8 @@
         <v-flex md12>
           <v-stepper v-model="e1">
             <v-stepper-header>
-              <v-stepper-step 
+              <v-stepper-step
+                color="pink"   
                 :complete="e1 > 1" 
                 step="1"
               >
@@ -21,7 +22,8 @@
 
               <v-divider />
 
-              <v-stepper-step 
+              <v-stepper-step
+                color="pink"   
                 :complete="e1 > 2" 
                 step="2"
               >

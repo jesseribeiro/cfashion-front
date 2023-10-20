@@ -18,8 +18,8 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-model="dadosCalcular.dataVenda"
             v-validate="'required'"
+            v-model="dadosCalcular.dataVenda"
             label="Data Venda"
             type="date"
             clearable
@@ -27,8 +27,8 @@
         </v-flex>
         <v-flex md4>
           <v-autocomplete
-            v-model="dadosCalcular.marcaId"
             v-validate="'required'"
+            v-model="dadosCalcular.marcaId"
             :error-messages="errors.collect('Marca')"
             :items="marcas"
             label="Marca"
@@ -42,8 +42,8 @@
         </v-flex>
         <v-flex md4>
           <v-autocomplete
-            v-model="dadosCalcular.categoria"
             v-validate="'required'"
+            v-model="dadosCalcular.categoria"
             :items="categorias"
             :loading="loadingCategorias"
             :error-messages="errors.collect('Categoria')"
@@ -56,8 +56,8 @@
         </v-flex>
         <v-flex md4>
           <v-autocomplete
-            v-model="dadosCalcular.codigo"
             v-validate="'required'"
+            v-model="dadosCalcular.codigo"
             :items="codigos"
             :loading="loadingCodigos"
             :error-messages="errors.collect('Código')"
@@ -74,8 +74,8 @@
           md4
         >
           <v-text-field
-            v-model="dadosCalcular.nomeProduto"
             v-validate="'required'"
+            v-model="dadosCalcular.nomeProduto"
             :loading="loadingProduto"
             :error-messages="errors.collect('Nome Produto')"
             label="Nome Produto"
@@ -87,9 +87,9 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-model.lazy="dadosCalcular.valorProduto"
             v-formata-moeda="dadosCalcular.valorProduto"
             v-validate="'required'"
+            v-model.lazy="dadosCalcular.valorProduto"
             :loading="loadingProduto"
             :error-messages="errors.collect('Valor Produto')"
             data-vv-name="Valor Produto"
@@ -102,9 +102,9 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-model.lazy="dadosCalcular.freteReceber"
             v-formata-moeda="dadosCalcular.freteReceber"
             v-money="money"
+            v-model.lazy="dadosCalcular.freteReceber"
             :error-messages="errors.collect('Frete Receber')"
             data-vv-name="Frete Receber"
             suffix="R$"
@@ -116,9 +116,9 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-model.lazy="dadosCalcular.fretePagar"
             v-formata-moeda="dadosCalcular.fretePagar"
             v-money="money"
+            v-model.lazy="dadosCalcular.fretePagar"
             :error-messages="errors.collect('Frete Pagar')"
             data-vv-name="Frete Pagar"
             suffix="R$"
@@ -130,10 +130,10 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-model.lazy="dadosCalcular.desconto"
             v-formata-moeda="dadosCalcular.desconto"
             v-validate="'required'"
             v-money="money"
+            v-model.lazy="dadosCalcular.desconto"
             :error-messages="errors.collect('Desconto')"
             data-vv-name="Desconto"
             suffix="R$"
@@ -145,8 +145,8 @@
         </v-flex>
         <v-flex md4>
           <v-autocomplete
-            v-model="dadosCalcular.tipo"
             v-validate="'required'"
+            v-model="dadosCalcular.tipo"
             :items="tipos"
             item-value="id"
             item-text="descricao"
@@ -160,10 +160,10 @@
           md4
         >
           <v-text-field
-            v-model.lazy="dadosCalcular.comissao"
             v-formata-moeda="dadosCalcular.comissao"
             v-validate="'required'"
             v-money="money"
+            v-model.lazy="dadosCalcular.comissao"
             :error-messages="errors.collect('Comissao MKT')"
             data-vv-name="Comissão"
             suffix="R$"
@@ -174,9 +174,9 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
+            v-validate="'required'"
             v-if="flagTipo"
             v-model="dadosCalcular.qtdParcela"
-            v-validate="'required'"
             :loading="loadingTipo"
             :disabled="disabled"
             :error-messages="errors.collect('Qtd Parcela')"
@@ -195,10 +195,10 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-if="flagTipo"
-            v-model.lazy="dadosCalcular.valorTarifa"
             v-formata-moeda="dadosCalcular.valorTarifa"
             v-validate="'required'"
+            v-if="flagTipo"
+            v-model.lazy="dadosCalcular.valorTarifa"
             :loading="loadingProduto"
             :error-messages="errors.collect('Valor Tarifa')"
             data-vv-name="Valor Tarifa"
@@ -210,11 +210,11 @@
         </v-flex>
         <v-flex md4>
           <v-text-field
-            v-if="flagParcela"
-            v-model.lazy="dadosCalcular.valorParcela"
             v-formata-moeda="dadosCalcular.valorParcela"
             v-validate="'required'"
             v-money="money"
+            v-if="flagParcela"
+            v-model.lazy="dadosCalcular.valorParcela"
             :error-messages="errors.collect('Valor Parcela')"
             data-vv-name="Valor Parcela"
             suffix="R$"
@@ -245,7 +245,7 @@
           <v-layout class="justify-end">
             <v-btn 
               :loading="loadingBtn" 
-              color="#4caf50" 
+              color="pink" 
               @click="vender()"
             >
               Confirmar

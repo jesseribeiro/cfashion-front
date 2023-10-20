@@ -9,7 +9,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Pesquisar Pagamentos"
         >
           <v-card class="elevation-0">
@@ -42,7 +42,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="pesquisar"
               >
                 Pesquisar
@@ -66,7 +66,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />

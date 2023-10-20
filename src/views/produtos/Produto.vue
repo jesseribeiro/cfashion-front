@@ -31,8 +31,8 @@
                   md4
                 >
                   <v-text-field
-                    v-model="form.nome"
                     v-validate="'required'"
+                    v-model="form.nome"
                     :error-messages="errors.collect('Nome')"
                     label="Nome"
                     data-vv-name="Nome"
@@ -41,8 +41,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model="form.codigo"
                     v-validate="'required'"
+                    v-model="form.codigo"
                     :error-messages="errors.collect('Código')"
                     name="codigo"
                     data-vv-name="Codigo"
@@ -58,24 +58,24 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model.lazy="form.valorCompra"
                     v-money="money"
                     v-validate="'required'"
                     v-formata-moeda="form.valorCompra"
+                    v-model.lazy="form.valorCompra"
                     :error-messages="errors.collect('Valor Compra')"
+                    :disabled="disabled"
                     data-vv-name="Valor Compra"
                     suffix="R$"
                     label="Valor Compra"
-                    reverse
-                    clearable  
-                    :disabled="disabled"                 
+                    reverse  
+                    clearable                 
                     type="tel"
                   />
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.tamanho"
                     v-validate="'required'"
+                    v-model="form.tamanho"
                     :error-messages="errors.collect('Tamanho')"
                     :items="tamanhos"
                     label="Tamanho"
@@ -87,8 +87,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.categoria"
                     v-validate="'required'"
+                    v-model="form.categoria"
                     :error-messages="errors.collect('Categoria')"
                     :items="categorias"
                     label="Categoria"
@@ -100,8 +100,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model="form.qtd"
                     v-validate="'required'"
+                    v-model="form.qtd"
                     :disabled="disabled"
                     :error-messages="errors.collect('Qtd')"
                     :rules="[rules.required]"
@@ -117,8 +117,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="form.marcaId"
                     v-validate="'required'"
+                    v-model="form.marcaId"
                     :error-messages="errors.collect('Marca')"
                     :items="marcas"
                     label="Marca"
@@ -146,7 +146,7 @@
                   :disabled="!valid"
                   :loading="loadingBtn"
                   type="submit"
-                  color="primary"
+                  color="pink"
                 >
                   Salvar
                 </v-btn>

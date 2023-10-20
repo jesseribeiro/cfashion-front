@@ -12,6 +12,7 @@
             non-linear>
             <v-stepper-header>
               <v-stepper-step
+                color="pink"   
                 :complete="e1 > 1"
                 editable
                 class="body-2 mt-1"
@@ -23,6 +24,7 @@
               <v-divider />
 
               <v-stepper-step
+                color="pink"   
                 :editable="ue >= 2"
                 :complete="e1 > 2"
                 class="body-2 mt-1"
@@ -33,6 +35,7 @@
               <v-divider />
 
               <v-stepper-step
+                color="pink"   
                 :editable="ue >= 3"
                 :complete="e1 > 3"
                 class="body-2 mt-1"

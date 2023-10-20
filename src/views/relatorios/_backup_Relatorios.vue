@@ -32,7 +32,7 @@
                   <v-btn 
                     flat 
                     small 
-                    color="primary"
+                    color="pink"
                   >
                     {{ item.text }}
                   </v-btn>

@@ -7,7 +7,7 @@
         xmlns="http://www.w3.org/2000/svg" 
         viewBox="0 0 1440 320">
         <path
-          fill="rgb(0, 99, 175)"
+          fill="rgb(180, 10, 90)"
           fill-opacity="1"
           d="M0,224L40,229.3C80,235,160,245,240,250.7C320,256,400,256,480,229.3C560,203,640,149,720,128C800,107,880,117,960,144C1040,171,1120,213,1200,245.3C1280,277,1360,299,1400,309.3L1440,320L1440,0L1400,0C1360,0,1280,0,1200,0C1120,0,1040,0,960,0C880,0,800,0,720,0C640,0,560,0,480,0C400,0,320,0,240,0C160,0,80,0,40,0L0,0Z"
         />
@@ -120,7 +120,7 @@ export default {
   }
   .menu-icone {
     flex: none;
-    color: rgb(0, 99, 175);
+    color: rgb(180, 10, 90);
     background-color: rgba(0, 99, 175, 0.1);
     border-radius: 100%;
     padding: 8px;
@@ -136,7 +136,7 @@ export default {
   padding: 4px;
   margin-left: 60px;
   //text-decoration: underline;
-  color: rgb(0, 99, 175);
+  color: rgb(180, 10, 90);
   transition: color 0.2s;
   &:hover {
     color: rgb(0, 110, 195);

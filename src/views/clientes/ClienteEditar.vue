@@ -5,7 +5,7 @@
       v-if="!loading"
       v-model="tab"
       centered
-      color="primary"
+      color="pink"
       dark
       icons-and-text
     >

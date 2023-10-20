@@ -37,8 +37,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="filtros.categoria"
                     v-validate="'required'"
+                    v-model="filtros.categoria"
                     :error-messages="errors.collect('Categoria')"
                     :items="categorias"
                     label="Categoria"
@@ -50,8 +50,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-autocomplete
-                    v-model="filtros.marcaId"
                     v-validate="'required'"
+                    v-model="filtros.marcaId"
                     :error-messages="errors.collect('Marca')"
                     :items="marcas"
                     label="Marca"
@@ -85,7 +85,7 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary"
+              color="pink"
             >
               Gerar
             </v-btn>

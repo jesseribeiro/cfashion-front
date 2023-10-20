@@ -22,7 +22,7 @@
           >
             <v-expansion-panel-content
               :key="0"
-              class="primary"
+              class="pink"
             >
               <template slot="actions">
                 <v-icon color="white">
@@ -139,7 +139,7 @@
               :disabled="!valid"
               :loading="loadingBtn"
               type="submit"
-              color="primary"
+              color="pink"
             >
               {{ editando ? "Salvar" : "Continuar" }}
             </v-btn>

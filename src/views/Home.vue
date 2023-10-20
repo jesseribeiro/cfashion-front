@@ -4,7 +4,7 @@
     grid-list-md
   >
     <material-card 
-      color="primary" 
+      color="pink" 
       flat 
       full-width 
       title="Funcionalidades"
@@ -142,7 +142,7 @@ export default {
   width: 120px !important;
   height: 96px !important;
   font-size: 16px !important;
-  /*color: #424242 !important; */
+  color:#ca0e7c !important;
 }
 .v-btn .v-icon {
   font-size: 2.25rem !important;

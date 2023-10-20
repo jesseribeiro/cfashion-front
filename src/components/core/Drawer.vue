@@ -21,30 +21,28 @@
           <v-list-tile-title v-text="link.text" />
         </v-list-tile>
       </v-list>
-      <core-alterar-senha
-        v-if="dialogAlterarSenha"
-        :usuario-id="$root.usuarioId()"
-        :show="dialogAlterarSenha"
-        :close="closeAlterarSenha"
-      />
     </v-navigation-drawer>
     <v-toolbar 
-      color="#FFFFFF" 
+      color="pink"
       app 
       clipped-left 
-      tile 
       flat
     >
       <v-btn icon>
         <v-icon 
           large 
-          color="#6B778C" 
+          color="white" 
           @click="mini = !mini"
         >
           mdi-menu
         </v-icon>
       </v-btn>
       <v-spacer />
+      <v-img
+        src="/img/logo.jpeg"
+        height="60"
+        width="750"
+      />
     </v-toolbar>
     <core-progress-modal :show="loading" />
     <template v-if="dialog">

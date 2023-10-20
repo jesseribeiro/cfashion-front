@@ -105,7 +105,7 @@
                   :disabled="!valid"
                   :loading="loadingBtn"
                   type="submit"
-                  color="primary"
+                  color="pink"
                 >
                   Salvar
                 </v-btn>

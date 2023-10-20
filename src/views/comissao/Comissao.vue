@@ -22,7 +22,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -49,7 +49,7 @@
               </td>
               <td class="text-xs-center">
                 <v-btn
-                  color="primary"
+                  color="pink"
                   @click="openDialogPagar(item)"
                 >
                   Editar
@@ -83,9 +83,9 @@
                 >
                   <v-flex md12>
                     <v-text-field
-                      v-model.lazy="itemSelecionado.comissao"
                       v-formata-moeda="itemSelecionado.comissao"
                       v-money="money"
+                      v-model.lazy="itemSelecionado.comissao"
                       box
                       type="tel"
                       prefix="R$"
@@ -107,7 +107,7 @@
 
                 <v-btn
                   :loading="loadingBtn"
-                  color="red"
+                  color="pink"
                   @click="confirmarPagar"
                 >
                   Confirmar

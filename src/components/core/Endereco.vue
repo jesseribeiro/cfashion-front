@@ -10,7 +10,7 @@
   >
     <v-expansion-panel-content 
       :key="0" 
-      class="primary"
+      class="pink"
     >
       <template slot="actions">
         <v-icon color="white">
@@ -31,9 +31,9 @@
               sm6
             >
               <v-text-field
-                v-model="value.cep"
                 v-mask="'#####-###'"
                 v-validate="'required'"
+                v-model="value.cep"
                 :error-messages="errors.collect('CEP')"
                 data-vv-name="CEP"
                 label="CEP"
@@ -68,7 +68,7 @@
                 <v-btn
                   :loading="loadingBtn"
                   dark
-                  color="primary"
+                  color="blue"
                   @click="consultarCEP"
                 >
                   Consultar CEP
@@ -101,8 +101,8 @@
 
             <v-flex md7>
               <v-text-field
-                v-model="value.logradouro"
                 v-validate="'required'"
+                v-model="value.logradouro"
                 :error-messages="errors.collect('Endereço (Rua,Av.,etc)')"
                 data-vv-name="Endereço (Rua,Av.,etc)"
                 label="Endereço (Rua,Av.,etc)"
@@ -110,8 +110,8 @@
             </v-flex>
             <v-flex md2>
               <v-text-field
-                v-model="value.numero"
                 v-validate="'required'"
+                v-model="value.numero"
                 :error-messages="errors.collect('Número')"
                 data-vv-name="Número"
                 label="Número"
@@ -127,8 +127,8 @@
 
             <v-flex md2>
               <v-autocomplete
-                v-model="value.estado"
                 v-validate="'required'"
+                v-model="value.estado"
                 :items="estados"
                 :error-messages="errors.collect('Estado')"
                 label="Estado"
@@ -142,8 +142,8 @@
 
             <v-flex md5>
               <v-autocomplete
-                v-model="value.cidadeIbge"
                 v-validate="'required'"
+                v-model="value.cidadeIbge"
                 :error-messages="errors.collect('Cidade')"
                 :items="cidades"
                 :loading="loadingCidades"
@@ -157,8 +157,8 @@
 
             <v-flex md5>
               <v-text-field
-                v-model="value.bairro"
                 v-validate="'required'"
+                v-model="value.bairro"
                 :error-messages="errors.collect('Bairro')"
                 data-vv-name="Bairro"
                 label="Bairro"

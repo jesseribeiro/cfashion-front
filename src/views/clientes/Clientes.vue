@@ -10,7 +10,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Pesquisar Cliente"
         >
           <v-card class="elevation-0">
@@ -29,8 +29,8 @@
                   </v-flex>
                   <v-flex md2>
                     <v-text-field
-                      v-model.trim="filtros.cpf"
                       v-mask="'###.###.###-##'"
+                      v-model.trim="filtros.cpf"
                       label="CPF"
                       type="text"
                       clearable
@@ -43,7 +43,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="pesquisar"
               >
                 Pesquisar
@@ -68,7 +68,7 @@
             <v-btn
               small
               fab
-              color="primary"
+              color="pink"
             >
               <v-icon @click="newItem()">
                 mdi-plus
@@ -77,7 +77,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -115,7 +115,7 @@
               <td class="justify-end layout ma-2">
                 <v-icon
                   class="mr-2"
-                  color="primary"
+                  color="red"
                   title="Editar dados da cliente"
                   @click="editItem(item)"
                 >

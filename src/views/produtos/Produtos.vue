@@ -10,7 +10,7 @@
     >
       <v-flex md12>
         <material-card
-          color="primary"
+          color="pink"
           title="Pesquisar Produto"
         >
           <v-card class="elevation-0">
@@ -69,7 +69,7 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 @click="pesquisar"
               >
                 Pesquisar
@@ -94,7 +94,7 @@
             <v-btn
               small
               fab
-              color="primary"
+              color="pink"
             >
               <v-icon @click="newItem()">
                 mdi-plus
@@ -103,7 +103,7 @@
           </v-toolbar>
           <v-progress-linear
             :active="loading"
-            color="light-blue"
+            color="red"
             indeterminate
             height="3"
           />
@@ -139,14 +139,14 @@
               <td class="justify-end layout ma-2">
                 <v-icon
                   class="mr-2"
-                  color="blue"
+                  color="red"
                   title="Editar dados do produto"
                   @click="editItem(item)"
                 >
                   mdi-pencil
                 </v-icon>
                 <v-icon
-                  color="red"
+                  color="brown"
                   title="Excluir Produto"
                   @click="openDialogDelete(item)"
                 >

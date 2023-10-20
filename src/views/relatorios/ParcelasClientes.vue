@@ -56,8 +56,8 @@
                 </v-flex>
                 <v-flex md4>
                   <v-text-field
-                    v-model.trim="filtros.cpf"
                     v-mask="'###.###.###-##'"
+                    v-model.trim="filtros.cpf"
                     label="CPF"
                     type="text"
                     clearable
@@ -101,7 +101,7 @@
             <v-btn
               :loading="loadingBtn"
               type="submit"
-              color="primary"
+              color="pink"
             >
               Gerar
             </v-btn>

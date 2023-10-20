@@ -3,23 +3,28 @@
     fill-height
     fluid
     grid-list-xl
-    class="mb-5">
+    class="mb-5"
+  >
     <v-layout
       wrap
       justify-center
-      align-center>
+      align-center
+    >
       <div class="card-login">
         <v-form
           novalidate
-          @submit.prevent="validateBeforeSubmit">
+          @submit.prevent="validateBeforeSubmit"
+        >
           <v-card>
             <div
               align="center"
-              class="pt-3 mb-2">
+              class="pt-3 mb-2"
+            >
               <v-img
-                src="/img/logo.png"
+                src="/img/logo.jpg"
                 height="80"
-                width="255"/>
+                width="255"
+              />
             </div>
             <v-card-text>
               <v-text-field
@@ -34,10 +39,10 @@
               />
               <v-text-field
                 v-validate="'required'"
+                v-model="password"
                 :error-messages="errors.collect('Senha')"
                 :type="showPassword ? 'text' : 'password'"
-                :append-icon="showPassword ? 'mdi-eye': 'mdi-eye-off'"
-                v-model="password"
+                :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 data-vv-name="Senha"
                 label="Senha"
                 prepend-icon="mdi-lock"
@@ -50,9 +55,11 @@
               <v-spacer />
               <v-btn
                 :loading="loadingBtn"
-                color="primary"
+                color="pink"
                 type="submit"
-              >Entrar</v-btn>
+              >
+                Entrar
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -62,72 +69,76 @@
 </template>
 
 <script>
-import LoginBusiness from '../business/LoginBusiness'
-import { LOCALSTORAGE } from '../constants'
+import LoginBusiness from "../business/LoginBusiness";
+import { LOCALSTORAGE } from "../constants";
 
 export default {
   metaInfo: {
-    titleTemplate: '%s - Entrar'
+    titleTemplate: "%s - Entrar",
   },
-  data () {
+  data() {
     return {
-      username: '',
-      password: '',
+      username: "",
+      password: "",
       showPassword: false,
-      loadingBtn: false
-    }
+      loadingBtn: false,
+    };
   },
   methods: {
-    showErro (msg) {
-      alert(msg)
+    showErro(msg) {
+      alert(msg);
     },
-    validateBeforeSubmit () {
-      this.$validator.validate()
-        .then(result => {
-          if (result) {
-            this.login()
-          } else {
-            this.$root.showAlerta(this.$vuetify.t('$vuetify.Erro.camposObrigatorios'))
-          }
-        })
+    validateBeforeSubmit() {
+      this.$validator.validate().then((result) => {
+        if (result) {
+          this.login();
+        } else {
+          this.$root.showAlerta(
+            this.$vuetify.t("$vuetify.Erro.camposObrigatorios")
+          );
+        }
+      });
     },
-    login () {
-      const self = this
-      this.loadingBtn = true
+    login() {
+      const self = this;
+      this.loadingBtn = true;
       LoginBusiness.login(this.username, this.password)
-        .then(response => {
-          localStorage.clear()
-          let token = response.data
-          let username = self.username
-          localStorage.setItem(LOCALSTORAGE.JWT, JSON.stringify(token))
-          localStorage.setItem(LOCALSTORAGE.LOGIN, username)
-          this.$router.push('/home')
+        .then((response) => {
+          localStorage.clear();
+          let token = response.data;
+          let username = self.username;
+          localStorage.setItem(LOCALSTORAGE.JWT, JSON.stringify(token));
+          localStorage.setItem(LOCALSTORAGE.LOGIN, username);
+          this.$router.push("/home");
 
-          this.$root.addTokenHeader()
+          this.$root.addTokenHeader();
         })
         .then(() => {
           LoginBusiness.getDadosUsuario(self.username)
-            .then(response => {
-              localStorage.setItem(LOCALSTORAGE.DADOS_USUARIO, JSON.stringify(response.data))
+            .then((response) => {
+              localStorage.setItem(
+                LOCALSTORAGE.DADOS_USUARIO,
+                JSON.stringify(response.data)
+              );
             })
             .finally(() => {
-              window.location.reload()
-            })
+              window.location.reload();
+            });
         })
         .finally(() => {
-          this.loadingBtn = false
-          this.$router.push('/home')
-        })
-    }
-  }
-}
+          this.loadingBtn = false;
+          this.$router.push("/home");
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
 .container-login {
   width: 100vw;
   height: 100vh;
-  background: #f8f9fa;
+  background: #8a0d36;
   display: flex;
   flex-direction: row;
   justify-content: center;
